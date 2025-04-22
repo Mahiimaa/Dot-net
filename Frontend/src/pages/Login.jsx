@@ -161,8 +161,9 @@ const Login = () => {
           animation: fade-in 0.3s ease-in;
         }
       `}</style>
+
     </div>
   );
 };
-
 export default Login;
+
