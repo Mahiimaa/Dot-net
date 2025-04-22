@@ -11,13 +11,17 @@ import AdminReview from "./pages/AdminReview";
 import AdminSettings from "./pages/AdminSettings";
 
 import './App.css'
+import Home from './pages/Home';
+import ProtectedRoute from "./Components/ProtectedRoute";
+import Login from './pages/Login';
 
 function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/register" element ={<Register/>}/>
-      <Route path ="/" element ={<Login/> }/>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       <Route path ="/dashboard" element ={<AdminDashboard/> }/>
       <Route path ="/adminBook" element ={<AdminBook/> }/>
       <Route path ="/inventory" element ={<Inventory/> }/>
@@ -26,6 +30,7 @@ function App() {
       <Route path ="/adminOrders" element ={<AdminOrders/> }/>
       <Route path ="/adminReview" element ={<AdminReview/> }/>
       <Route path ="/adminsettings" element ={<AdminSettings/> }/>
+
       </Routes>
     </Router>
   )

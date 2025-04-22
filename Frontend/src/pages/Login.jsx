@@ -1,83 +1,169 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebookF } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin =() => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", { username, password, rememberMe });
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axios.post("http://localhost:5127/Auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      const { token, user } = response.data;
+      localStorage.setItem("token", token);
+      setSuccess("Login successful! Redirecting...");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 401) {
+          setError("Incorrect email or password.");
+        } else if (err.response.status === 400) {
+          setError("Please provide valid email and password.");
+        } else {
+          setError(err.response.data.message || "Login failed. Please try again.");
+        }
+      } else {
+        setError("Unable to connect to the server. Please check your connection.");
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f7f2ec]">
-      <div className="absolute top-4 left-6 font-bold text-xl flex items-center gap-2">
-        <span>✈️</span>
-        <span>Foliana</span>
+    <div className="w-full h-screen bg-[#e8dfd6] flex items-center justify-center relative overflow-hidden">
+      <div className="absolute top-4 left-4 text-black font-semibold text-lg flex items-center gap-2 z-20">
+        <span className="text-xl">📖</span> Foliana
       </div>
-
-      <div className="bg-[#f7f2ec] w-full max-w-md p-8 rounded-xl shadow-xl border border-gray-300 text-center">
-        <div className="flex justify-center gap-12 mb-6 text-lg font-semibold">
-          <span className="text-green-600 border-b-2 border-green-600 pb-1">LOGIN</span>
-          <span className="text-black">SIGN UP</span>
+      <div className="rounded-2xl shadow-xl w-full max-w-md px-8 py-10 text-center z-10 backdrop-blur-md bg-white/30 border border-black/50">
+        <div className="flex justify-between mb-6">
+          <Link
+            to="/login"
+            className="text-sm font-medium text-black"
+          >
+            LOGIN
+          </Link>
+          <Link
+            to="/register"
+            className="text-sm font-medium text-gray-400 hover:text-green-600"
+          >
+            SIGN UP
+          </Link>
         </div>
-
-        <form onSubmit={handleLogin} className="space-y-4">
+        {error && (
+          <div className="text-white bg-[#e57373] text-sm mb-4 p-2 rounded-md animate-fade-in">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="text-white bg-green-600 text-sm mb-4 p-2 rounded-md animate-fade-in">
+            {success}
+          </div>
+        )}
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none"
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleInputChange}
+            className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
+            required
           />
           <input
             type="password"
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none"
+            value={formData.password}
+            onChange={handleInputChange}
+            className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
+            required
           />
-
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="accent-[#083c43]"
-            />
-            <label>Remember me</label>
-          </div>
-
+          <div className="text-right text-xs text-green-600 cursor-pointer">Forgot password?</div>
           <button
             type="submit"
-            className="w-full py-2 bg-[#c4845c] text-white rounded hover:bg-[#a96f4f] transition"
+            className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
           >
-            Login
+            Log in
           </button>
         </form>
-
-        <div className="mt-4 text-sm">
-          <p className="text-[#b2765a]">Forget Password?</p>
-          <p className="text-green-600 mt-1">Already have account? <span className="underline cursor-pointer">Sign UP</span></p>
+        <div className="my-4 text-sm text-gray-500">OR</div>
+        <div className="flex justify-center gap-4">
+          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+            <FaFacebookF className="text-blue-600" />
+          </button>
+          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+            <FcGoogle />
+          </button>
         </div>
       </div>
-
-      {/* Waves at the bottom */}
-      <div className="absolute bottom-0 w-full">
-        <svg viewBox="0 0 1440 320">
+      <div className="absolute -bottom-10 w-full z-0">
+        <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />
+        <svg viewBox="0 0 2000 180" className="w-full h-60">
           <path
             fill="#ffffff"
-            fillOpacity="1"
-            d="M0,160L48,144C96,128,192,96,288,101.3C384,107,480,149,576,181.3C672,213,768,235,864,213.3C960,192,1056,128,1152,128C1248,128,1344,192,1392,224L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ></path>
+            d="M0,100 C500,250 1500,-30 2000,100 L2000,180 L0,180 Z"
+          />
+        </svg>
+        <svg viewBox="0 0 3000 100" className="w-full h-24 absolute bottom-10 left-0">
+          <path
+            d="M0,30 Q250,150 500,30 T1000,30 T1500,30 T2000,30 T2500,30 T3000,30"
+            stroke="#7cc8f9"
+            strokeWidth="2"
+            fill="none"
+          />
+          <path
+            d="M0,50 Q250,-50 500,50 T1000,50 T1500,50 T2000,50 T2500,50 T3000,50"
+            stroke="#92f2b8"
+            strokeWidth="2"
+            fill="none"
+          />
+          <path
+            d="M0,70 Q250,130 500,70 T1000,70 T1500,70 T2000,70 T2500,70 T3000,70"
+            stroke="#99dbff"
+            strokeWidth="2"
+            fill="none"
+          />
         </svg>
       </div>
-      <p onClick={() => navigate('/dashboard')}>AdminHome</p>
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-in;
+        }
+      `}</style>
+
     </div>
   );
 };
-
 export default Login;
+
