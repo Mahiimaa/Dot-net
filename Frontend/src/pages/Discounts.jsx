@@ -11,6 +11,13 @@ function Discounts() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [onSale, setOnSale] = useState(false);
+    const [editingDiscount, setEditingDiscount] = useState(null);
+    const [editTitle, setEditTitle] = useState("");
+    const [editDiscountPercent, setEditDiscountPercent] = useState("");
+    const [editStartDate, setEditStartDate] = useState("");
+    const [editEndDate, setEditEndDate] = useState("");
+    const [editOnSale, setEditOnSale] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
 
     const fetchDiscounts = async () => {
         try {
@@ -48,6 +55,39 @@ function Discounts() {
         console.error("Add discount failed:", err);
         }
     };
+
+    const openEditModal = (discount) => {
+        setEditingDiscount(discount);
+        setEditTitle(discount.title);
+        setEditDiscountPercent(discount.discountPercent);
+        setEditStartDate(discount.startDate?.slice(0, 10));
+        setEditEndDate(discount.endDate?.slice(0, 10));
+        setEditOnSale(discount.onSale);
+        setShowAddModal(false);
+      };
+
+      const handleUpdateDiscount = async () => {
+        try {
+          const res = await axios.put(`http://localhost:5000/api/discounts/${editingDiscount.id}`, {
+            title: editTitle,
+            discountPercent: editDiscountPercent,
+            startDate: editStartDate,
+            endDate: editEndDate,
+            onSale: editOnSale,
+          });
+      
+          const updatedDiscount = res.data;
+          const updatedList = discounts.map((d) =>
+            d.id === updatedDiscount.id ? updatedDiscount : d
+          );
+          setDiscounts(updatedList);
+          setEditingDiscount(null);
+        } catch (err) {
+          console.error("Update discount failed:", err);
+        }
+      };
+      
+      
   return (
     <div className="h-screen w-screen flex overflow-hidden">
         <AdminNav />
@@ -99,7 +139,8 @@ function Discounts() {
                         )}
                     </td>
                     <td className="px-4 py-2 space-x-2">
-                        <button className="bg-[#5c2314] text-white px-4 py-1 rounded">
+                        <button onClick={() => openEditModal(d)}
+                        className="bg-[#5c2314] text-white px-4 py-1 rounded">
                         Update
                         </button>
                         <button className="bg-red-600 text-white px-4 py-1 rounded">
@@ -189,6 +230,84 @@ function Discounts() {
             </div>
             </div>
         )}
+        {showEditModal && (
+        <div className="fixed inset-0 bg-gray-800/40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-md p-6 w-[90%] max-w-2xl border">
+            <h2 className="text-center text-lg font-semibold mb-4">
+                Edit Discount
+            </h2>
+
+            <form className="grid grid-cols-2 gap-4">
+                <div>
+                <label className="block font-medium">Title</label>
+                <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="w-full border p-2 rounded"
+                />
+                </div>
+
+                <div>
+                <label className="block font-medium">Discount (%)</label>
+                <input
+                    type="number"
+                    value={editDiscountPercent}
+                    onChange={(e) => setEditDiscountPercent(e.target.value)}
+                    className="w-full border p-2 rounded"
+                />
+                </div>
+
+                <div>
+                <label className="block font-medium">Start Date</label>
+                <input
+                    type="date"
+                    value={editStartDate}
+                    onChange={(e) => setEditStartDate(e.target.value)}
+                    className="w-full border p-2 rounded"
+                />
+                </div>
+
+                <div>
+                <label className="block font-medium">End Date</label>
+                <input
+                    type="date"
+                    value={editEndDate}
+                    onChange={(e) => setEditEndDate(e.target.value)}
+                    className="w-full border p-2 rounded"
+                />
+                </div>
+
+                <div className="col-span-2 flex items-center gap-2 mt-2">
+                <input
+                    type="checkbox"
+                    checked={editOnSale}
+                    onChange={(e) => setEditOnSale(e.target.checked)}
+                />
+                <label>On Sale</label>
+                </div>
+
+                <div className="col-span-2 flex justify-center gap-4 mt-4">
+                <button
+                    type="button"
+                    onClick={handleUpdateDiscount}
+                    className="bg-[#5c2314] text-white px-6 py-2 rounded"
+                >
+                    Update
+                </button>
+                <button
+                    type="button"
+                    onClick={() => setShowEditModal(false)}
+                    className="bg-gray-600 text-white px-6 py-2 rounded"
+                >
+                    Cancel
+                </button>
+                </div>
+            </form>
+            </div>
+        </div>
+        )}
+
         </div>
         </div></div>
   )

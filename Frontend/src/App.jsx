@@ -9,20 +9,18 @@ import Announcements from "./pages/Announcements";
 import AdminOrders from "./pages/AdminOrders";
 import AdminReview from "./pages/AdminReview";
 import AdminSettings from "./pages/AdminSettings";
-
 import './App.css'
 import Home from './pages/Home';
 import ProtectedRoute from "./Components/ProtectedRoute";
-import Login from './pages/Login';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-      <Route path ="/dashboard" element ={<AdminDashboard/> }/>
+      <Route path ="/" element ={<AdminDashboard/> }/>
       <Route path ="/adminBook" element ={<AdminBook/> }/>
       <Route path ="/inventory" element ={<Inventory/> }/>
       <Route path ="/discounts" element ={<Discounts/> }/>
