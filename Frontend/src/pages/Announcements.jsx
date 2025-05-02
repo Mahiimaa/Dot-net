@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import AdminNav from "../Components/AdminNavbar"
 import AdminTop from "../Components/AdminTop"
+import axios from "axios"
 
 function Announcements() {
     const [announcements, setAnnouncements] = useState([]);
@@ -20,7 +21,7 @@ function Announcements() {
 
     const fetchAnnouncements = async () => {
         try {
-        const res = await axios.get("http://localhost:5000/api/announcements");
+        const res = await axios.get("http://localhost:5127/api/announcements");
         setAnnouncements(res.data);
         } catch (err) {
         console.error("Fetch failed:", err);
@@ -35,7 +36,7 @@ function Announcements() {
 
     const handleAddAnnouncement = async () => {
         try {
-        const res = await axios.post("http://localhost:5000/api/announcements", {
+        const res = await axios.post("http://localhost:5127/api/announcements", {
             message,
             type,
             startDate,
@@ -63,7 +64,7 @@ function Announcements() {
 
       const handleUpdateAnnouncement = async () => {
         try {
-          await axios.put(`http://localhost:5000/api/announcements/${editId}`, {
+          await axios.put(`http://localhost:5127/api/announcements/${editId}`, {
             message: editMessage,
             type: editType,
             startDate: editStartDate,
@@ -75,6 +76,18 @@ function Announcements() {
           console.error("Update announcement failed:", err);
         }
       };
+
+      const handleDeleteAnnouncement = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this announcement?")) return;
+      
+        try {
+          await axios.delete(`http://localhost:5127/api/announcements/${id}`);
+          setAnnouncements(announcements.filter((a) => a.id !== id));
+        } catch (err) {
+          console.error("Delete announcement failed:", err);
+        }
+      };
+      
       
   return (
     <div className="h-screen flex ">
@@ -124,11 +137,14 @@ function Announcements() {
                     <td className="px-4 py-2">{item.startDate?.slice(0, 10)}</td>
                     <td className="px-4 py-2">{item.endDate?.slice(0, 10)}</td>
                     <td className="px-4 py-2 space-y-1">
-                        <button className="bg-[#5c2314] text-white px-4 py-1 rounded">
+                        <button className="bg-[#5c2314] text-white px-4 py-1 rounded"
+                        onClick={() => handleEdit(item)}>
                         Update
                         </button>
                         <br />
-                        <button className="bg-red-600 text-white px-4 py-1 rounded">
+                        <button className="bg-red-600 text-white px-4 py-1 rounded"
+                        onClick={() => handleDeleteAnnouncement(item.id)}
+                        >
                         Delete
                         </button>
                     </td>

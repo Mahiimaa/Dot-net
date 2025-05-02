@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import AdminNav from "../Components/AdminNavbar"
 import AdminTop from "../Components/AdminTop"
+import axios from "axios"
+import { Check, X } from "lucide-react";
+
 
 function Discounts() {
     const [discounts, setDiscounts] = useState([]);
@@ -18,11 +21,15 @@ function Discounts() {
     const [editEndDate, setEditEndDate] = useState("");
     const [editOnSale, setEditOnSale] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [books, setBooks] = useState([]);
+    const [selectedBooks, setSelectedBooks] = useState([]);
+    const [editSelectedBooks, setEditSelectedBooks] = useState([]);
+
 
     const fetchDiscounts = async () => {
         try {
-        const res = await axios.get("http://localhost:5000/api/discounts");
-        setDiscounts(res.data);
+        const res = await axios.get("http://localhost:5127/api/discounts");
+        setDiscounts(res.data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate)));
         } catch (err) {
         console.error("Failed to fetch discounts", err);
         } finally {
@@ -32,16 +39,18 @@ function Discounts() {
 
     useEffect(() => {
         fetchDiscounts();
+        fetchBooks();
     }, []);
 
     const handleAddDiscount = async () => {
         try {
-        const res = await axios.post("http://localhost:5000/api/discounts", {
+        const res = await axios.post("http://localhost:5127/api/discounts", {
             title,
-            discountPercent,
-            startDate,
-            endDate,
+            discountPercent : parseFloat(discountPercent),
+            startDate: startDate ? new Date(startDate).toISOString() : null,
+            endDate: endDate ? new Date(endDate).toISOString() : null,
             onSale,
+            bookIds: selectedBooks.map(Number)
         });
 
         setDiscounts([...discounts, res.data]);
@@ -51,6 +60,7 @@ function Discounts() {
         setStartDate("");
         setEndDate("");
         setOnSale(false);
+        setEditSelectedBooks([]);
         } catch (err) {
         console.error("Add discount failed:", err);
         }
@@ -58,22 +68,25 @@ function Discounts() {
 
     const openEditModal = (discount) => {
         setEditingDiscount(discount);
+        setEditSelectedBooks(discount.bookIds || []);
         setEditTitle(discount.title);
         setEditDiscountPercent(discount.discountPercent);
         setEditStartDate(discount.startDate?.slice(0, 10));
         setEditEndDate(discount.endDate?.slice(0, 10));
         setEditOnSale(discount.onSale);
         setShowAddModal(false);
+        setShowEditModal(true);
       };
 
       const handleUpdateDiscount = async () => {
         try {
-          const res = await axios.put(`http://localhost:5000/api/discounts/${editingDiscount.id}`, {
+          const res = await axios.put(`http://localhost:5127/api/discounts/${editingDiscount.id}`, {
             title: editTitle,
-            discountPercent: editDiscountPercent,
-            startDate: editStartDate,
-            endDate: editEndDate,
+            discountPercent: parseFloat(editDiscountPercent),
+            startDate: editStartDate ? new Date(editStartDate).toISOString() : null,
+            endDate: editEndDate ? new Date(editEndDate).toISOString() : null,
             onSale: editOnSale,
+            bookIds: editSelectedBooks.map(Number),
           });
       
           const updatedDiscount = res.data;
@@ -81,10 +94,42 @@ function Discounts() {
             d.id === updatedDiscount.id ? updatedDiscount : d
           );
           setDiscounts(updatedList);
+          setShowEditModal(false);
           setEditingDiscount(null);
         } catch (err) {
           console.error("Update discount failed:", err);
         }
+      };
+      
+      const fetchBooks = async () => {
+        try {
+          const res = await axios.get("http://localhost:5127/api/books");
+          setBooks(res.data);
+        } catch (err) {
+          console.error("Failed to fetch books:", err);
+        }
+      };
+      
+      const handleDeleteDiscount = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this discount?")) return;
+      
+        try {
+          await axios.delete(`http://localhost:5127/api/discounts/${id}`);
+          setDiscounts(discounts.filter((d) => d.id !== id));
+        } catch (err) {
+          console.error("Delete discount failed:", err);
+        }
+      };
+
+      const resetEditForm = () => {
+        setEditingDiscount(null);
+        setEditTitle("");
+        setEditDiscountPercent("");
+        setEditStartDate("");
+        setEditEndDate("");
+        setEditOnSale(false);
+        setEditSelectedBooks([]);
+        setShowEditModal(false);
       };
       
       
@@ -143,7 +188,8 @@ function Discounts() {
                         className="bg-[#5c2314] text-white px-4 py-1 rounded">
                         Update
                         </button>
-                        <button className="bg-red-600 text-white px-4 py-1 rounded">
+                        <button className="bg-red-600 text-white px-4 py-1 rounded"
+                        onClick={() => handleDeleteDiscount(d.id)}>
                         Delete
                         </button>
                     </td>
@@ -208,6 +254,23 @@ function Discounts() {
                     onChange={(e) => setOnSale(e.target.checked)}
                     />
                     <label>On Sale</label>
+                </div>
+                <div className="col-span-2">
+                <label className="block font-medium">Applicable Books</label>
+                <select
+                    multiple
+                    className="w-full border p-2 rounded"
+                    value={selectedBooks}
+                    onChange={(e) =>
+                    setSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
+                    }
+                >
+                    {books.map((b) => (
+                    <option key={b.id} value={b.id}>
+                        {b.title}
+                    </option>
+                    ))}
+                </select>
                 </div>
 
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
@@ -276,8 +339,14 @@ function Discounts() {
                     onChange={(e) => setEditEndDate(e.target.value)}
                     className="w-full border p-2 rounded"
                 />
-                </div>
-
+                </div>  
+                {editStartDate && editEndDate &&
+                (new Date(editStartDate) <= new Date() && new Date(editEndDate) >= new Date() ? (
+                    <span className="text-green-600">Active</span>
+                ) : (
+                    <span className="text-gray-500">Inactive</span>
+                ))
+                }
                 <div className="col-span-2 flex items-center gap-2 mt-2">
                 <input
                     type="checkbox"
@@ -286,7 +355,23 @@ function Discounts() {
                 />
                 <label>On Sale</label>
                 </div>
-
+                <div className="col-span-2">
+                    <label className="block font-medium">Applicable Books</label>
+                    <select
+                        multiple
+                        className="w-full border p-2 rounded"
+                        value={editSelectedBooks}
+                        onChange={(e) =>
+                        setEditSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
+                        }
+                    >
+                        {books.map((b) => (
+                        <option key={b.id} value={b.id}>
+                            {b.title}
+                        </option>
+                        ))}
+                    </select>
+                    </div>
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
                 <button
                     type="button"
@@ -297,7 +382,7 @@ function Discounts() {
                 </button>
                 <button
                     type="button"
-                    onClick={() => setShowEditModal(false)}
+                    onClick={resetEditForm}
                     className="bg-gray-600 text-white px-6 py-2 rounded"
                 >
                     Cancel
