@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import AdminNav from "../Components/AdminNavbar"
 import AdminTop from "../Components/AdminTop"
+import axios from "axios";
 
 function Inventory() {
     const [inventory, setInventory] = useState([]);
@@ -12,7 +13,7 @@ function Inventory() {
 
   const fetchInventory = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/inventory");
+      const res = await axios.get("http://localhost:5127/api/inventory");
       setInventory(res.data); 
     } catch (error) {
       console.error("Error fetching inventory:", error);
@@ -34,9 +35,9 @@ function Inventory() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/inventory/${selectedItem.id}`, {
-        inStockQty: updatedStock,
-        reservedQty: updatedReserved,
+      await axios.put(`http://localhost:5127/api/inventory/${selectedItem.id}`, {
+        inStockQty: parseInt(updatedStock),
+        reservedQty: parseInt(updatedReserved),
       });
 
       setInventory((prev) =>
@@ -53,6 +54,14 @@ function Inventory() {
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedItem(null);
+    setUpdatedStock("");
+    setUpdatedReserved("");
+  };
+  
+
   return (
     <div className="h-screen flex ">
         <AdminNav />
@@ -67,6 +76,7 @@ function Inventory() {
                 <tr>
                 <th className="px-4 py-2 text-left">Title</th>
                 <th className="px-4 py-2 text-left">ISBN</th>
+                <th className="px-4 py-2 text-left">Total Qty</th>
                 <th className="px-4 py-2 text-left">In Stock Quantity</th>
                 <th className="px-4 py-2 text-left">Reserved</th>
                 <th className="px-4 py-2 text-left">Action</th>
@@ -86,7 +96,12 @@ function Inventory() {
                     <tr key={item.id} className="border-t">
                     <td className="px-4 py-2">{item.title}</td>
                     <td className="px-4 py-2">{item.isbn}</td>
-                    <td className="px-4 py-2">{item.inStockQty}</td>
+                    <td className="px-4 py-2">
+                      {parseInt(item.inStockQty) + parseInt(item.reservedQty)}
+                    </td>
+                    <td className={`px-4 py-2font-semibold ${
+                        item.inStockQty < 5 ? "text-red-600" : "text-green-700"
+                      }`}>{item.inStockQty}</td>
                     <td className="px-4 py-2">{item.reservedQty}</td>
                     <td className="px-4 py-2">
                         <button className="bg-[#5c2314] text-white px-4 py-1 rounded hover:opacity-90"
@@ -153,7 +168,7 @@ function Inventory() {
                     </button>
                     <button
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={closeModal}
                     className="bg-gray-500 text-white px-6 py-2 rounded hover:opacity-90"
                     >
                     Cancel

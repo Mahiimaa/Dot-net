@@ -13,6 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"))
 );
+builder.Services.AddDbContext<AuthDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"))
+);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -76,6 +79,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowViteFrontend");
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
