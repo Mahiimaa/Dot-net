@@ -32,7 +32,8 @@ public class User {
     [Required]
     [StringLength(8)]
     public string MembershipId { get; set; } = string.Empty;
-
+    public string? ResetOtp { get; set; } // Store the OTP
+    public DateTime? OtpExpiration { get; set; } // OTP expiration time
 }
 
 internal class keyAttribute : Attribute

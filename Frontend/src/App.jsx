@@ -9,11 +9,13 @@ import Announcements from "./pages/Announcements";
 import AdminOrders from "./pages/AdminOrders";
 import AdminReview from "./pages/AdminReview";
 import AdminSettings from "./pages/AdminSettings";
-
 import './App.css'
 import Home from './pages/Home';
 import ProtectedRoute from "./Components/ProtectedRoute";
-import Login from './pages/Login';
+import Navbar from "./pages/Layout/Navbar";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import OtpVerification from "./pages/Auth/OtpVerification";
+import NewPassword from "./pages/Auth/NewPasswordStep";
 
 function App() {
   return (
@@ -22,6 +24,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/navbar" element={<Navbar/>} />
+        <Route path="/forgotpassword" element={<ForgotPassword/>} />
+        <Route path="/otpverification" element={<OtpVerification/>} />
+        <Route path="/newpassword" element={<NewPassword/>} />
+
       <Route path ="/dashboard" element ={<AdminDashboard/> }/>
       <Route path ="/adminBook" element ={<AdminBook/> }/>
       <Route path ="/inventory" element ={<Inventory/> }/>

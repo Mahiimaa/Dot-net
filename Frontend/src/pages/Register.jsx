@@ -137,7 +137,7 @@ const Register = () => {
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
             required
           />
-          <div className="text-right text-xs text-green-600 cursor-pointer">Forgot password?</div>
+          {/* <div className="text-right text-xs text-green-600 cursor-pointer">Forgot password?</div> */}
           <button
             type="submit"
             className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
