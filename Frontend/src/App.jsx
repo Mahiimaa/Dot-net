@@ -9,11 +9,13 @@ import Announcements from "./pages/Announcements";
 import AdminOrders from "./pages/AdminOrders";
 import AdminReview from "./pages/AdminReview";
 import AdminSettings from "./pages/AdminSettings";
-
 import './App.css'
 import Home from './pages/Home';
 import ProtectedRoute from "./Components/ProtectedRoute";
-// import Login from './pages/Login';
+import Navbar from "./pages/Layout/Navbar";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import OtpVerification from "./pages/Auth/OtpVerification";
+import NewPassword from "./pages/Auth/NewPasswordStep";
 
 
 

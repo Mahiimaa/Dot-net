@@ -33,7 +33,12 @@ const Login = () => {
       localStorage.setItem("token", token);
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
-        navigate("/");
+        // Check if user role is admin, navigate to dashboard, else to home
+        if (user.role === "Admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
       }, 2000);
     } catch (err) {
       if (err.response) {
@@ -99,7 +104,7 @@ const Login = () => {
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
             required
           />
-          <div className="text-right text-xs text-green-600 cursor-pointer">Forgot password?</div>
+          <div className="text-right text-xs text-green-600 cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot password?</div>
           <button
             type="submit"
             className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
@@ -146,7 +151,7 @@ const Login = () => {
           />
         </svg>
       </div>
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;
@@ -161,9 +166,8 @@ const Login = () => {
           animation: fade-in 0.3s ease-in;
         }
       `}</style>
-
     </div>
   );
 };
-export default Login;
 
+export default Login;

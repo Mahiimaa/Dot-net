@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7WfU7S1AWecjwqBYfj6mphucbY2Lq9zXcJ0b2cAonQs=",
+  "Hash": "jyG6qjaXjaFdK+hBD5KbG0N1OwAsqAzKkV2Y3t0bQxI=",
   "Source": "Backend",
   "BasePath": "_content/Backend",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "Backend\\wwwroot",
       "Source": "Backend",
-      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
       "BasePath": "_content/Backend",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
       "SourceId": "Backend",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
       "BasePath": "_content/Backend",
       "RelativePath": "images/014a415d-3e83-4427-9f75-c764a72d9a1d#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -38,10 +38,10 @@
       "OriginalItemSpec": "wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png"
     },
     {
-      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
       "SourceId": "Backend",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
       "BasePath": "_content/Backend",
       "RelativePath": "images/042405a6-0fba-47e5-a898-d1afe6e96276#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -59,10 +59,10 @@
       "OriginalItemSpec": "wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png"
     },
     {
-      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
       "SourceId": "Backend",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
       "BasePath": "_content/Backend",
       "RelativePath": "images/1d820104-7fc3-4480-bcd5-05eeadb11381#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -80,10 +80,10 @@
       "OriginalItemSpec": "wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png"
     },
     {
-      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
       "SourceId": "Backend",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
       "BasePath": "_content/Backend",
       "RelativePath": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5#[.{fingerprint}]?.png",
       "AssetKind": "All",
@@ -104,7 +104,7 @@
   "Endpoints": [
     {
       "Route": "images/014a415d-3e83-4427-9f75-c764a72d9a1d.49btqu9ovi.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -125,7 +125,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 07:22:15 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -149,7 +149,7 @@
     },
     {
       "Route": "images/014a415d-3e83-4427-9f75-c764a72d9a1d.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -170,7 +170,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 07:22:15 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -186,7 +186,7 @@
     },
     {
       "Route": "images/042405a6-0fba-47e5-a898-d1afe6e96276.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -207,7 +207,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 08:23:38 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -223,7 +223,7 @@
     },
     {
       "Route": "images/042405a6-0fba-47e5-a898-d1afe6e96276.tvoumgc8w8.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -244,7 +244,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 08:23:38 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -268,7 +268,7 @@
     },
     {
       "Route": "images/1d820104-7fc3-4480-bcd5-05eeadb11381.49btqu9ovi.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -289,7 +289,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 11:07:56 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -313,7 +313,7 @@
     },
     {
       "Route": "images/1d820104-7fc3-4480-bcd5-05eeadb11381.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -334,7 +334,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 11:07:56 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -350,7 +350,7 @@
     },
     {
       "Route": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5.49btqu9ovi.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -371,7 +371,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 11:13:15 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -395,7 +395,7 @@
     },
     {
       "Route": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
-      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -416,7 +416,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 02 May 2025 11:13:15 GMT"
+          "Value": "Fri, 02 May 2025 14:26:33 GMT"
         },
         {
           "Name": "Cache-Control",

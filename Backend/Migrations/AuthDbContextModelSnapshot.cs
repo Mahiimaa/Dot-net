@@ -250,8 +250,14 @@ namespace Backend.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("character varying(8)");
 
+                    b.Property<DateTime?>("OtpExpiration")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResetOtp")
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
