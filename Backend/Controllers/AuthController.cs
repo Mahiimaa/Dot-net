@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.DTO;
 using Backend.Model;
 using Backend.Services;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers 
 {
@@ -121,6 +123,37 @@ namespace Backend.Controllers
                     MembershipId = user.MembershipId
                 }
             });
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<UserDTO>> GetCurrentUser()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { error = "Invalid user ID in token." });
+            }
+
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Select(u => new UserDTO
+                {
+                    Id = u.Id,
+                    Email = u.Email,
+                    Role = u.Role,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    MembershipId = u.MembershipId
+                })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found." });
+            }
+
+            return Ok(user);
         }
     }
 }
