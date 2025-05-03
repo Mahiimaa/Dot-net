@@ -18,6 +18,9 @@ public class AuthDbContext : DbContext
     public DbSet<Announcement> Announcements { get; set; }
 
     public DbSet<Order> Orders { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<Bookmark> Bookmarks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,5 +41,14 @@ public class AuthDbContext : DbContext
             .WithMany(b => b.Discounts);                
         modelBuilder.Entity<Announcement>().Property(a => a.Type).HasMaxLength(50);
 
+        modelBuilder.Entity<Cart>()
+            .HasIndex(c => new { c.UserId, c.BookId })
+            .IsUnique();
+        modelBuilder.Entity<Bookmark>()
+            .HasIndex(b => new { b.UserId, b.BookId })
+            .IsUnique();
+        modelBuilder.Entity<Review>()
+            .HasIndex(r => new { r.UserId, r.BookId })
+            .IsUnique();
     }
 }

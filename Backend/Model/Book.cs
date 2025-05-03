@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+
 namespace Backend.Model
 {
     public class Book
     {
-         [Key]
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -51,7 +53,9 @@ namespace Backend.Model
         public bool IsAwardWinner { get; set; } = false;
         public bool IsComingSoon { get; set; } = false;
         public DateTime? PublishDate { get; set; }
-        public List<Discount> Discounts { get; set; } = new();
 
+        public List<Discount> Discounts { get; set; } = new();
+        public List<Review> Reviews { get; set; } = new();
+        public int TotalSold { get; set; } = 0;
     }
 }

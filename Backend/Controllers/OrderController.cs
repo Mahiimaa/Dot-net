@@ -3,6 +3,8 @@ using Backend.Data;
 using Backend.Model;
 using Backend.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace Backend.Controllers
 {
@@ -50,6 +52,36 @@ namespace Backend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderDTO dto)
+        {
+            var order = new Order
+            {
+                CustomerName = dto.CustomerName,
+                BookName = dto.BookName,
+                ClaimCode = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper(),
+                TotalAmount = dto.TotalAmount,
+                Status = "Pending",
+                OrderDate = DateTime.UtcNow
+            };
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            // Broadcast order
+            var hubContext = HttpContext.RequestServices.GetService<IHubContext<OrderHub>>();
+            await hubContext.Clients.All.SendAsync("orderBroadcast", $"New order placed for {order.BookName}!");
+
+            return Ok(order);
+        }
+
+        public class OrderDTO
+        {
+            public string CustomerName { get; set; }
+            public string BookName { get; set; }
+            public decimal TotalAmount { get; set; }
         }
     }
 }

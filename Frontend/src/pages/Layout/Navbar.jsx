@@ -59,8 +59,8 @@ const Navbar = () => {
 
         {/* Navigation Links - Desktop */}
         <div className="hidden md:flex space-x-6 items-center">
-          <a href="#" className="text-gray-600 hover:text-green-700 transition">Home</a>
-          <a href="#" className="text-gray-600 hover:text-green-700 transition">Books</a>
+          <a href="/" className="text-gray-600 hover:text-green-700 transition">Home</a>
+          <a href="/book" className="text-gray-600 hover:text-green-700 transition">Books</a>
           <a href="#" className="text-gray-600 hover:text-green-700 transition">Authors</a>
           <a href="#" className="text-gray-600 hover:text-green-700 transition">Genres</a>
           <button className="bg-teal-100 text-teal-800 px-4 py-1 rounded-full hover:bg-teal-200 transition">
