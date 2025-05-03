@@ -15,11 +15,12 @@ import Navbar from './pages/Layout/Navbar';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import OtpVerification from './pages/Auth/OtpVerification';
 import NewPassword from './pages/Auth/NewPasswordStep';
-import Book from './pages/Book';
+import BookCatalog from './pages/BookCatalog';  
+import BookDetail from './pages/BookDetail';  
 import './App.css';
 import { useContext } from 'react';
 
-
+// ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { isAuthenticated, user } = useContext(AuthContext);
   if (!isAuthenticated) {
@@ -36,16 +37,17 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/navbar" element={<Navbar />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/otpverification" element={<OtpVerification />} />
           <Route path="/newpassword" element={<NewPassword />} />
-          <Route path="/book" element={<Book />} />
-
-          {/* Admin routes with ProtectedRoute */}
+          <Route path="/bookCatalog" element={<BookCatalog />} />
+          <Route path="/bookDetail/:id" element={<BookDetail />} />
+          
+          {/* Admin Routes (Protected) */}
           <Route
             path="/dashboard"
             element={
