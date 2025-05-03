@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { FaFacebookF } from 'react-icons/fa';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -20,37 +22,36 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     try {
-      const response = await axios.post("http://localhost:5127/Auth/login", {
+      const response = await axios.post('http://localhost:5127/Auth/login', {
         email: formData.email,
         password: formData.password,
       });
 
       const { token, user } = response.data;
-      localStorage.setItem("token", token);
-      setSuccess("Login successful! Redirecting...");
+      login(token, user); // Use AuthContext login
+      setSuccess('Login successful! Redirecting...');
       setTimeout(() => {
-        // Check if user role is admin, navigate to dashboard, else to home
-        if (user.role === "Admin") {
-          navigate("/dashboard");
+        if (user.role === 'Admin') {
+          navigate('/dashboard');
         } else {
-          navigate("/");
+          navigate('/');
         }
       }, 2000);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401) {
-          setError("Incorrect email or password.");
+          setError('Incorrect email or password.');
         } else if (err.response.status === 400) {
-          setError("Please provide valid email and password.");
+          setError('Please provide valid email and password.');
         } else {
-          setError(err.response.data.message || "Login failed. Please try again.");
+          setError(err.response.data.message || 'Login failed. Please try again.');
         }
       } else {
-        setError("Unable to connect to the server. Please check your connection.");
+        setError('Unable to connect to the server. Please check your connection.');
       }
     }
   };
@@ -62,16 +63,10 @@ const Login = () => {
       </div>
       <div className="rounded-2xl shadow-xl w-full max-w-md px-8 py-10 text-center z-10 backdrop-blur-md bg-white/30 border border-black/50">
         <div className="flex justify-between mb-6">
-          <Link
-            to="/login"
-            className="text-sm font-medium text-black"
-          >
+          <Link to="/login" className="text-sm font-medium text-black">
             LOGIN
           </Link>
-          <Link
-            to="/register"
-            className="text-sm font-medium text-gray-400 hover:text-green-600"
-          >
+          <Link to="/register" className="text-sm font-medium text-gray-400 hover:text-green-600">
             SIGN UP
           </Link>
         </div>
@@ -104,7 +99,12 @@ const Login = () => {
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
             required
           />
-          <div className="text-right text-xs text-green-600 cursor-pointer" onClick={() => navigate('/forgotpassword')}>Forgot password?</div>
+          <div
+            className="text-right text-xs text-green-600 cursor-pointer"
+            onClick={() => navigate('/forgotpassword')}
+          >
+            Forgot password?
+          </div>
           <button
             type="submit"
             className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
@@ -125,10 +125,7 @@ const Login = () => {
       <div className="absolute -bottom-10 w-full z-0">
         <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />
         <svg viewBox="0 0 2000 180" className="w-full h-60">
-          <path
-            fill="#ffffff"
-            d="M0,100 C500,250 1500,-30 2000,100 L2000,180 L0,180 Z"
-          />
+          <path fill="#ffffff" d="M0,100 C500,250 1500,-30 2000,100 L2000,180 L0,180 Z" />
         </svg>
         <svg viewBox="0 0 3000 100" className="w-full h-24 absolute bottom-10 left-0">
           <path

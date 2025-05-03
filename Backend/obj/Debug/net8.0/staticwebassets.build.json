@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "jyG6qjaXjaFdK+hBD5KbG0N1OwAsqAzKkV2Y3t0bQxI=",
+  "Hash": "O0kCZjwfZD1N8k/bE9xjxp3rP7lJ7Z0OSueY5RJBMAE=",
   "Source": "Backend",
   "BasePath": "_content/Backend",
   "Mode": "Default",
@@ -59,6 +59,27 @@
       "OriginalItemSpec": "wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png"
     },
     {
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg"
+    },
+    {
       "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
       "SourceId": "Backend",
       "SourceType": "Discovered",
@@ -80,6 +101,69 @@
       "OriginalItemSpec": "wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png"
     },
     {
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/62006949-7ed2-4cb7-af1d-18af34b4a015#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg"
+    },
+    {
       "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
       "SourceId": "Backend",
       "SourceType": "Discovered",
@@ -99,6 +183,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png"
+    },
+    {
+      "Identity": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/ad0369c6-fada-40f0-b570-8ea655a300b0#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg"
     }
   ],
   "Endpoints": [
@@ -267,6 +372,88 @@
       ]
     },
     {
+      "Route": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:23:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.mscnbl1f6e.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:23:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
       "Route": "images/1d820104-7fc3-4480-bcd5-05eeadb11381.49btqu9ovi.png",
       "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
       "Selectors": [],
@@ -349,6 +536,252 @@
       ]
     },
     {
+      "Route": "images/62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:08:55 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/62006949-7ed2-4cb7-af1d-18af34b4a015.mscnbl1f6e.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:08:55 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/62006949-7ed2-4cb7-af1d-18af34b4a015.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:08:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9.mscnbl1f6e.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:08:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 15:48:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881.mscnbl1f6e.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 15:48:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
       "Route": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5.49btqu9ovi.png",
       "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
       "Selectors": [],
@@ -427,6 +860,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:16:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/ad0369c6-fada-40f0-b570-8ea655a300b0.mscnbl1f6e.jpg",
+      "AssetFile": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 03 May 2025 12:16:07 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ad0369c6-fada-40f0-b570-8ea655a300b0.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
         }
       ]
     }

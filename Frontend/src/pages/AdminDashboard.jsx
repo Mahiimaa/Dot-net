@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import AdminNav from "../Components/AdminNavbar"
 import AdminTop from "../Components/AdminTop"
 import { PackageCheck, DollarSign, BookOpenText, Megaphone, ClipboardList, Gift, ShoppingCart } from "lucide-react";
+import axios from "axios";
 
 function AdminDashboard() {
     const [stats, setStats] = useState({
