@@ -4,48 +4,91 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Model;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-[Route("api/[controller]")]
-[ApiController]
-[Authorize]
-public class BookmarksController : ControllerBase
+namespace Backend.Controllers
 {
-    private readonly AuthDbContext _context;
-
-    public BookmarksController(AuthDbContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class BookmarksController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly AuthDbContext _context;
 
-    [HttpPost]
-    public async Task<IActionResult> BookmarkBook([FromBody] BookmarkDTO dto)
-    {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        var book = await _context.Books.FindAsync(dto.BookId);
-        if (book == null)
-            return BadRequest("Book not found.");
-
-        var existingBookmark = await _context.Bookmarks
-            .FirstOrDefaultAsync(b => b.UserId == userId && b.BookId == dto.BookId);
-        if (existingBookmark != null)
-            return Ok(new { Message = "Book already bookmarked" });
-
-        var bookmark = new Bookmark
+        public BookmarksController(AuthDbContext context)
         {
-            UserId = userId,
-            BookId = dto.BookId,
-            BookmarkedAt = DateTime.UtcNow
-        };
+            _context = context;
+        }
 
-        _context.Bookmarks.Add(bookmark);
-        await _context.SaveChangesAsync();
+        // GET: api/Bookmarks?bookId={id}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Bookmark>>> GetBookmarks(int? bookId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var query = _context.Bookmarks
+                .Where(b => b.UserId == userId);
 
-        return Ok(new { Message = "Book bookmarked" });
+            if (bookId.HasValue)
+            {
+                query = query.Where(b => b.BookId == bookId.Value);
+            }
+
+            var bookmarks = await query
+                .Select(b => new
+                {
+                    b.Id,
+                    b.UserId,
+                    b.BookId,
+                    b.BookmarkedAt
+                })
+                .ToListAsync();
+            return Ok(bookmarks);
+        }
+
+        // POST: api/Bookmarks
+        [HttpPost]
+        public async Task<ActionResult<Bookmark>> PostBookmark([FromBody] Bookmark bookmark)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var existingBookmark = await _context.Bookmarks
+                .FirstOrDefaultAsync(b => b.UserId == userId && b.BookId == bookmark.BookId);
+
+            if (existingBookmark != null)
+            {
+                return Conflict(new { error = "Book is already bookmarked." });
+            }
+
+            var bookExists = await _context.Books.AnyAsync(b => b.Id == bookmark.BookId);
+            if (!bookExists)
+            {
+                return BadRequest(new { error = "Book not found." });
+            }
+
+            bookmark.UserId = userId;
+            bookmark.BookmarkedAt = DateTime.UtcNow;
+
+            _context.Bookmarks.Add(bookmark);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { id = bookmark.Id });
+        }
+
+        // DELETE: api/Bookmarks/{bookId}
+        [HttpDelete("{bookId}")]
+        public async Task<IActionResult> DeleteBookmark(int bookId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var bookmark = await _context.Bookmarks
+                .FirstOrDefaultAsync(b => b.UserId == userId && b.BookId == bookId);
+
+            if (bookmark == null)
+            {
+                return NotFound(new { error = "Bookmark not found." });
+            }
+
+            _context.Bookmarks.Remove(bookmark);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
-}
-
-public class BookmarkDTO
-{
-    public int BookId { get; set; }
 }

@@ -3240,59 +3240,32 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
-    "C:\\Users\\LENOVO-PC\\.nuget\\packages\\": {}
-=======
-<<<<<<< HEAD
-    "C:\\Users\\Nts\\.nuget\\packages\\": {},
-=======
     "C:\\Users\\lenovo\\.nuget\\packages\\": {},
->>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
->>>>>>> 0ca5fd275b5bba46c01cf3bfa9be07960f38b941
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\Users\\LENOVO-PC\\Desktop\\ADTeam\\Dot-net\\Backend\\Backend.csproj",
-      "projectName": "Backend",
-      "projectPath": "C:\\Users\\LENOVO-PC\\Desktop\\ADTeam\\Dot-net\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\LENOVO-PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LENOVO-PC\\Desktop\\ADTeam\\Dot-net\\Backend\\obj\\",
-=======
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\Users\\Nts\\Dot-net\\Backend\\Backend.csproj",
-      "projectName": "Backend",
-      "projectPath": "C:\\Users\\Nts\\Dot-net\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\Nts\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nts\\Dot-net\\Backend\\obj\\",
-=======
       "projectUniqueName": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\Backend.csproj",
       "projectName": "Backend",
       "projectPath": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\obj\\",
->>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
->>>>>>> 0ca5fd275b5bba46c01cf3bfa9be07960f38b941
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-<<<<<<< HEAD
-        "C:\\Users\\LENOVO-PC\\AppData\\Roaming\\NuGet\\NuGet.Config"
-=======
-<<<<<<< HEAD
-        "C:\\Users\\Nts\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
         "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
->>>>>>> 0ca5fd275b5bba46c01cf3bfa9be07960f38b941
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3310,7 +3283,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -3368,24 +3342,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.15, 8.0.15]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3394,11 +3350,7 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.105/PortableRuntimeIdentifierGraph.json"
->>>>>>> 0ca5fd275b5bba46c01cf3bfa9be07960f38b941
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

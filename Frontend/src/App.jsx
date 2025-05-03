@@ -19,6 +19,8 @@ import BookCatalog from './pages/BookCatalog';
 import BookDetail from './pages/BookDetail';  
 import './App.css';
 import { useContext } from 'react';
+import Book from './pages/Book';
+import Review from './pages/Review';
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -44,8 +46,12 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/otpverification" element={<OtpVerification />} />
           <Route path="/newpassword" element={<NewPassword />} />
+          <Route path="/book" element={<Book/>} />
           <Route path="/bookCatalog" element={<BookCatalog />} />
-          <Route path="/bookDetail/:id" element={<BookDetail />} />
+          <Route path="/books/:id" element={<BookDetail/>} />
+          <Route path="/review" element={<Review/>} />
+          <Route path="*" element={<div>404 - Page Not Found</div>} />
+
           
           {/* Admin Routes (Protected) */}
           <Route
