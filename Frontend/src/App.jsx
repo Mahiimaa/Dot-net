@@ -12,16 +12,23 @@ import AdminSettings from "./pages/AdminSettings";
 import './App.css'
 import Home from './pages/Home';
 import ProtectedRoute from "./Components/ProtectedRoute";
-import Login from './pages/Login';
+import Navbar from "./pages/Layout/Navbar";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import OtpVerification from "./pages/Auth/OtpVerification";
+import NewPassword from "./pages/Auth/NewPasswordStep";
+import BookCatalog from './pages/BookCatalog';  
+import BookDetail from './pages/BookDetail';  
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/home" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-      <Route path ="/" element ={<AdminDashboard/> }/>
+        <Route path="/" element={<Home/>} />
+
+      <Route path ="/admin" element ={<AdminDashboard/> }/>
       <Route path ="/adminBook" element ={<AdminBook/> }/>
       <Route path ="/inventory" element ={<Inventory/> }/>
       <Route path ="/discounts" element ={<Discounts/> }/>

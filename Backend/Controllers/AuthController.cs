@@ -15,11 +15,13 @@ namespace Backend.Controllers
     {
         private readonly AuthDbContext _context;
         private readonly TokenService _token;
+        private readonly EmailService _emailService;
 
-        public AuthController(AuthDbContext context, TokenService token)
+        public AuthController(AuthDbContext context, TokenService token, EmailService emailService)
         {
             _context = context;
             _token = token;
+            _emailService = emailService;
         }
 
         [HttpPost("register")]
@@ -53,6 +55,18 @@ namespace Backend.Controllers
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+
+            // Send welcome email
+            try
+            {
+                await _emailService.SendWelcomeEmailAsync(user.Email, user.FirstName, user.MembershipId);
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                Console.WriteLine($"Failed to send welcome email: {ex.Message}");
+                // Optionally, include a warning in the response
+            }
 
             // Generate JWT token for immediate login
             var token = _token.GenerateToken(user);

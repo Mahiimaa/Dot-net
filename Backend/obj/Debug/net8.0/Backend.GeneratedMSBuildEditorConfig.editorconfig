@@ -9,11 +9,27 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Backend
 build_property.RootNamespace = Backend
+<<<<<<< HEAD
 build_property.ProjectDir = C:\Users\LENOVO-PC\Desktop\ADTeam\Dot-net\Backend\
+=======
+<<<<<<< HEAD
+build_property.ProjectDir = C:\Users\Nts\Dot-net\Backend\
+=======
+build_property.ProjectDir = C:\Users\lenovo\Documents\Dot-net\Backend\
+>>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
+>>>>>>> 0ca5fd275b5bba46c01cf3bfa9be07960f38b941
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = C:\Users\LENOVO-PC\Desktop\ADTeam\Dot-net\Backend
+=======
+<<<<<<< HEAD
+build_property.MSBuildProjectDirectory = C:\Users\Nts\Dot-net\Backend
+=======
+build_property.MSBuildProjectDirectory = C:\Users\lenovo\Documents\Dot-net\Backend
+>>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
+>>>>>>> 0ca5fd275b5bba46c01cf3bfa9be07960f38b941
 build_property._RazorSourceGeneratorDebug = 

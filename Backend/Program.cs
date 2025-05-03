@@ -13,6 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"))
 );
+builder.Services.AddDbContext<AuthDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"))
+);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -44,6 +47,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<EmailService>();
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -67,6 +71,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -74,6 +79,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowViteFrontend");
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
