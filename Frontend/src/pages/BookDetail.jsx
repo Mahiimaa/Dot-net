@@ -590,4 +590,4 @@ function BookDetail() {
   )
 }
 
-export default BookDetailw
+export default BookDetail
