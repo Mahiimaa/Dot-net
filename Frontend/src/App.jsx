@@ -12,6 +12,7 @@ import AdminSettings from "./pages/AdminSettings";
 import './App.css'
 import Home from './pages/Home';
 import ProtectedRoute from "./Components/ProtectedRoute";
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
       <Route path ="/adminOrders" element ={<AdminOrders/> }/>
       <Route path ="/adminReview" element ={<AdminReview/> }/>
       <Route path ="/adminsettings" element ={<AdminSettings/> }/>
+      <Route path="/bookCatalog" element={<BookCatalog />} />
+      <Route path="/bookDetail/:id" element={<BookDetail />} />
 
       </Routes>
     </Router>
