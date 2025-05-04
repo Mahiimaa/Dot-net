@@ -28,6 +28,7 @@ import Genres from './pages/Genres';
 import './App.css';
 import { useContext } from 'react';
 import Book from './pages/Book';
+
 // import Review from './pages/Review';
 
 // ProtectedRoute Component
@@ -51,6 +52,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account/>}/>
+          <Route path="/order" element={<Order/>}/>
+          <Route path="/wishlist" element={<Wishlist/>}/>
+          <Route path="/Review" element={<Reviews/>}/>
+          <Route path="/Addcart" element={<Addcart/>}/>
+          <Route path="/setting" element={<Settings/>}/>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/otpverification" element={<OtpVerification />} />
           <Route path="/newpassword" element={<NewPassword />} />

@@ -12,7 +12,7 @@ namespace Backend.Model
 
         [Required]
         public int BookId { get; set; }
-        public DateTime BookmarkedAt { get; set; }
+        public DateTime BookmarkedAt { get; set; } = DateTime.UtcNow;
 
         public User User { get; set; }
         public Book Book { get; set; }
