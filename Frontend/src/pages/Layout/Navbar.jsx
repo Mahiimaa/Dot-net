@@ -61,8 +61,8 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-6 items-center">
           <a href="/" className="text-gray-600 hover:text-green-700 transition">Home</a>
           <a href="/book" className="text-gray-600 hover:text-green-700 transition">Books</a>
-          <a href="#" className="text-gray-600 hover:text-green-700 transition">Authors</a>
-          <a href="#" className="text-gray-600 hover:text-green-700 transition">Genres</a>
+          <a href="/authors" className="text-gray-600 hover:text-green-700 transition">Authors</a>
+          <a href="/genres" className="text-gray-600 hover:text-green-700 transition">Genres</a>
           <button className="bg-teal-100 text-teal-800 px-4 py-1 rounded-full hover:bg-teal-200 transition">
             Shop
           </button>
@@ -81,7 +81,9 @@ const Navbar = () => {
               <span className="p-2 bg-[brown] text-white rounded-[10px]">
                 <FiShoppingCart />
               </span>
-              <div className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center border">
+              <div className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center border"
+              onClick={() => navigate('/account')}
+              >
                 <FiUser className="text-gray-600" />
               </div>
             </>
