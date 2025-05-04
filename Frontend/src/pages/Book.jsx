@@ -136,10 +136,9 @@ const Book = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch books with filters, sorting, and pagination
+        // Fetch books without search parameter
         const booksResponse = await api.get('/api/Books', {
           params: {
-            search: searchQuery || undefined,
             author: filters.author || undefined,
             genre: filters.genre || undefined,
             availability: filters.availability || undefined,
@@ -155,20 +154,42 @@ const Book = () => {
             pageSize: booksPerPage,
           },
         });
-        setBooks(booksResponse.data.books || []);
-        setTotalBooks(booksResponse.data.total || 0);
-        setTotalPages(Math.ceil(booksResponse.data.total / booksResponse.data.pageSize) || 1);
 
-        // Fetch announcements (corrected endpoint)
+        let books = booksResponse.data.books || [];
+
+        // Apply client-side search filtering
+        if (searchQuery) {
+          const lowerSearch = searchQuery.toLowerCase();
+          books = books.filter(
+            (book) =>
+              book.title?.toLowerCase().includes(lowerSearch) ||
+              book.isbn?.toLowerCase().includes(lowerSearch) ||
+              book.description?.toLowerCase().includes(lowerSearch)
+          );
+        }
+
+        setBooks(books);
+        setTotalBooks(booksResponse.data.total || 0);
+        // Adjust total pages based on filtered results
+        setTotalPages(Math.ceil(books.length / booksPerPage) || 1);
+
+        // Fetch announcements
         const announcementsResponse = await api.get('/api/Announcements');
         const activeAnnouncements = announcementsResponse.data.filter(
-          ann =>
-            (!ann.startDate || new Date(ann.startDate + (ann.startDate.endsWith('Z') ? '' : 'Z')) <= new Date()) &&
-            (!ann.endDate || new Date(ann.endDate + (ann.endDate.endsWith('Z') ? '' : 'Z')) >= new Date())
+          (ann) =>
+            (!ann.startDate ||
+              new Date(ann.startDate + (ann.startDate.endsWith('Z') ? '' : 'Z')) <=
+                new Date()) &&
+            (!ann.endDate ||
+              new Date(ann.endDate + (ann.endDate.endsWith('Z') ? '' : 'Z')) >= new Date())
         );
         setAnnouncements(activeAnnouncements);
       } catch (err) {
-        setError('Failed to load data. Please try again later.');
+        if (err.response?.status === 500) {
+          setError('Failed to load books. Please try a different query or try again later.');
+        } else {
+          setError('Failed to load data. Please check your network and try again.');
+        }
         console.error('Fetch error:', err.response?.status, err.response?.data || err.message);
       } finally {
         setLoading(false);
@@ -176,40 +197,37 @@ const Book = () => {
     };
 
     fetchData();
-  }, [searchQuery, filters, sortBy, activeTab, currentPage]);
+  }, [filters, sortBy, activeTab, currentPage, searchQuery]);
 
   // Handle SignalR for real-time broadcasting
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5127/orderHub', { withCredentials: true })
-      .withAutomaticReconnect([0, 2000, 5000, 10000]) // Retry delays in ms
+      .withAutomaticReconnect([0, 2000, 5000, 10000])
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    // Handle incoming broadcasts
-    connection.on('orderBroadcast', message => {
+    connection.on('orderBroadcast', (message) => {
       console.log('Received broadcast:', message);
       setBroadcastMessage(message);
       setTimeout(() => setBroadcastMessage(''), 5000);
     });
 
-    // Handle connection state changes
-    connection.onreconnecting(error => {
+    connection.onreconnecting((error) => {
       console.warn('SignalR reconnecting:', error?.message);
       setConnectionStatus('reconnecting');
     });
 
-    connection.onreconnected(connectionId => {
+    connection.onreconnected((connectionId) => {
       console.log('SignalR reconnected with ID:', connectionId);
       setConnectionStatus('connected');
     });
 
-    connection.onclose(error => {
+    connection.onclose((error) => {
       console.error('SignalR connection closed:', error?.message);
       setConnectionStatus('disconnected');
     });
 
-    // Start connection with retry logic
     const startConnection = async () => {
       try {
         await connection.start();
@@ -218,17 +236,15 @@ const Book = () => {
       } catch (err) {
         console.error('SignalR connection failed:', err.message);
         setConnectionStatus('failed');
-        // Retry after 5 seconds
         setTimeout(startConnection, 5000);
       }
     };
 
     startConnection();
 
-    // Cleanup on unmount
     return () => {
       console.log('Stopping SignalR connection');
-      connection.stop().catch(err => console.error('Error stopping SignalR:', err.message));
+      connection.stop().catch((err) => console.error('Error stopping SignalR:', err.message));
     };
   }, []);
 
@@ -289,11 +305,11 @@ const Book = () => {
   };
 
   // Unique filter options
-  const authors = [...new Set(books.map(b => b.author).filter(Boolean))];
-  const genres = [...new Set(books.map(b => b.genre).filter(Boolean))];
-  const languages = [...new Set(books.map(b => b.language).filter(Boolean))];
-  const formats = [...new Set(books.map(b => b.format).filter(Boolean))];
-  const publishers = [...new Set(books.map(b => b.publisher).filter(Boolean))];
+  const authors = [...new Set(books.map((b) => b.author).filter(Boolean))];
+  const genres = [...new Set(books.map((b) => b.genre).filter(Boolean))];
+  const languages = [...new Set(books.map((b) => b.language).filter(Boolean))];
+  const formats = [...new Set(books.map((b) => b.format).filter(Boolean))];
+  const publishers = [...new Set(books.map((b) => b.publisher).filter(Boolean))];
 
   return (
     <>
@@ -311,7 +327,7 @@ const Book = () => {
           ) : (
             <>
               {/* Announcements */}
-              {announcements.map(ann => (
+              {announcements.map((ann) => (
                 <div
                   key={ann.id}
                   className="bg-blue-100 p-4 text-center mb-6 rounded-lg border border-blue-200"
@@ -327,7 +343,7 @@ const Book = () => {
                 </div>
               )}
 
-              {/* SignalR Connection Status (for debugging, can be removed in production) */}
+              {/* SignalR Connection Status (for debugging) */}
               {connectionStatus !== 'connected' && (
                 <div className="bg-orange-100 p-4 text-center mb-6 rounded-lg border border-orange-200">
                   <p className="text-orange-800 font-medium">
@@ -357,7 +373,7 @@ const Book = () => {
                   'New Arrivals',
                   'Coming Soon',
                   'Deals',
-                ].map(tab => (
+                ].map((tab) => (
                   <button
                     key={tab}
                     className={`px-4 py-2 rounded-full transition ${
@@ -382,7 +398,7 @@ const Book = () => {
                     type="text"
                     placeholder="Search by title, ISBN, or description..."
                     value={searchQuery}
-                    onChange={e => {
+                    onChange={(e) => {
                       setSearchQuery(e.target.value);
                       setCurrentPage(1);
                     }}
@@ -405,7 +421,7 @@ const Book = () => {
                       className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
                     >
                       <option value="">All Authors</option>
-                      {authors.map(author => (
+                      {authors.map((author) => (
                         <option key={author} value={author}>
                           {author}
                         </option>
@@ -421,7 +437,7 @@ const Book = () => {
                       className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
                     >
                       <option value="">All Genres</option>
-                      {genres.map(genre => (
+                      {genres.map((genre) => (
                         <option key={genre} value={genre}>
                           {genre}
                         </option>
@@ -466,7 +482,7 @@ const Book = () => {
                       className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
                     >
                       <option value="">All Languages</option>
-                      {languages.map(lang => (
+                      {languages.map((lang) => (
                         <option key={lang} value={lang}>
                           {lang}
                         </option>
@@ -482,7 +498,7 @@ const Book = () => {
                       className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
                     >
                       <option value="">All Formats</option>
-                      {formats.map(format => (
+                      {formats.map((format) => (
                         <option key={format} value={format}>
                           {format}
                         </option>
@@ -498,7 +514,7 @@ const Book = () => {
                       className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
                     >
                       <option value="">All Publishers</option>
-                      {publishers.map(pub => (
+                      {publishers.map((pub) => (
                         <option key={pub} value={pub}>
                           {pub}
                         </option>
@@ -550,7 +566,7 @@ const Book = () => {
                   <label className="mr-2 text-sm font-medium text-gray-700">Sort by:</label>
                   <select
                     value={sortBy}
-                    onChange={e => {
+                    onChange={(e) => {
                       setSortBy(e.target.value);
                       setCurrentPage(1);
                     }}
@@ -571,12 +587,14 @@ const Book = () => {
               {books.length === 0 ? (
                 <div className="bg-white p-8 rounded-xl shadow-sm text-center">
                   <h3 className="text-xl font-medium text-gray-700 mb-2">No books found</h3>
-                  <p className="text-gray-500">Try adjusting your search or filters</p>
+                  <p className="text-gray-500">
+                    Try adjusting your search or filters, or clear the search term.
+                  </p>
                 </div>
               ) : (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {books.map(book => (
+                    {books.map((book) => (
                       <BookCard
                         key={book.id}
                         book={book}
@@ -595,7 +613,7 @@ const Book = () => {
                         aria-label="Pagination"
                       >
                         <button
-                          onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
+                          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                           disabled={currentPage === 1}
                           className={`px-4 py-2 rounded-l-md border ${
                             currentPage === 1
@@ -619,7 +637,7 @@ const Book = () => {
                           </button>
                         ))}
                         <button
-                          onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
+                          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                           disabled={currentPage === totalPages}
                           className={`px-4 py-2 rounded-r-md border ${
                             currentPage === totalPages
