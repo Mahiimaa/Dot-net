@@ -1,0 +1,11 @@
+# .NET Core
+Backend/bin/
+Backend/obj/
+Frontend/bin/
+Frontend/obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.suo
+*.user
