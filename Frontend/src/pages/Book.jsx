@@ -136,9 +136,10 @@ const Book = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch books without search parameter
+        // Fetch books with search parameter
         const booksResponse = await api.get('/api/Books', {
           params: {
+            search: searchQuery || undefined, // Add search query to API params
             author: filters.author || undefined,
             genre: filters.genre || undefined,
             availability: filters.availability || undefined,
@@ -155,23 +156,11 @@ const Book = () => {
           },
         });
 
-        let books = booksResponse.data.books || [];
-
-        // Apply client-side search filtering
-        if (searchQuery) {
-          const lowerSearch = searchQuery.toLowerCase();
-          books = books.filter(
-            (book) =>
-              book.title?.toLowerCase().includes(lowerSearch) ||
-              book.isbn?.toLowerCase().includes(lowerSearch) ||
-              book.description?.toLowerCase().includes(lowerSearch)
-          );
-        }
-
+        const books = booksResponse.data.books || [];
         setBooks(books);
         setTotalBooks(booksResponse.data.total || 0);
-        // Adjust total pages based on filtered results
-        setTotalPages(Math.ceil(books.length / booksPerPage) || 1);
+        // Calculate total pages based on server-provided total
+        setTotalPages(Math.ceil(booksResponse.data.total / booksPerPage) || 1);
 
         // Fetch announcements
         const announcementsResponse = await api.get('/api/Announcements');
@@ -190,7 +179,7 @@ const Book = () => {
         } else {
           setError('Failed to load data. Please check your network and try again.');
         }
-        console.error('Fetch error:', err.response?.status, err.response?.data || err.message);
+        console.error('Fetch549 error:', err.response?.status, err.response?.data || err.message);
       } finally {
         setLoading(false);
       }
@@ -378,7 +367,7 @@ const Book = () => {
                     key={tab}
                     className={`px-4 py-2 rounded-full transition ${
                       activeTab === tab
-                        ? 'bg-blue-600 text-white shadow-md'
+                        ? 'bg-blue-900 text-white shadow-md'
                         : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
                     }`}
                     onClick={() => {
@@ -629,7 +618,7 @@ const Book = () => {
                             onClick={() => setCurrentPage(i + 1)}
                             className={`px-4 py-2 border ${
                               currentPage === i + 1
-                                ? 'z-10 bg-blue-600 border-blue-600 text-white'
+                                ? 'z-10 bg-blue-900 border-blue-900 text-white'
                                 : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                             }`}
                           >

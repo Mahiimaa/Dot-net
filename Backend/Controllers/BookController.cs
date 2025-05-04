@@ -47,10 +47,11 @@ namespace Backend.Controllers
             // Search
             if (!string.IsNullOrEmpty(search))
             {
+                search = search.ToLower();
                 query = query.Where(b =>
-                    b.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    b.Title.ToLower().Contains(search) ||
                     b.ISBN.Contains(search) ||
-                    b.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+                    b.Description.ToLower().Contains(search));
             }
 
             // Filters
