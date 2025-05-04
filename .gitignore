@@ -1,0 +1,13 @@
+# Backend build folders
+Backend/obj/
+Backend/bin/
+
+# Frontend dependencies and builds
+Frontend/node_modules/
+dist/
+build/
+.vscode/
+.DS_Store
+
+# Logs
+*.log
