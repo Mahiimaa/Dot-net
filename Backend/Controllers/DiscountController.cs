@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Model;
 using Microsoft.AspNetCore.Authorization;
+using Backend.DTO;
 
 
 [Route("api/[controller]")]
