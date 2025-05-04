@@ -15,7 +15,7 @@ namespace Backend.Model
 
         [Range(1, 100)]
         public int Quantity { get; set; }
-        public DateTime AddedAt { get; set; }
+        public DateTime AddedAt { get; set; } = DateTime.UtcNow;
 
         public User User { get; set; }
         public Book Book { get; set; }
