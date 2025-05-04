@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from './Layout/Navbar'; 
+import Footer from './Layout/Footer';
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
