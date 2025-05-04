@@ -16,6 +16,8 @@ import Navbar from "./pages/Layout/Navbar";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import OtpVerification from "./pages/Auth/OtpVerification";
 import NewPassword from "./pages/Auth/NewPasswordStep";
+import BookList from "./pages/BookList";
+import Layout from "./pages/Layout/layout";
 
 
 
@@ -27,7 +29,10 @@ function App() {
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Layout/>} />
+        <Route path="/BookList" element={<BookList/>} />
+
+        
 
       <Route path ="/admin" element ={<AdminDashboard/> }/>
       <Route path ="/adminBook" element ={<AdminBook/> }/>

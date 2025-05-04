@@ -35,7 +35,7 @@ const Login = () => {
       setTimeout(() => {
         // Check if user role is admin, navigate to dashboard, else to home
         if (user.role === "Admin") {
-          navigate("/dashboard");
+          navigate("/");
         } else {
           navigate("/");
         }

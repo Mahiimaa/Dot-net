@@ -3240,39 +3240,23 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\Nts\\.nuget\\packages\\": {},
-=======
-    "C:\\Users\\lenovo\\.nuget\\packages\\": {},
->>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Nts\\Dot-net\\Backend\\Backend.csproj",
       "projectName": "Backend",
       "projectPath": "C:\\Users\\Nts\\Dot-net\\Backend\\Backend.csproj",
       "packagesPath": "C:\\Users\\Nts\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Nts\\Dot-net\\Backend\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\Backend.csproj",
-      "projectName": "Backend",
-      "projectPath": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lenovo\\Documents\\Dot-net\\Backend\\obj\\",
->>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-<<<<<<< HEAD
         "C:\\Users\\Nts\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> 09dc62aeb6e864ee4ef70c6e727c26542ff6ccca
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3387,5 +3371,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.105/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Nts\\Dot-net\\Backend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

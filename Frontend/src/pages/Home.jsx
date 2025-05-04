@@ -12,7 +12,10 @@ export default function HomePage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // Set isLoggedIn to true if token exists
-  }, []);
+    if (!token) {
+      navigate("/login"); // Redirect to login if not logged in
+    }
+  }, [navigate]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -24,7 +27,7 @@ export default function HomePage() {
     localStorage.removeItem("resetEmail"); // Clean up any leftover reset email
     setIsLoggedIn(false);
     setMenuOpen(false); // Close mobile menu on logout
-    navigate("/login");
+    navigate("/login"); // Redirect to login page after logout
   };
 
   return (
