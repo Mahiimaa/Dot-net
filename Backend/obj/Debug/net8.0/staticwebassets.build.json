@@ -1,0 +1,1670 @@
+{
+  "Version": 1,
+  "Hash": "/7SK49hL4h/wfDpyoA9Z7TH7hMc9GcdLu4GpSLFBHxI=",
+  "Source": "Backend",
+  "BasePath": "_content/Backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Backend\\wwwroot",
+      "Source": "Backend",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/014a415d-3e83-4427-9f75-c764a72d9a1d#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "49btqu9ovi",
+      "Integrity": "OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/042405a6-0fba-47e5-a898-d1afe6e96276#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "tvoumgc8w8",
+      "Integrity": "ea+qYW7e4R46xmgadgQiCxzMx6mbDFMrU+yXpCMafsE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.jpeg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ily7z3t4da",
+      "Integrity": "GpamMBAFMz7UABzzdlkzIl0qZz/GTOEnjT8W+xcOxP0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.jpeg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/1d820104-7fc3-4480-bcd5-05eeadb11381#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "49btqu9ovi",
+      "Integrity": "OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.jpeg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/48452d5e-0d3e-4d3e-8e6e-bb21e07fce88#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "h4aok7lqfo",
+      "Integrity": "QSkaOt1ZokkOScJ6WL+RzZsQBUogolOvWuTF1Rc1kwI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.jpeg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\574830c9-c3e5-414e-ad5d-11197c0b6cb1.jpeg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/574830c9-c3e5-414e-ad5d-11197c0b6cb1#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "c9dii6bzux",
+      "Integrity": "YFLLVz5EmUWiNmeWF2CMvYOnw+VK39DurDAzbvNy0vs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\574830c9-c3e5-414e-ad5d-11197c0b6cb1.jpeg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/62006949-7ed2-4cb7-af1d-18af34b4a015#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\7061f71f-e4e6-4706-a8a1-34c06c2377d6.jpeg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/7061f71f-e4e6-4706-a8a1-34c06c2377d6#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "7hk5fzxms3",
+      "Integrity": "62HbbP4clPpRtYqwZ9abrE41gYxn7qiPDAhIzJ/4y3w=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\7061f71f-e4e6-4706-a8a1-34c06c2377d6.jpeg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\73816f89-dddb-43af-b544-36848b53f2fc.jpeg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/73816f89-dddb-43af-b544-36848b53f2fc#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "hplq3cu8it",
+      "Integrity": "ZWPbrjGpheBz7EqLkPb1Yf3FNTBAmmv+lVQZDC+culk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\73816f89-dddb-43af-b544-36848b53f2fc.jpeg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "49btqu9ovi",
+      "Integrity": "OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/ad0369c6-fada-40f0-b570-8ea655a300b0#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mscnbl1f6e",
+      "Integrity": "hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\c7c94a2f-7809-4ad9-af0c-33c2fa50b276.jpeg",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/c7c94a2f-7809-4ad9-af0c-33c2fa50b276#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "civsk1uyiq",
+      "Integrity": "fNl94NcazDuR/5BsNLUfqUpP/wOzN0d4B2U1RYI3Bq8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\c7c94a2f-7809-4ad9-af0c-33c2fa50b276.jpeg"
+    },
+    {
+      "Identity": "E:\\Foliana\\Backend\\wwwroot\\images\\cfbd9659-17d0-4bf2-9e03-424dab5ca123.png",
+      "SourceId": "Backend",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Foliana\\Backend\\wwwroot\\",
+      "BasePath": "_content/Backend",
+      "RelativePath": "images/cfbd9659-17d0-4bf2-9e03-424dab5ca123#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "kjbfh541h0",
+      "Integrity": "0LIg0kTRXBfyz/9CtiFlr4cjaJlfAV6LuCTVEPselEs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\cfbd9659-17d0-4bf2-9e03-424dab5ca123.png"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "images/014a415d-3e83-4427-9f75-c764a72d9a1d.49btqu9ovi.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "103543"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 07:22:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "49btqu9ovi"
+        },
+        {
+          "Name": "label",
+          "Value": "images/014a415d-3e83-4427-9f75-c764a72d9a1d.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\014a415d-3e83-4427-9f75-c764a72d9a1d.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "103543"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 07:22:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "51794"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ea+qYW7e4R46xmgadgQiCxzMx6mbDFMrU+yXpCMafsE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 08:23:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ea+qYW7e4R46xmgadgQiCxzMx6mbDFMrU+yXpCMafsE="
+        }
+      ]
+    },
+    {
+      "Route": "images/042405a6-0fba-47e5-a898-d1afe6e96276.tvoumgc8w8.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\042405a6-0fba-47e5-a898-d1afe6e96276.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "51794"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ea+qYW7e4R46xmgadgQiCxzMx6mbDFMrU+yXpCMafsE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 08:23:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tvoumgc8w8"
+        },
+        {
+          "Name": "label",
+          "Value": "images/042405a6-0fba-47e5-a898-d1afe6e96276.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ea+qYW7e4R46xmgadgQiCxzMx6mbDFMrU+yXpCMafsE="
+        }
+      ]
+    },
+    {
+      "Route": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.mscnbl1f6e.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/0c0f3eaf-a427-4bcb-8e51-a573b4a6bace.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.ily7z3t4da.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13123"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GpamMBAFMz7UABzzdlkzIl0qZz/GTOEnjT8W+xcOxP0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ily7z3t4da"
+        },
+        {
+          "Name": "label",
+          "Value": "images/14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GpamMBAFMz7UABzzdlkzIl0qZz/GTOEnjT8W+xcOxP0="
+        }
+      ]
+    },
+    {
+      "Route": "images/14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\14ead2f0-6f4c-4b91-b149-1c0b2bd2fec4.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13123"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GpamMBAFMz7UABzzdlkzIl0qZz/GTOEnjT8W+xcOxP0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GpamMBAFMz7UABzzdlkzIl0qZz/GTOEnjT8W+xcOxP0="
+        }
+      ]
+    },
+    {
+      "Route": "images/1d820104-7fc3-4480-bcd5-05eeadb11381.49btqu9ovi.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "103543"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 11:07:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "49btqu9ovi"
+        },
+        {
+          "Name": "label",
+          "Value": "images/1d820104-7fc3-4480-bcd5-05eeadb11381.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\1d820104-7fc3-4480-bcd5-05eeadb11381.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "103543"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 11:07:56 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.h4aok7lqfo.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12561"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"QSkaOt1ZokkOScJ6WL+RzZsQBUogolOvWuTF1Rc1kwI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "h4aok7lqfo"
+        },
+        {
+          "Name": "label",
+          "Value": "images/48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-QSkaOt1ZokkOScJ6WL+RzZsQBUogolOvWuTF1Rc1kwI="
+        }
+      ]
+    },
+    {
+      "Route": "images/48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\48452d5e-0d3e-4d3e-8e6e-bb21e07fce88.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12561"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"QSkaOt1ZokkOScJ6WL+RzZsQBUogolOvWuTF1Rc1kwI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-QSkaOt1ZokkOScJ6WL+RzZsQBUogolOvWuTF1Rc1kwI="
+        }
+      ]
+    },
+    {
+      "Route": "images/574830c9-c3e5-414e-ad5d-11197c0b6cb1.c9dii6bzux.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\574830c9-c3e5-414e-ad5d-11197c0b6cb1.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12112"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YFLLVz5EmUWiNmeWF2CMvYOnw+VK39DurDAzbvNy0vs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c9dii6bzux"
+        },
+        {
+          "Name": "label",
+          "Value": "images/574830c9-c3e5-414e-ad5d-11197c0b6cb1.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YFLLVz5EmUWiNmeWF2CMvYOnw+VK39DurDAzbvNy0vs="
+        }
+      ]
+    },
+    {
+      "Route": "images/574830c9-c3e5-414e-ad5d-11197c0b6cb1.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\574830c9-c3e5-414e-ad5d-11197c0b6cb1.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12112"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YFLLVz5EmUWiNmeWF2CMvYOnw+VK39DurDAzbvNy0vs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YFLLVz5EmUWiNmeWF2CMvYOnw+VK39DurDAzbvNy0vs="
+        }
+      ]
+    },
+    {
+      "Route": "images/62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/62006949-7ed2-4cb7-af1d-18af34b4a015.mscnbl1f6e.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\62006949-7ed2-4cb7-af1d-18af34b4a015.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/62006949-7ed2-4cb7-af1d-18af34b4a015.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/7061f71f-e4e6-4706-a8a1-34c06c2377d6.7hk5fzxms3.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\7061f71f-e4e6-4706-a8a1-34c06c2377d6.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7541"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"62HbbP4clPpRtYqwZ9abrE41gYxn7qiPDAhIzJ/4y3w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "7hk5fzxms3"
+        },
+        {
+          "Name": "label",
+          "Value": "images/7061f71f-e4e6-4706-a8a1-34c06c2377d6.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-62HbbP4clPpRtYqwZ9abrE41gYxn7qiPDAhIzJ/4y3w="
+        }
+      ]
+    },
+    {
+      "Route": "images/7061f71f-e4e6-4706-a8a1-34c06c2377d6.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\7061f71f-e4e6-4706-a8a1-34c06c2377d6.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7541"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"62HbbP4clPpRtYqwZ9abrE41gYxn7qiPDAhIzJ/4y3w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-62HbbP4clPpRtYqwZ9abrE41gYxn7qiPDAhIzJ/4y3w="
+        }
+      ]
+    },
+    {
+      "Route": "images/73816f89-dddb-43af-b544-36848b53f2fc.hplq3cu8it.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\73816f89-dddb-43af-b544-36848b53f2fc.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16407"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZWPbrjGpheBz7EqLkPb1Yf3FNTBAmmv+lVQZDC+culk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "hplq3cu8it"
+        },
+        {
+          "Name": "label",
+          "Value": "images/73816f89-dddb-43af-b544-36848b53f2fc.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZWPbrjGpheBz7EqLkPb1Yf3FNTBAmmv+lVQZDC+culk="
+        }
+      ]
+    },
+    {
+      "Route": "images/73816f89-dddb-43af-b544-36848b53f2fc.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\73816f89-dddb-43af-b544-36848b53f2fc.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16407"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZWPbrjGpheBz7EqLkPb1Yf3FNTBAmmv+lVQZDC+culk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZWPbrjGpheBz7EqLkPb1Yf3FNTBAmmv+lVQZDC+culk="
+        }
+      ]
+    },
+    {
+      "Route": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9.mscnbl1f6e.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/77a5fd37-9def-46d8-947a-f4f79e33eed9.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881.mscnbl1f6e.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/89dfa683-1d48-4240-a0af-ad05bbf8b881.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5.49btqu9ovi.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "103543"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 11:13:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "49btqu9ovi"
+        },
+        {
+          "Name": "label",
+          "Value": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\a59c0094-0ccf-45b8-86e6-4dc832ece6c5.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "103543"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 11:13:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OAAD/jJhyYpdvo09OUR0dkzGb9PdFx3wZIea0jrczYs="
+        }
+      ]
+    },
+    {
+      "Route": "images/ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/ad0369c6-fada-40f0-b570-8ea655a300b0.mscnbl1f6e.jpg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\ad0369c6-fada-40f0-b570-8ea655a300b0.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86872"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mscnbl1f6e"
+        },
+        {
+          "Name": "label",
+          "Value": "images/ad0369c6-fada-40f0-b570-8ea655a300b0.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hs+sDzduny0QsZ1Ktqkng/ft0dm4tR9118M2EoKxx7s="
+        }
+      ]
+    },
+    {
+      "Route": "images/c7c94a2f-7809-4ad9-af0c-33c2fa50b276.civsk1uyiq.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\c7c94a2f-7809-4ad9-af0c-33c2fa50b276.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9434"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fNl94NcazDuR/5BsNLUfqUpP/wOzN0d4B2U1RYI3Bq8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "civsk1uyiq"
+        },
+        {
+          "Name": "label",
+          "Value": "images/c7c94a2f-7809-4ad9-af0c-33c2fa50b276.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fNl94NcazDuR/5BsNLUfqUpP/wOzN0d4B2U1RYI3Bq8="
+        }
+      ]
+    },
+    {
+      "Route": "images/c7c94a2f-7809-4ad9-af0c-33c2fa50b276.jpeg",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\c7c94a2f-7809-4ad9-af0c-33c2fa50b276.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9434"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fNl94NcazDuR/5BsNLUfqUpP/wOzN0d4B2U1RYI3Bq8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fNl94NcazDuR/5BsNLUfqUpP/wOzN0d4B2U1RYI3Bq8="
+        }
+      ]
+    },
+    {
+      "Route": "images/cfbd9659-17d0-4bf2-9e03-424dab5ca123.kjbfh541h0.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\cfbd9659-17d0-4bf2-9e03-424dab5ca123.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9573"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0LIg0kTRXBfyz/9CtiFlr4cjaJlfAV6LuCTVEPselEs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "kjbfh541h0"
+        },
+        {
+          "Name": "label",
+          "Value": "images/cfbd9659-17d0-4bf2-9e03-424dab5ca123.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0LIg0kTRXBfyz/9CtiFlr4cjaJlfAV6LuCTVEPselEs="
+        }
+      ]
+    },
+    {
+      "Route": "images/cfbd9659-17d0-4bf2-9e03-424dab5ca123.png",
+      "AssetFile": "E:\\Foliana\\Backend\\wwwroot\\images\\cfbd9659-17d0-4bf2-9e03-424dab5ca123.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9573"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0LIg0kTRXBfyz/9CtiFlr4cjaJlfAV6LuCTVEPselEs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 04 May 2025 05:15:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-0LIg0kTRXBfyz/9CtiFlr4cjaJlfAV6LuCTVEPselEs="
+        }
+      ]
+    }
+  ]
+}
