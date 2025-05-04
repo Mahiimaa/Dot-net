@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Foliana\\Backend\\Backend.csproj": {}
+    "C:\\Dot-net\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "E:\\Foliana\\Backend\\Backend.csproj": {
+    "C:\\Dot-net\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Foliana\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Dot-net\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "E:\\Foliana\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "E:\\Foliana\\Backend\\obj\\",
+        "projectPath": "C:\\Dot-net\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\gita4\\.nuget\\packages\\",
+        "outputPath": "C:\\Dot-net\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\gita4\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -75,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
