@@ -5,9 +5,7 @@
 // using Backend.Model;
 // using System.Security.Claims;
 // using System.Threading.Tasks;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
 
 // [Route("api/[controller]")]
 // [ApiController]
@@ -58,8 +56,6 @@
 // {
 //     public int BookId { get; set; }
 // }
-=======
->>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120
 
 // [Route("api/[controller]")]
 // [ApiController]
@@ -182,7 +178,4 @@ namespace Backend.Controllers
         }
     }
 }
-<<<<<<< HEAD
-=======
->>>>>>> 523b181 (Backend work for wishlist)
->>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120
+
