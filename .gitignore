@@ -1,0 +1,31 @@
+# === BACKEND (.NET) ===
+Backend/bin/
+Backend/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# === FRONTEND (Node/React) ===
+Frontend/node_modules/
+Frontend/build/
+Frontend/dist/
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === OS & IDE FILES ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === LOGS ===
+*.log
+
+# === OTHERS ===
+*.cache
+*.tmp
