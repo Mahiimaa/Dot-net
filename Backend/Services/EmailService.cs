@@ -17,12 +17,10 @@ namespace Backend.Services
         public async Task SendWelcomeEmailAsync(string toEmail, string firstName, string membershipId)
         {
             var emailSettings = _configuration.GetSection("EmailSettings");
-
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(emailSettings["SenderName"], emailSettings["SenderEmail"]));
             message.To.Add(new MailboxAddress("", toEmail));
             message.Subject = "Welcome to Foliana!";
-
             var bodyBuilder = new BodyBuilder
             {
                 HtmlBody = $@"
@@ -33,19 +31,16 @@ namespace Backend.Services
                     <p>Best regards,<br>The Foliana Team</p>"
             };
             message.Body = bodyBuilder.ToMessageBody();
-
             await SendEmailAsync(message);
         }
 
         public async Task SendOtpEmailAsync(string toEmail, string firstName, string otp)
         {
             var emailSettings = _configuration.GetSection("EmailSettings");
-
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(emailSettings["SenderName"], emailSettings["SenderEmail"]));
             message.To.Add(new MailboxAddress("", toEmail));
             message.Subject = "Foliana Password Reset OTP";
-
             var bodyBuilder = new BodyBuilder
             {
                 HtmlBody = $@"
@@ -57,14 +52,33 @@ namespace Backend.Services
                     <p>Best regards,<br>The Foliana Team</p>"
             };
             message.Body = bodyBuilder.ToMessageBody();
+            await SendEmailAsync(message);
+        }
 
+        public async Task SendOrderConfirmationEmailAsync(string toEmail, string firstName, string claimCode, string bookName)
+        {
+            var emailSettings = _configuration.GetSection("EmailSettings");
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(emailSettings["SenderName"], emailSettings["SenderEmail"]));
+            message.To.Add(new MailboxAddress("", toEmail));
+            message.Subject = "Foliana Order Confirmation";
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = $@"
+                    <h2>Order Confirmation</h2>
+                    <p>Dear {firstName},</p>
+                    <p>Thank you for your order! Your books ({bookName}) have been reserved.</p>
+                    <p>Your Claim Code is: <strong>{claimCode}</strong></p>
+                    <p>Please present this code and your Membership ID at pickup. You'll be notified when your order is ready.</p>
+                    <p>Best regards,<br>The Foliana Team</p>"
+            };
+            message.Body = bodyBuilder.ToMessageBody();
             await SendEmailAsync(message);
         }
 
         private async Task SendEmailAsync(MimeMessage message)
         {
             var emailSettings = _configuration.GetSection("EmailSettings");
-
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync(emailSettings["SmtpServer"], int.Parse(emailSettings["SmtpPort"]), MailKit.Security.SecureSocketOptions.StartTls);

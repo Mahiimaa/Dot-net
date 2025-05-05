@@ -2,8 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Model;
+using Microsoft.AspNetCore.Authorization;
+using Backend.DTO;
+
 
 [Route("api/[controller]")]
+// [Authorize(Roles = "Admin")]
 [ApiController]
 public class DiscountsController : ControllerBase
 {

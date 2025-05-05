@@ -1,3 +1,5 @@
+namespace Backend.DTO
+{
 public class DiscountDTO {
     public string Title { get; set; } = "" ;
     public decimal DiscountPercent { get; set; }
@@ -6,4 +8,5 @@ public class DiscountDTO {
     public bool OnSale { get; set; }
 
     public List<int> BookIds { get; set; } = new(); 
+}
 }

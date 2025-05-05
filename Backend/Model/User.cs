@@ -4,8 +4,10 @@ using System.Linq;
 namespace Backend.Model;
 
 public class User {
-    [key]
-    public int Id {get; set;}
+    // [key]
+    // public int Id {get; set;}
+    [Key]
+    public int Id { get; set; }
 
     // [Required]
     // [StringLength(50)]
@@ -36,6 +38,6 @@ public class User {
     public DateTime? OtpExpiration { get; set; } // OTP expiration time
 }
 
-internal class keyAttribute : Attribute
-{
-}
+// internal class keyAttribute : Attribute
+// {
+// }
