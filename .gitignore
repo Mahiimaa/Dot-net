@@ -1,2 +1,18 @@
+<<<<<<< HEAD
 Backend/obj/
 Backend/bin/
+=======
+# Backend build folders
+Backend/obj/
+Backend/bin/
+
+# Frontend dependencies and builds
+Frontend/node_modules/
+dist/
+build/
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+>>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120

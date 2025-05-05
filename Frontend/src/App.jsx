@@ -17,17 +17,17 @@ import OtpVerification from './pages/Auth/OtpVerification';
 import NewPassword from './pages/Auth/NewPasswordStep';
 import BookCatalog from './pages/BookCatalog';  
 import BookDetail from './pages/BookDetail';  
+import Authors from './pages/Authors';  
+import Account from './pages/Members/Account';
+import Wishlist from './pages/Members/Wishlist';
+import Order from './pages/Members/Order';
+import AddCart from './pages/Members/Addcart';
+import Review from './pages/Members/Review';
+import Settings from './pages/Members/Settings';
+import Genres from './pages/Genres';
 import './App.css';
 import { useContext } from 'react';
 import Book from './pages/Book';
-import Review from './pages/Review';
-import Account from './pages/Members/Account';
-import Order from './pages/Members/Order';
-import Wishlist from './pages/Members/Wishlist';
-import Addcart from './pages/Members/Addcart';
-import Reviews from './pages/Members/Review';
-import Settings from './pages/Members/Settings';
-
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -63,6 +63,14 @@ function App() {
           <Route path="/bookCatalog" element={<BookCatalog />} />
           <Route path="/books/:id" element={<BookDetail/>} />
           <Route path="/review" element={<Review/>} />
+          <Route path="/authors" element={<Authors/>} />
+          <Route path="/genres" element={<Genres/>} />
+          <Route path="/account" element={<Account/>} />
+          <Route path="/wishlist" element={<Wishlist/>} />
+          <Route path="/settings" element={<Settings/>} />
+          <Route path="/order" element={<Order/>} />
+          <Route path="/addcart" element={<AddCart/>} />
+          <Route path="/review" element={<Review />} />
           <Route path="*" element={<div>404 - Page Not Found</div>} />
 
           
