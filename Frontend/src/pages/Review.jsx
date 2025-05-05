@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import api from '../api/axios';
 
-function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navigate }) {
+function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navigate, hasPurchased }) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
@@ -82,30 +82,39 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
         </p>
       </div>
 
-      {isAuthenticated && (
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Share Your Thoughts</h3>
-          <div className="mb-4">
-            <p className="text-gray-700 mb-2">Your Rating</p>
-            {renderStars(rating, true, setRating)}
+      {isAuthenticated ? (
+        hasPurchased ? (
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Share Your Thoughts</h3>
+            <div className="mb-4">
+              <p className="text-gray-700 mb-2">Your Rating</p>
+              {renderStars(rating, true, setRating)}
+            </div>
+            <textarea
+              className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="4"
+              placeholder="Write your review..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              aria-label="Write your review"
+            />
+            <button
+              className="mt-4 bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              onClick={handleAddComment}
+              disabled={isSubmittingReview || !comment.trim() || rating < 1}
+            >
+              Submit Review
+            </button>
           </div>
-          <textarea
-            className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows="4"
-            placeholder="Write your review..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            aria-label="Write your review"
-          />
-          <button
-            className="mt-4 bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-            onClick={handleAddComment}
-            disabled={isSubmittingReview || !comment.trim() || rating < 1}
-          >
-            Submit Review
-          </button>
-        </div>
+        ) : (
+          <p className="text-sm text-gray-500 italic">
+            You must purchase this book to leave a review.
+          </p>
+        )
+      ) : (
+        <p className="text-sm text-gray-500 italic">Please log in to leave a review.</p>
       )}
+
 
       <div className="space-y-6">
         {reviews.length === 0 ? (

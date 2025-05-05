@@ -20,6 +20,7 @@ function BookDetail() {
   const [error, setError] = useState(null);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isBookmarking, setIsBookmarking] = useState(false);
+  const [hasPurchased, setHasPurchased] = useState(false);
 
   // Memoize isAuthenticated to prevent unnecessary re-renders
   const stableIsAuthenticated = useMemo(() => isAuthenticated, [isAuthenticated]);
@@ -71,7 +72,12 @@ function BookDetail() {
               }
             }
           }
-
+          try {
+            const purchaseCheck = await api.get(`/api/Orders/has-purchased/${bookId}`);
+            setHasPurchased(purchaseCheck.data.hasPurchased);
+          } catch (err) {
+            console.warn('Purchase check failed:', err.response?.status, err.response?.data || err.message);
+          }
           try {
             const bookmarksResponse = await api.get(`/api/Bookmarks?bookId=${bookId}`);
             setWishlisted(bookmarksResponse.data.some(b => b.bookId === bookId));
@@ -327,6 +333,7 @@ function BookDetail() {
                   currentUser={currentUser}
                   isAuthenticated={stableIsAuthenticated}
                   navigate={navigate}
+                  hasPurchased={hasPurchased}
                 />
               )}
             </div>

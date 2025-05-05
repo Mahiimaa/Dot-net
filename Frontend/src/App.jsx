@@ -11,7 +11,6 @@ import AdminOrders from './pages/AdminOrders';
 import AdminReview from './pages/AdminReview';
 import AdminSettings from './pages/AdminSettings';
 import Home from './pages/Home';
-import ProtectedRoute from "./Components/ProtectedRoute";
 import BookList from "./pages/BookList";
 import Layout from "./pages/Layout/layout";
 import Navbar from './pages/Layout/Navbar';
@@ -30,7 +29,6 @@ import Genres from './pages/Genres';
 import './App.css';
 import { useContext } from 'react';
 import Book from './pages/Book';
-
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -57,12 +55,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/account" element={<Account/>}/>
-          <Route path="/order" element={<Order/>}/>
-          <Route path="/wishlist" element={<Wishlist/>}/>
-          <Route path="/Review" element={<Reviews/>}/>
-          <Route path="/Addcart" element={<Addcart/>}/>
-          <Route path="/setting" element={<Settings/>}/>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/otpverification" element={<OtpVerification />} />
           <Route path="/newpassword" element={<NewPassword />} />

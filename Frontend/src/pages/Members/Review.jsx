@@ -18,7 +18,7 @@ const Review = () => {
   const reviews = Array(3).fill({
     title: "The invisible life or Addie LaRue",
     author: "V.E. Schwab",
-    image: "https://via.placeholder.com/80x120", // Replace with actual book image
+    image: "https://via.placeholder.com/80x120", 
     rating: 5,
     reviewText:
       "Absolutely enchanting! I was completely captivated by Addie's journey through time. The prose is beautiful, the characters are complex, and the central premise is explored in such a thoughtful way. Schwab has outdone herself with this masterpiece",

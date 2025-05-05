@@ -35,14 +35,9 @@ const Login = () => {
       login(token, user); // Use AuthContext login
       setSuccess('Login successful! Redirecting...');
       setTimeout(() => {
-<<<<<<< HEAD
         // Check if user role is admin, navigate to dashboard, else to home
         if (user.role === "Admin") {
           navigate("/");
-=======
-        if (user.role === 'Admin') {
-          navigate('/dashboard');
->>>>>>> c09de56424264ad8ac758808609d42f22a8bcb88
         } else {
           navigate('/');
         }
