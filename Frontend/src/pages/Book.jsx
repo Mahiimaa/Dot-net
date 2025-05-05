@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, ChevronDown, ChevronUp } from 'lucide-react';
 import * as signalR from '@microsoft/signalr';
 import api from '../api/axios';
 import Navbar from './Layout/Navbar';
 import { AuthContext } from '../context/AuthContext';
+import Footer from './Layout/Footer';
 
 const BookCard = ({ book, addToCart, bookmarkBook, isAuthenticated }) => {
   // Parse discountStart and discountEnd as UTC dates
@@ -19,7 +20,7 @@ const BookCard = ({ book, addToCart, bookmarkBook, isAuthenticated }) => {
     (!book.discountEnd || parseUTCDate(book.discountEnd) >= new Date());
 
   return (
-    <div className="relative border rounded-lg p-6 flex flex-col items-center shadow-md hover:shadow-lg transition h-full">
+    <div className="relative border rounded-lg p-6 flex flex-col items-center shadow-md hover:shadow-lg transition h-full bg-white">
       {isDiscountActive && (
         <span className="absolute top-3 left-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full">
           On Sale!
@@ -33,7 +34,7 @@ const BookCard = ({ book, addToCart, bookmarkBook, isAuthenticated }) => {
               : 'https://via.placeholder.com/150x200?text=Book+Cover'
           }
           alt={book.title}
-          className="w-40 h-56 object-cover rounded-md"
+          className="w-80 h-56 object-contain rounded-md p-4 bg-white"
         />
       </Link>
       <div className="absolute top-3 right-3 flex space-x-2">
@@ -125,6 +126,7 @@ const Book = () => {
   const [totalBooks, setTotalBooks] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const booksPerPage = 6;
 
   // SignalR connection state
@@ -179,7 +181,7 @@ const Book = () => {
         } else {
           setError('Failed to load data. Please check your network and try again.');
         }
-        console.error('Fetch549 error:', err.response?.status, err.response?.data || err.message);
+        console.error('Fetch error:', err.response?.status, err.response?.data || err.message);
       } finally {
         setLoading(false);
       }
@@ -259,6 +261,10 @@ const Book = () => {
     setSortBy('');
     setSearchQuery('');
     setCurrentPage(1);
+  };
+
+  const toggleFilterSection = () => {
+    setIsFilterExpanded(!isFilterExpanded);
   };
 
   const addToCart = async (bookId) => {
@@ -381,7 +387,7 @@ const Book = () => {
               </div>
 
               {/* Search */}
-              <div className="flex justify-center mb-10">
+              <div className="flex justify-center mb-10 ">
                 <div className="relative w-full max-w-2xl">
                   <input
                     type="text"
@@ -391,259 +397,276 @@ const Book = () => {
                       setSearchQuery(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                   />
                   <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
                 </div>
               </div>
 
-              {/* Filters */}
-              <div className="bg-white p-6 rounded-xl shadow-sm mb-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Filter Books</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
-                    <select
-                      name="author"
-                      value={filters.author}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Authors</option>
-                      {authors.map((author) => (
-                        <option key={author} value={author}>
-                          {author}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Genre</label>
-                    <select
-                      name="genre"
-                      value={filters.genre}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Genres</option>
-                      {genres.map((genre) => (
-                        <option key={genre} value={genre}>
-                          {genre}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Availability
-                    </label>
-                    <select
-                      name="availability"
-                      value={filters.availability}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Availability</option>
-                      <option value="Available">Available</option>
-                      <option value="Library Only">Library Only</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
-                    <select
-                      name="rating"
-                      value={filters.rating}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Ratings</option>
-                      <option value="4">4+ Stars</option>
-                      <option value="3">3+ Stars</option>
-                      <option value="2">2+ Stars</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
-                    <select
-                      name="language"
-                      value={filters.language}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Languages</option>
-                      {languages.map((lang) => (
-                        <option key={lang} value={lang}>
-                          {lang}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
-                    <select
-                      name="format"
-                      value={filters.format}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Formats</option>
-                      {formats.map((format) => (
-                        <option key={format} value={format}>
-                          {format}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Publisher</label>
-                    <select
-                      name="publisher"
-                      value={filters.publisher}
-                      onChange={handleFilterChange}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                    >
-                      <option value="">All Publishers</option>
-                      {publishers.map((pub) => (
-                        <option key={pub} value={pub}>
-                          {pub}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Price Range
-                    </label>
-                    <div className="flex space-x-2">
-                      <input
-                        type="number"
-                        name="minPrice"
-                        value={filters.minPrice}
+              {/* Collapsible Filters */}
+              <div className="bg-white p-4 rounded-xl shadow-sm mb-8">
+                <button 
+                  onClick={toggleFilterSection}
+                  className="w-full flex justify-between items-center text-xl font-semibold text-gray-800"
+                >
+                  <span>Filter Books</span>
+                  {isFilterExpanded ? 
+                    <ChevronUp className="w-6 h-6" /> : 
+                    <ChevronDown className="w-6 h-6" />
+                  }
+                </button>
+                
+                {isFilterExpanded && (
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
+                      <select
+                        name="author"
+                        value={filters.author}
                         onChange={handleFilterChange}
-                        placeholder="Min"
-                        className="w-1/2 p-2 border border-gray-300 rounded-md shadow-sm"
-                      />
-                      <input
-                        type="number"
-                        name="maxPrice"
-                        value={filters.maxPrice}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Authors</option>
+                        {authors.map((author) => (
+                          <option key={author} value={author}>
+                            {author}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Genre</label>
+                      <select
+                        name="genre"
+                        value={filters.genre}
                         onChange={handleFilterChange}
-                        placeholder="Max"
-                        className="w-1/2 p-2 border border-gray-300 rounded-md shadow-sm"
-                      />
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Genres</option>
+                        {genres.map((genre) => (
+                          <option key={genre} value={genre}>
+                            {genre}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Availability
+                      </label>
+                      <select
+                        name="availability"
+                        value={filters.availability}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Availability</option>
+                        <option value="Available">Available</option>
+                        <option value="Library Only">Library Only</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                      <select
+                        name="rating"
+                        value={filters.rating}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Ratings</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="3">3+ Stars</option>
+                        <option value="2">2+ Stars</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                      <select
+                        name="language"
+                        value={filters.language}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Languages</option>
+                        {languages.map((lang) => (
+                          <option key={lang} value={lang}>
+                            {lang}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
+                      <select
+                        name="format"
+                        value={filters.format}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Formats</option>
+                        {formats.map((format) => (
+                          <option key={format} value={format}>
+                            {format}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Publisher</label>
+                      <select
+                        name="publisher"
+                        value={filters.publisher}
+                        onChange={handleFilterChange}
+                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                      >
+                        <option value="">All Publishers</option>
+                        {publishers.map((pub) => (
+                          <option key={pub} value={pub}>
+                            {pub}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Price Range
+                      </label>
+                      <div className="flex space-x-2">
+                        <input
+                          type="number"
+                          name="minPrice"
+                          value={filters.minPrice}
+                          onChange={handleFilterChange}
+                          placeholder="Min"
+                          className="w-1/2 p-2 border border-gray-300 rounded-md shadow-sm"
+                        />
+                        <input
+                          type="number"
+                          name="maxPrice"
+                          value={filters.maxPrice}
+                          onChange={handleFilterChange}
+                          placeholder="Max"
+                          className="w-1/2 p-2 border border-gray-300 rounded-md shadow-sm"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="col-span-1 sm:col-span-2 lg:col-span-4 flex justify-end mt-4 space-x-3">
+                      <button
+                        onClick={handleClearFilters}
+                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
+                      >
+                        Clear Filters
+                      </button>
                     </div>
                   </div>
-                </div>
-                <div className="flex justify-end mt-4 space-x-3">
-                  <button
-                    onClick={handleClearFilters}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
-                  >
-                    Clear Filters
-                  </button>
-                </div>
+                )}
               </div>
 
-              {/* Sort and Results Info */}
-              <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-                <div className="text-gray-600 mb-3 sm:mb-0">
-                  {books.length > 0
-                    ? `Showing ${books.length} of ${totalBooks} books`
-                    : 'No books match your filters'}
-                </div>
-                <div className="flex items-center">
-                  <label className="mr-2 text-sm font-medium text-gray-700">Sort by:</label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => {
-                      setSortBy(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                    className="p-2 border border-gray-300 rounded-md shadow-sm"
-                    disabled={books.length === 0}
-                  >
-                    <option value="">Default</option>
-                    <option value="title">Title (A-Z)</option>
-                    <option value="publishDate">Publication Date (Newest)</option>
-                    <option value="priceLow">Price (Low to High)</option>
-                    <option value="priceHigh">Price (High to Low)</option>
-                    <option value="popularity">Popularity (Most Sold)</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Book Grid */}
-              {books.length === 0 ? (
-                <div className="bg-white p-8 rounded-xl shadow-sm text-center">
-                  <h3 className="text-xl font-medium text-gray-700 mb-2">No books found</h3>
-                  <p className="text-gray-500">
-                    Try adjusting your search or filters, or clear the search term.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {books.map((book) => (
-                      <BookCard
-                        key={book.id}
-                        book={book}
-                        addToCart={addToCart}
-                        bookmarkBook={bookmarkBook}
-                        isAuthenticated={isAuthenticated}
-                      />
-                    ))}
+              {/* White background for content below filters */}
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                {/* Sort and Results Info */}
+                <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+                  <div className="text-teal-800 bg-teal-100 p-2 rounded-md mb-3 sm:mb-0">
+                    {books.length > 0
+                      ? `Showing ${books.length} of ${totalBooks} books`
+                      : 'No books match your filters'}
                   </div>
+                  <div className="flex items-center">
+                    <label className="mr-2 text-sm font-medium text-gray-700">Sort by:</label>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => {
+                        setSortBy(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="p-2 border border-gray-300 rounded-md shadow-sm"
+                      disabled={books.length === 0}
+                    >
+                      <option value="">Default</option>
+                      <option value="title">Title (A-Z)</option>
+                      <option value="publishDate">Publication Date (Newest)</option>
+                      <option value="priceLow">Price (Low to High)</option>
+                      <option value="priceHigh">Price (High to Low)</option>
+                      <option value="popularity">Popularity (Most Sold)</option>
+                    </select>
+                  </div>
+                </div>
 
-                  {/* Pagination */}
-                  {totalPages > 1 && (
-                    <div className="flex justify-center mt-12">
-                      <nav
-                        className="inline-flex rounded-md shadow-sm -space-x-px"
-                        aria-label="Pagination"
-                      >
-                        <button
-                          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                          disabled={currentPage === 1}
-                          className={`px-4 py-2 rounded-l-md border ${
-                            currentPage === 1
-                              ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
-                              : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                          }`}
+                {/* Book Grid */}
+                {books.length === 0 ? (
+                  <div className="bg-white p-8 rounded-xl shadow-sm text-center">
+                    <h3 className="text-xl font-medium text-gray-700 mb-2">No books found</h3>
+                    <p className="text-gray-500">
+                      Try adjusting your search or filters, or clear the search term.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {books.map((book) => (
+                        <BookCard
+                          key={book.id}
+                          book={book}
+                          addToCart={addToCart}
+                          bookmarkBook={bookmarkBook}
+                          isAuthenticated={isAuthenticated}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center mt-12">
+                        <nav
+                          className="inline-flex rounded-md shadow-sm -space-x-px"
+                          aria-label="Pagination"
                         >
-                          Previous
-                        </button>
-                        {[...Array(totalPages)].map((_, i) => (
                           <button
-                            key={i + 1}
-                            onClick={() => setCurrentPage(i + 1)}
-                            className={`px-4 py-2 border ${
-                              currentPage === i + 1
-                                ? 'z-10 bg-blue-900 border-blue-900 text-white'
+                            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                            disabled={currentPage === 1}
+                            className={`px-4 py-2 rounded-l-md border ${
+                              currentPage === 1
+                                ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
                                 : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                             }`}
                           >
-                            {i + 1}
+                            Previous
                           </button>
-                        ))}
-                        <button
-                          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                          disabled={currentPage === totalPages}
-                          className={`px-4 py-2 rounded-r-md border ${
-                            currentPage === totalPages
-                              ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
-                              : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                          }`}
-                        >
-                          Next
-                        </button>
-                      </nav>
-                    </div>
-                  )}
-                </>
-              )}
+                          {[...Array(totalPages)].map((_, i) => (
+                            <button
+                              key={i + 1}
+                              onClick={() => setCurrentPage(i + 1)}
+                              className={`px-4 py-2 border ${
+                                currentPage === i + 1
+                                  ? 'z-10 bg-blue-900 border-blue-900 text-white'
+                                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                              }`}
+                            >
+                              {i + 1}
+                            </button>
+                          ))}
+                          <button
+                            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                            className={`px-4 py-2 rounded-r-md border ${
+                              currentPage === totalPages
+                                ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
+                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            Next
+                          </button>
+                        </nav>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             </>
           )}
         </div>
+        <Footer />
       </div>
     </>
   );

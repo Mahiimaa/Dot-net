@@ -18,7 +18,6 @@ import Navbar from './pages/Layout/Navbar';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import OtpVerification from './pages/Auth/OtpVerification';
 import NewPassword from './pages/Auth/NewPasswordStep';
-import BookCatalog from './pages/BookCatalog';  
 import BookDetail from './pages/BookDetail';  
 import Authors from './pages/Authors';  
 import Account from './pages/Members/Account';
@@ -68,7 +67,6 @@ function App() {
           <Route path="/otpverification" element={<OtpVerification />} />
           <Route path="/newpassword" element={<NewPassword />} />
           <Route path="/book" element={<Book/>} />
-          <Route path="/bookCatalog" element={<BookCatalog />} />
           <Route path="/books/:id" element={<BookDetail/>} />
           <Route path="/review" element={<Review/>} />
           <Route path="/authors" element={<Authors/>} />
