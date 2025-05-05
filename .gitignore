@@ -1,11 +1,52 @@
-# .NET Core
+<<<<<<< HEAD
+# === BACKEND (.NET) ===
 Backend/bin/
 Backend/obj/
-Frontend/bin/
-Frontend/obj/
-*.dll
-*.exe
-*.pdb
-*.cache
-*.suo
 *.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# === FRONTEND (Node/React) ===
+Frontend/node_modules/
+Frontend/build/
+Frontend/dist/
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === OS & IDE FILES ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === LOGS ===
+*.log
+
+# === OTHERS ===
+*.cache
+*.tmp
+=======
+<<<<<<< HEAD
+Backend/obj/
+Backend/bin/
+=======
+# Backend build folders
+Backend/obj/
+Backend/bin/
+
+# Frontend dependencies and builds
+Frontend/node_modules/
+dist/
+build/
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+>>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120
+>>>>>>> c09de56424264ad8ac758808609d42f22a8bcb88

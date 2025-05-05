@@ -1,318 +1,540 @@
-// import React from "react";
-// import profileImg from '../../assets/Profile.jpeg'; 
+// // // import React from "react";
+// // // import { Link, useLocation, useNavigate } from "react-router-dom";
+// // // import MemNavbar from "../../Components/MemNavbar";
+// // // import SideProfile from "../../Components/SideProfile";
+// // // import { FaHeart } from "react-icons/fa";
+
+// // // const Wishlist = () => {
+// // //   const location = useLocation();
+// // //   const navigate = useNavigate();
+
+// // //   const tabs = [
+// // //     { name: "Account Overview", path: "/account" },
+// // //     { name: "Orders", path: "/order" },
+// // //     { name: "Wishlist", path: "/wishlist" },
+// // //     { name: "Reviews", path: "/review" },
+// // //     { name: "Settings", path: "/setting" },
+// // //   ];
+
+// // //   const wishlistItems = Array(6).fill({
+// // //     title: "The Great Adventure",
+// // //     price: 935,
+// // //     image: "https://via.placeholder.com/100x150", // Replace with actual image
+// // //     author: "John Strass",
+// // //     originalPrice: 1100,
+// // //     rating: 5,
+// // //     reviews: 1,
+// // //   });
+
+// // //   const handleAddToCart = (item) => {
+// // //     navigate("/addcart", { state: { item } });
+// // //   };
+
+// // //   return (
+// // //     <div className="min-h-screen bg-gray-50 p-6">
+// // //       <MemNavbar />
+
+// // //       <div className="flex gap-8">
+// // //         <SideProfile />
+
+// // //         <div className="w-3/4">
+// // //           {/* Tabs */}
+// // //           <div className="flex gap-6 border-b border-gray-200 mb-6">
+// // //             {tabs.map((tab) => (
+// // //               <Link
+// // //                 key={tab.name}
+// // //                 to={tab.path}
+// // //                 className={`pb-2 border-b-2 ${
+// // //                   location.pathname === tab.path
+// // //                     ? "border-brown-500 text-brown-700 font-medium"
+// // //                     : "text-gray-500"
+// // //                 }`}
+// // //               >
+// // //                 {tab.name}
+// // //               </Link>
+// // //             ))}
+// // //           </div>
+
+// // //           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+// // //             My Wishlist <FaHeart className="text-pink-500" />
+// // //           </h2>
+
+// // //           <div className="grid grid-cols-3 gap-6">
+// // //             {wishlistItems.map((item, idx) => (
+// // //               <div key={idx} className="bg-white rounded-xl p-4 shadow border">
+// // //                 <img
+// // //                   src={item.image}
+// // //                   alt={item.title}
+// // //                   className="mx-auto h-40 mb-3"
+// // //                 />
+// // //                 <h4 className="text-center text-sm font-semibold">
+// // //                   {item.title}
+// // //                 </h4>
+// // //                 <p className="text-center text-blue-700 font-medium mb-2">
+// // //                   Rs. {item.price}
+// // //                 </p>
+// // //                 <div className="flex items-center justify-between">
+// // //                   <FaHeart className="text-red-500 text-lg" />
+// // //                   <button
+// // //                     onClick={() => handleAddToCart(item)}
+// // //                     className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
+// // //                   >
+// // //                     Add to cart
+// // //                   </button>
+// // //                 </div>
+// // //               </div>
+// // //             ))}
+// // //           </div>
+// // //         </div>
+// // //       </div>
+// // //     </div>
+// // //   );
+// // // };
+
+// // // export default Wishlist;
+
+// // import React, { useEffect, useState } from "react";
+// // import { Link, useLocation, useNavigate } from "react-router-dom";
+// // import MemNavbar from "../../Components/MemNavbar";
+// // import SideProfile from "../../Components/SideProfile";
+// // import { FaHeart } from "react-icons/fa";
+
+// // const Wishlist = () => {
+// //   const location = useLocation();
+// //   const navigate = useNavigate();
+
+// //   const tabs = [
+// //     { name: "Account Overview", path: "/account" },
+// //     { name: "Orders", path: "/order" },
+// //     { name: "Wishlist", path: "/wishlist" },
+// //     { name: "Reviews", path: "/review" },
+// //     { name: "Settings", path: "/setting" },
+// //   ];
+
+// //   // ✅ State for wishlist items
+// //   const [wishlistItems, setWishlistItems] = useState([]);
+
+// //   // ✅ Load wishlist from localStorage on mount
+// //   useEffect(() => {
+// //     const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+// //     setWishlistItems(storedWishlist);
+// //   }, []);
+
+// //   // ✅ Save wishlist to localStorage whenever it changes
+// //   useEffect(() => {
+// //     localStorage.setItem("wishlist", JSON.stringify(wishlistItems));
+// //   }, [wishlistItems]);
+
+// //   // ✅ Add to Cart handler
+// //   const handleAddToCart = (item) => {
+// //     // Get existing cart
+// //     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// //     // Check if item already exists
+// //     const exists = storedCart.find((cartItem) => cartItem.title === item.title);
+
+// //     if (!exists) {
+// //       storedCart.push({ ...item, id: Date.now(), quantity: 1 });
+// //       localStorage.setItem("cart", JSON.stringify(storedCart));
+// //     }
+
+// //     navigate("/addcart");
+// //   };
+
+// //   // ✅ Remove from wishlist
+// //   const handleRemoveFromWishlist = (title) => {
+// //     const updated = wishlistItems.filter((item) => item.title !== title);
+// //     setWishlistItems(updated);
+// //   };
+
+// //   return (
+// //     <div className="min-h-screen bg-gray-50 p-6">
+// //       <MemNavbar />
+
+// //       <div className="flex gap-8">
+// //         <SideProfile />
+
+// //         <div className="w-3/4">
+// //           {/* Tabs */}
+// //           <div className="flex gap-6 border-b border-gray-200 mb-6">
+// //             {tabs.map((tab) => (
+// //               <Link
+// //                 key={tab.name}
+// //                 to={tab.path}
+// //                 className={`pb-2 border-b-2 ${
+// //                   location.pathname === tab.path
+// //                     ? "border-brown-500 text-brown-700 font-medium"
+// //                     : "text-gray-500"
+// //                 }`}
+// //               >
+// //                 {tab.name}
+// //               </Link>
+// //             ))}
+// //           </div>
+
+// //           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+// //             My Wishlist <FaHeart className="text-pink-500" />
+// //           </h2>
+
+// //           {wishlistItems.length === 0 ? (
+// //             <p className="text-gray-500">No items in wishlist.</p>
+// //           ) : (
+// //             <div className="grid grid-cols-3 gap-6">
+// //               {wishlistItems.map((item, idx) => (
+// //                 <div
+// //                   key={idx}
+// //                   className="bg-white rounded-xl p-4 shadow border"
+// //                 >
+// //                   <img
+// //                     src={item.image}
+// //                     alt={item.title}
+// //                     className="mx-auto h-40 mb-3"
+// //                   />
+// //                   <h4 className="text-center text-sm font-semibold">
+// //                     {item.title}
+// //                   </h4>
+// //                   <p className="text-center text-blue-700 font-medium mb-2">
+// //                     Rs. {item.price}
+// //                   </p>
+// //                   <div className="flex items-center justify-between">
+// //                     {/* Remove from wishlist */}
+// //                     <button
+// //                       onClick={() => handleRemoveFromWishlist(item.title)}
+// //                       className="text-red-500 text-sm"
+// //                     >
+// //                       Remove
+// //                     </button>
+
+// //                     {/* Add to cart */}
+// //                     <button
+// //                       onClick={() => handleAddToCart(item)}
+// //                       className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
+// //                     >
+// //                       Add to cart
+// //                     </button>
+// //                   </div>
+// //                 </div>
+// //               ))}
+// //             </div>
+// //           )}
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default Wishlist;
+
+
+// import React, { useEffect, useState } from "react";
+// import { Link, useLocation, useNavigate } from "react-router-dom";
+// import MemNavbar from "../../Components/MemNavbar";
+// import SideProfile from "../../Components/SideProfile";
+// import { FaHeart } from "react-icons/fa";
+// import axios from "axios";
 
 // const Wishlist = () => {
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const tabs = [
+//     { name: "Account Overview", path: "/account" },
+//     { name: "Orders", path: "/order" },
+//     { name: "Wishlist", path: "/wishlist" },
+//     { name: "Reviews", path: "/review" },
+//     { name: "Settings", path: "/setting" },
+//   ];
+
+//   // State for wishlist items
+//   const [wishlistItems, setWishlistItems] = useState([]);
+
+//   // Get user id (replace this with actual user ID management)
+//   const currentUserId = 1;  // Hardcoded for example purposes, replace with real user ID logic.
+
+//   // Get wishlist items from backend
+//   // useEffect(() => {
+//   //   const fetchWishlist = async () => {
+//   //     try {
+//   //       const response = await axios.get(`/api/wishlist/user/${currentUserId}`);
+//   //       setWishlistItems(response.data); // Set the wishlist items
+//   //     } catch (error) {
+//   //       console.error("Failed to fetch wishlist", error);
+//   //     }
+//   //   };
+
+//   //   fetchWishlist();
+//   // }, [currentUserId]);
+//   useEffect(() => {
+//     const fetchWishlist = async () => {
+//       try {
+//         const response = await axios.get(`/api/wishlist/user/${currentUserId}`);
+//         console.log("Fetched wishlist response:", response.data); // ✅ Check this in your browser console
+//         setWishlistItems(response.data);
+//       } catch (error) {
+//         console.error("Failed to fetch wishlist", error);
+//       }
+//     };
+  
+//     fetchWishlist();
+//   }, [currentUserId]);
+  
+
+//   // Add to wishlist handler
+//   const handleAddToWishlist = async (bookId) => {
+//     try {
+//       const response = await axios.post("/api/wishlist/add", {
+//         userId: currentUserId,
+//         bookId: bookId,
+//       });
+//       alert(response.data.message); // Show message returned from backend
+//       setWishlistItems([...wishlistItems, { bookId }]); // Update state to reflect added item
+//     } catch (error) {
+//       alert(error.response?.data?.message || "Failed to add to wishlist");
+//     }
+//   };
+
+//   // Remove from wishlist handler
+//   const handleRemoveFromWishlist = async (id) => {
+//     try {
+//       const response = await axios.delete(`/api/wishlist/remove/${id}`);
+//       alert(response.data.message); // Show message returned from backend
+//       setWishlistItems(wishlistItems.filter((item) => item.id !== id)); // Remove item from wishlist state
+//     } catch (error) {
+//       console.error("Failed to remove from wishlist", error);
+//     }
+//   };
+
+//   // Render the wishlist
 //   return (
 //     <div className="min-h-screen bg-gray-50 p-6">
-//       {/* Header */}
-//       <header className="flex items-center justify-between mb-8">
-//         <h1 className="text-2xl font-bold text-gray-800">Foliana</h1>
-//         <nav className="flex space-x-6 text-gray-600">
-//           <a href="#">Home</a>
-//           <a href="#">Books</a>
-//           <a href="#">Authors</a>
-//           <a href="#">Genres</a>
-//           <button className="bg-green-100 text-green-700 px-4 py-1 rounded-full">Shop</button>
-//           <button className="bg-blue-500 text-white px-4 py-1 rounded-full">Logout</button>
-//           <div className="w-6 h-6 bg-black rounded-full"></div>
-//         </nav>
-//       </header>
+//       <MemNavbar />
 
-//       {/* Main Content */}
 //       <div className="flex gap-8">
-//         {/* Left Profile */}
-//         <div className="w-1/4 bg-white p-4 rounded-xl shadow">
-//         <img
-//             src={profileImg}
-//             alt="Profile"
-//             className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-//         />
-//           <h2 className="text-center font-semibold text-lg">Prinsha Shresthaa</h2>
-//           <p className="text-center text-sm text-gray-500">Member since April 3, 2012</p>
-//           <p className="mt-2 text-center text-gray-600 text-sm">
-//             Book enthusiast with a love for mystery novels and historical fiction.
-//           </p>
-//         </div>
+//         <SideProfile />
 
-//         {/* Right Content */}
 //         <div className="w-3/4">
 //           {/* Tabs */}
-//           <div className="flex gap-4 mb-6">
-//             {["Account Overview", "Orders", "Wishlist", "Reviews", "Settings"].map((tab) => (
-//               <button
-//                 key={tab}
-//                 className={`px-4 py-2 rounded-full ${
-//                   tab === "Account Overview" ? "bg-gray-200" : "text-gray-600"
+//           <div className="flex gap-6 border-b border-gray-200 mb-6">
+//             {tabs.map((tab) => (
+//               <Link
+//                 key={tab.name}
+//                 to={tab.path}
+//                 className={`pb-2 border-b-2 ${
+//                   location.pathname === tab.path
+//                     ? "border-brown-500 text-brown-700 font-medium"
+//                     : "text-gray-500"
 //                 }`}
 //               >
-//                 {tab}
-//               </button>
+//                 {tab.name}
+//               </Link>
 //             ))}
 //           </div>
 
-//           {/* Stats */}
-//           <div className="grid grid-cols-3 gap-4 mb-6">
-//             <StatCard number="23" label="Books purchased" />
-//             <StatCard number="5" label="Orders" />
-//             <StatCard number="10%" label="Discount Earned" />
-//           </div>
+//           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+//             My Wishlist <FaHeart className="text-pink-500" />
+//           </h2>
 
-//           {/* Upcoming Pickups */}
-//           <div className="bg-green-50 p-4 rounded-xl mb-6">
-//             <h3 className="font-semibold text-lg mb-4">Upcoming Pickups</h3>
-//             <PickupCard
-//               title="The silent Patient"
-//               author="Alex"
-//               status="Ready for pickup"
-//               date="Apr 30, 2025"
-//               code="BN-1176"
-//               badgeColor="green"
-//             />
-//             <PickupCard
-//               title="Multiple Items"
-//               author="Order #BK123"
-//               status="Processing"
-//               date="Apr 30, 2025"
-//               badgeColor="orange"
-//             />
-//           </div>
+//           {Array.isArray(wishlistItems) && wishlistItems.length === 0 ? (
+//             <p className="text-gray-500">No items in wishlist.</p>
+//           ) : (
+//             <div className="grid grid-cols-3 gap-6">
+//               {Array.isArray(wishlistItems) &&
+//                 wishlistItems.map((item, idx) => (
+//                   <div key={idx} className="bg-white rounded-xl p-4 shadow border">
+//                     <img
+//                       src={item.image || "https://via.placeholder.com/100x150"}
+//                       alt={item.title}
+//                       className="mx-auto h-40 mb-3"
+//                     />
+//                     <h4 className="text-center text-sm font-semibold">
+//                       {item.title}
+//                     </h4>
+//                     <p className="text-center text-blue-700 font-medium mb-2">
+//                       Rs. {item.price}
+//                     </p>
+//                     <div className="flex items-center justify-between">
+//                       {/* Remove from wishlist */}
+//                       <button
+//                         onClick={() => handleRemoveFromWishlist(item.id)}
+//                         className="text-red-500 text-sm"
+//                       >
+//                         Remove
+//                       </button>
 
-//           {/* Recents */}
-//           <div className="bg-white p-4 rounded-xl shadow">
-//             <h3 className="font-semibold text-lg mb-4">Recents</h3>
-//             <RecentItem icon="🛒" title="Order Placed" desc="You ordered The silent Patient" />
-//             <RecentItem icon="%" title="Discount Earned" desc="Earned 10% discount for your next order" />
-//             <RecentItem icon="❤️" title="Book Added to Wishlist" desc="Added 'Promised land' to your wishlist" />
-//           </div>
+//                       {/* Add to cart */}
+//                       <button
+//                         onClick={() => handleAddToCart(item)}
+//                         className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
+//                       >
+//                         Add to cart
+//                       </button>
+//                     </div>
+//                   </div>
+//                 ))}
+//             </div>
+//           )}
 //         </div>
 //       </div>
 //     </div>
 //   );
 // };
 
-// const StatCard = ({ number, label }) => (
-//   <div className="bg-white p-4 rounded-xl shadow flex flex-col items-center">
-//     <div className="text-2xl font-bold">{number}</div>
-//     <div className="text-sm text-gray-600">{label}</div>
-//   </div>
-// );
-
-// const PickupCard = ({ title, author, status, date, code, badgeColor }) => (
-//   <div className="flex items-center gap-4 mb-4 bg-white p-4 rounded-xl shadow">
-//     <img
-//       src="https://via.placeholder.com/60x90"
-//       alt={title}
-//       className="w-16 h-24 rounded object-cover"
-//     />
-//     <div className="flex-1">
-//       <h4 className="font-semibold">{title}</h4>
-//       <p className="text-sm text-gray-500">{author}</p>
-//       <div className="flex items-center gap-2 mt-2">
-//         <span
-//           className={`text-xs font-medium px-2 py-1 rounded-full ${
-//             badgeColor === "green"
-//               ? "bg-green-100 text-green-700"
-//               : "bg-orange-100 text-orange-700"
-//           }`}
-//         >
-//           {status}
-//         </span>
-//         <span className="text-xs text-gray-500">Claim by: {date}</span>
-//       </div>
-//       {code && (
-//         <div className="mt-2 text-xs text-gray-700">
-//           Claim code: <span className="font-semibold">{code}</span>
-//         </div>
-//       )}
-//     </div>
-//   </div>
-// );
-
-// const RecentItem = ({ icon, title, desc }) => (
-//   <div className="flex items-center gap-3 mb-2">
-//     <div className="text-xl">{icon}</div>
-//     <div>
-//       <p className="font-medium text-sm">{title}</p>
-//       <p className="text-xs text-gray-500">{desc}</p>
-//     </div>
-//   </div>
-// );
-
 // export default Wishlist;
 
+
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import profileImg from "../../assets/Profile.jpeg"; 
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import MemNavbar from "../../Components/MemNavbar";
+import SideProfile from "../../Components/SideProfile";
+import { FaHeart } from "react-icons/fa";
+import axios from "axios";
 
 const Wishlist = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+
+  const tabs = [
+    { name: "Account Overview", path: "/account" },
+    { name: "Orders", path: "/order" },
+    { name: "Wishlist", path: "/wishlist" },
+    { name: "Reviews", path: "/review" },
+    { name: "Settings", path: "/setting" },
+  ];
+
+  // State for wishlist items
+  const [wishlistItems, setWishlistItems] = useState([]);
+
+  // Get user id (replace this with actual user ID management)
+  const currentUserId = 1; // Hardcoded for example purposes, replace with real user ID logic.
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
+    const fetchWishlist = async () => {
+      try {
+        const response = await axios.get(`/api/wishlist/user/${currentUserId}`);
+        console.log("Fetched wishlist response:", response.data);
 
-    if (!token || !userData) {
-      navigate("/login"); 
-      return;
-    }
+        // ✅ Flatten the data from backend
+        const flattenedData = response.data.map((item) => ({
+          id: item.id,
+          bookId: item.bookId,
+          title: item.book?.title || "Untitled",
+          price: item.book?.price || 0,
+          image: item.book?.image || "https://via.placeholder.com/100x150",
+        }));
 
+        setWishlistItems(flattenedData);
+      } catch (error) {
+        console.error("Failed to fetch wishlist", error);
+      }
+    };
+
+    fetchWishlist();
+  }, [currentUserId]);
+
+  // Add to wishlist handler
+  const handleAddToWishlist = async (bookId) => {
     try {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-    } catch (err) {
-    
-      localStorage.clear(); 
-      navigate("/login");
+      const response = await axios.post("/api/wishlist/add", {
+        userId: currentUserId,
+        bookId: bookId,
+      });
+      alert(response.data.message);
+      // Optionally, re-fetch the wishlist
+      window.location.reload();
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to add to wishlist");
     }
-  }, [navigate]);
+  };
 
-  if (!user) return null; 
+  // Remove from wishlist handler
+  const handleRemoveFromWishlist = async (id) => {
+    try {
+      const response = await axios.delete(`/api/wishlist/remove/${id}`);
+      alert(response.data.message);
+      setWishlistItems(wishlistItems.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Failed to remove from wishlist", error);
+    }
+  };
+
+  // Dummy add to cart handler
+  const handleAddToCart = (item) => {
+    alert(`Added ${item.title} to cart!`);
+  };
+
+  // Render the wishlist
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      {/* Header */}
-      <header className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Foliana</h1>
-        <nav className="flex space-x-6 text-gray-600">
-          <a href="#">Home</a>
-          <a href="#">Books</a>
-          <a href="#">Authors</a>
-          <a href="#">Genres</a>
-          <button className="bg-green-100 text-green-700 px-4 py-1 rounded-full">Shop</button>
-          <button
-            onClick={() => {
-              localStorage.clear();
-              navigate("/login");
-            }}
-            className="bg-blue-500 text-white px-4 py-1 rounded-full"
-          >
-            Logout
-          </button>
-          <img
-            src={profileImg}
-            alt="Profile"
-            className="w-6 h-6 rounded-full object-cover"
-          />
-        </nav>
-      </header>
+      <MemNavbar />
 
       <div className="flex gap-8">
-        {/* Left Profile */}
-        <div className="w-1/4 bg-white p-4 rounded-xl shadow">
-          <img
-            src={profileImg}
-            alt="Profile"
-            className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-          />
-          <h2 className="text-center font-semibold text-lg">
-            {user.firstName} {user.lastName}
-          </h2>
-          <p className="text-center text-sm text-gray-500">
-            Member since {new Date(user.joinedDate || Date.now()).toLocaleDateString()}
-          </p>
-          <p className="mt-2 text-center text-gray-600 text-sm">
-            Book enthusiast with a love for mystery novels and historical fiction.
-          </p>
-        </div>
+        <SideProfile />
 
-        {/* Right Content */}
         <div className="w-3/4">
-          <div className="flex gap-4 mb-6">
-            {["Account Overview", "Orders", "Wishlist", "Reviews", "Settings"].map((tab) => (
-              <button
-                key={tab}
-                className={`px-4 py-2 rounded-full ${
-                  tab === "Account Overview" ? "bg-gray-200" : "text-gray-600"
+          {/* Tabs */}
+          <div className="flex gap-6 border-b border-gray-200 mb-6">
+            {tabs.map((tab) => (
+              <Link
+                key={tab.name}
+                to={tab.path}
+                className={`pb-2 border-b-2 ${
+                  location.pathname === tab.path
+                    ? "border-brown-500 text-brown-700 font-medium"
+                    : "text-gray-500"
                 }`}
               >
-                {tab}
-              </button>
+                {tab.name}
+              </Link>
             ))}
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <StatCard number="23" label="Books purchased" />
-            <StatCard number="5" label="Orders" />
-            <StatCard number="10%" label="Discount Earned" />
-          </div>
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            My Wishlist <FaHeart className="text-pink-500" />
+          </h2>
 
-          <div className="bg-green-50 p-4 rounded-xl mb-6">
-            <h3 className="font-semibold text-lg mb-4">Upcoming Pickups</h3>
-            <PickupCard
-              title="The Silent Patient"
-              author="Alex"
-              status="Ready for pickup"
-              date="Apr 30, 2025"
-              code="BN-1176"
-              badgeColor="green"
-            />
-            <PickupCard
-              title="Multiple Items"
-              author="Order #BK123"
-              status="Processing"
-              date="Apr 30, 2025"
-              badgeColor="orange"
-            />
-          </div>
+          {Array.isArray(wishlistItems) && wishlistItems.length === 0 ? (
+            <p className="text-gray-500">No items in wishlist.</p>
+          ) : (
+            <div className="grid grid-cols-3 gap-6">
+              {wishlistItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-xl p-4 shadow border"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="mx-auto h-40 mb-3"
+                  />
+                  <h4 className="text-center text-sm font-semibold">
+                    {item.title}
+                  </h4>
+                  <p className="text-center text-blue-700 font-medium mb-2">
+                    Rs. {item.price}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => handleRemoveFromWishlist(item.id)}
+                      className="text-red-500 text-sm"
+                    >
+                      Remove
+                    </button>
 
-          <div className="bg-white p-4 rounded-xl shadow">
-            <h3 className="font-semibold text-lg mb-4">Recents</h3>
-            <RecentItem icon="🛒" title="Order Placed" desc="You ordered The Silent Patient" />
-            <RecentItem icon="%" title="Discount Earned" desc="Earned 10% discount for your next order" />
-            <RecentItem icon="❤️" title="Book Added to Wishlist" desc="Added 'Promised Land' to your wishlist" />
-          </div>
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
-
-const StatCard = ({ number, label }) => (
-  <div className="bg-white p-4 rounded-xl shadow flex flex-col items-center">
-    <div className="text-2xl font-bold">{number}</div>
-    <div className="text-sm text-gray-600">{label}</div>
-  </div>
-);
-
-const PickupCard = ({ title, author, status, date, code, badgeColor }) => (
-  <div className="flex items-center gap-4 mb-4 bg-white p-4 rounded-xl shadow">
-    <img
-      src="https://via.placeholder.com/60x90"
-      alt={title}
-      className="w-16 h-24 rounded object-cover"
-    />
-    <div className="flex-1">
-      <h4 className="font-semibold">{title}</h4>
-      <p className="text-sm text-gray-500">{author}</p>
-      <div className="flex items-center gap-2 mt-2">
-        <span
-          className={`text-xs font-medium px-2 py-1 rounded-full ${
-            badgeColor === "green"
-              ? "bg-green-100 text-green-700"
-              : "bg-orange-100 text-orange-700"
-          }`}
-        >
-          {status}
-        </span>
-        <span className="text-xs text-gray-500">Claim by: {date}</span>
-      </div>
-      {code && (
-        <div className="mt-2 text-xs text-gray-700">
-          Claim code: <span className="font-semibold">{code}</span>
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-const RecentItem = ({ icon, title, desc }) => (
-  <div className="flex items-center gap-3 mb-2">
-    <div className="text-xl">{icon}</div>
-    <div>
-      <p className="font-medium text-sm">{title}</p>
-      <p className="text-xs text-gray-500">{desc}</p>
-    </div>
-  </div>
-);
 
 export default Wishlist;

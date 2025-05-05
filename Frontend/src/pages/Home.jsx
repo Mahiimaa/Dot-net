@@ -11,14 +11,22 @@ export default function HomePage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // Set isLoggedIn to true if token exists
-  }, []);
+    if (!token) {
+      navigate("/login"); // Redirect to login if not logged in
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
     // Clear token and user data from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("resetEmail"); // Clean up any leftover reset email
     setIsLoggedIn(false);
+<<<<<<< HEAD
+    setMenuOpen(false); // Close mobile menu on logout
+    navigate("/login"); // Redirect to login page after logout
+=======
     navigate("/login");
+>>>>>>> c09de56424264ad8ac758808609d42f22a8bcb88
   };
 
   return (
