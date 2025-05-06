@@ -1,420 +1,18 @@
-// // import React, { useState } from "react";
-// // import MemNavbar from "../../Components/MemNavbar";
-// // import SideProfile from "../../Components/SideProfile";
-// // import { Link, useLocation } from "react-router-dom";
-
-// // const Settings = () => {
-// //   const location = useLocation();
-
-// //   const [formData, setFormData] = useState({
-// //     firstName: "",
-// //     lastName: "",
-// //     email: "",
-// //     phone: "",
-// //     bio: "",
-// //     currentPassword: "",
-// //     newPassword: "",
-// //     confirmPassword: "",
-// //   });
-
-// //   const handleChange = (e) => {
-// //     setFormData({ ...formData, [e.target.name]: e.target.value });
-// //   };
-
-// //   const handleSaveChanges = () => {
-// //     // TODO: Make API call here to save profile info
-// //     alert("Profile information updated!");
-// //   };
-
-// //   const handleUpdatePassword = () => {
-// //     // TODO: Make API call here to update password
-// //     if (formData.newPassword !== formData.confirmPassword) {
-// //       alert("Passwords do not match!");
-// //       return;
-// //     }
-// //     alert("Password updated!");
-// //   };
-
-// //   const tabs = [
-// //     { name: "Account Overview", path: "/account" },
-// //     { name: "Orders", path: "/order" },
-// //     { name: "Wishlist", path: "/wishlist" },
-// //     { name: "Reviews", path: "/review" },
-// //     { name: "Settings", path: "/setting" },
-// //   ];
-
-// //   return (
-// //     <div className="min-h-screen bg-gray-50 p-6">
-// //       <MemNavbar />
-
-// //       <div className="flex gap-8">
-// //         <SideProfile />
-
-// //         <div className="w-3/4">
-// //           {/* Tabs */}
-// //           <div className="flex gap-6 border-b border-gray-200 mb-6">
-// //             {tabs.map((tab) => (
-// //               <Link
-// //                 key={tab.name}
-// //                 to={tab.path}
-// //                 className={`pb-2 border-b-2 ${
-// //                   location.pathname === tab.path
-// //                     ? "border-brown-500 text-brown-700 font-medium"
-// //                     : "text-gray-500"
-// //                 }`}
-// //               >
-// //                 {tab.name}
-// //               </Link>
-// //             ))}
-// //           </div>
-
-// //           <h2 className="text-lg font-semibold mb-4">Personal Information</h2>
-
-// //           {/* Add Bio */}
-// //           <div className="mb-4">
-// //             <button className="bg-blue-200 text-blue-800 px-4 py-1 rounded mb-2">
-// //               Add Bio
-// //             </button>
-// //             <textarea
-// //               name="bio"
-// //               value={formData.bio}
-// //               onChange={handleChange}
-// //               className="w-full border rounded p-2"
-// //               rows="2"
-// //             ></textarea>
-// //           </div>
-
-// //           {/* Form */}
-// //           <div className="flex flex-col gap-4">
-// //             <div>
-// //               <label>First Name:</label>
-// //               <input
-// //                 name="firstName"
-// //                 value={formData.firstName}
-// //                 onChange={handleChange}
-// //                 className="w-full border rounded p-2"
-// //               />
-// //             </div>
-
-// //             <div>
-// //               <label>Last Name:</label>
-// //               <input
-// //                 name="lastName"
-// //                 value={formData.lastName}
-// //                 onChange={handleChange}
-// //                 className="w-full border rounded p-2"
-// //               />
-// //             </div>
-
-// //             <div>
-// //               <label>Email:</label>
-// //               <input
-// //                 name="email"
-// //                 value={formData.email}
-// //                 onChange={handleChange}
-// //                 className="w-full border rounded p-2"
-// //               />
-// //             </div>
-
-// //             <div>
-// //               <label>Phone Number:</label>
-// //               <input
-// //                 name="phone"
-// //                 value={formData.phone}
-// //                 onChange={handleChange}
-// //                 className="w-full border rounded p-2"
-// //               />
-// //             </div>
-
-// //             <button
-// //               onClick={handleSaveChanges}
-// //               className="bg-blue-400 text-white px-4 py-2 rounded w-max"
-// //             >
-// //               Save Changes
-// //             </button>
-
-// //             <div>
-// //               <label>Current Password:</label>
-// //               <input
-// //                 type="password"
-// //                 name="currentPassword"
-// //                 value={formData.currentPassword}
-// //                 onChange={handleChange}
-// //                 className="w-full border rounded p-2"
-// //               />
-// //             </div>
-
-// //             <div className="flex gap-4">
-// //               <div className="w-1/2">
-// //                 <label>New Password:</label>
-// //                 <input
-// //                   type="password"
-// //                   name="newPassword"
-// //                   value={formData.newPassword}
-// //                   onChange={handleChange}
-// //                   className="w-full border rounded p-2"
-// //                 />
-// //               </div>
-
-// //               <div className="w-1/2">
-// //                 <label>Confirm Password:</label>
-// //                 <input
-// //                   type="password"
-// //                   name="confirmPassword"
-// //                   value={formData.confirmPassword}
-// //                   onChange={handleChange}
-// //                   className="w-full border rounded p-2"
-// //                 />
-// //               </div>
-// //             </div>
-
-// //             <button
-// //               onClick={handleUpdatePassword}
-// //               className="bg-blue-400 text-white px-4 py-2 rounded w-max"
-// //             >
-// //               Update Password
-// //             </button>
-// //           </div>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default Settings;
-
-// import React, { useState } from "react";
-// import MemNavbar from "../../Components/MemNavbar";
-// import SideProfile from "../../Components/SideProfile";
-// import { Link, useLocation } from "react-router-dom";
-// import { IoClose } from "react-icons/io5";
-
-// const Settings = () => {
-//   const location = useLocation();
-
-//   const [formData, setFormData] = useState({
-//     firstName: "",
-//     lastName: "",
-//     email: "",
-//     phone: "",
-//     bio: "",
-//     currentPassword: "",
-//     newPassword: "",
-//     confirmPassword: "",
-//   });
-
-//   const [showBioBox, setShowBioBox] = useState(false);
-//   const [tempBio, setTempBio] = useState("");
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSaveChanges = () => {
-//     alert("Profile information updated!");
-//   };
-
-//   const handleUpdatePassword = () => {
-//     if (formData.newPassword !== formData.confirmPassword) {
-//       alert("Passwords do not match!");
-//       return;
-//     }
-//     alert("Password updated!");
-//   };
-
-//   const handleBioSave = () => {
-//     setFormData({ ...formData, bio: tempBio });
-//     setShowBioBox(false);
-//   };
-
-//   const tabs = [
-//     { name: "Account Overview", path: "/account" },
-//     { name: "Orders", path: "/order" },
-//     { name: "Wishlist", path: "/wishlist" },
-//     { name: "Reviews", path: "/review" },
-//     { name: "Settings", path: "/setting" },
-//   ];
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-6">
-//       <MemNavbar />
-
-//       <div className="flex gap-8">
-//         <SideProfile />
-
-//         <div className="w-3/4 relative">
-//           {/* Tabs */}
-//           <div className="flex gap-6 border-b border-gray-200 mb-6">
-//             {tabs.map((tab) => (
-//               <Link
-//                 key={tab.name}
-//                 to={tab.path}
-//                 className={`pb-2 border-b-2 ${
-//                   location.pathname === tab.path
-//                     ? "border-brown-500 text-brown-700 font-medium"
-//                     : "text-gray-500"
-//                 }`}
-//               >
-//                 {tab.name}
-//               </Link>
-//             ))}
-//           </div>
-
-//           <div className="flex justify-between items-center mb-4">
-//             <h2 className="text-lg font-semibold">Personal Information</h2>
-//             <button
-//               onClick={() => {
-//                 setTempBio(formData.bio);
-//                 setShowBioBox(true);
-//               }}
-//               className="bg-blue-200 text-blue-800 px-4 py-1 rounded"
-//             >
-//               Add Bio
-//             </button>
-//           </div>
-
-//           {/* Bio Popup Box */}
-//           {showBioBox && (
-//             <div className="absolute top-20 right-0 w-80 bg-white p-4 rounded-lg shadow-lg border z-10">
-//               <div className="flex justify-between items-center mb-2">
-//                 <h3 className="font-medium text-gray-700">Describe Yourself</h3>
-//                 <button onClick={() => setShowBioBox(false)}>
-//                   <IoClose className="text-xl text-gray-600 hover:text-gray-800" />
-//                 </button>
-//               </div>
-//               <textarea
-//                 rows="3"
-//                 className="w-full border rounded p-2 mb-2"
-//                 value={tempBio}
-//                 onChange={(e) => setTempBio(e.target.value)}
-//               />
-//               <button
-//                 onClick={handleBioSave}
-//                 className="bg-blue-500 text-white px-4 py-1 rounded"
-//               >
-//                 Save
-//               </button>
-//             </div>
-//           )}
-
-//           {/* Form */}
-//           <div className="flex flex-col gap-4">
-//             <div>
-//               <label>First Name:</label>
-//               <input
-//                 name="firstName"
-//                 value={formData.firstName}
-//                 onChange={handleChange}
-//                 className="w-full border rounded p-2"
-//               />
-//             </div>
-
-//             <div>
-//               <label>Last Name:</label>
-//               <input
-//                 name="lastName"
-//                 value={formData.lastName}
-//                 onChange={handleChange}
-//                 className="w-full border rounded p-2"
-//               />
-//             </div>
-
-//             <div>
-//               <label>Email:</label>
-//               <input
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 className="w-full border rounded p-2"
-//               />
-//             </div>
-
-//             <div>
-//               <label>Phone Number:</label>
-//               <input
-//                 name="phone"
-//                 value={formData.phone}
-//                 onChange={handleChange}
-//                 className="w-full border rounded p-2"
-//               />
-//             </div>
-
-//             <div>
-//               <label>Bio:</label>
-//               <textarea
-//                 name="bio"
-//                 value={formData.bio}
-//                 onChange={handleChange}
-//                 className="w-full border rounded p-2"
-//                 rows="2"
-//               ></textarea>
-//             </div>
-
-//             <button
-//               onClick={handleSaveChanges}
-//               className="bg-blue-400 text-white px-4 py-2 rounded w-max"
-//             >
-//               Save Changes
-//             </button>
-
-//             <div>
-//               <label>Current Password:</label>
-//               <input
-//                 type="password"
-//                 name="currentPassword"
-//                 value={formData.currentPassword}
-//                 onChange={handleChange}
-//                 className="w-full border rounded p-2"
-//               />
-//             </div>
-
-//             <div className="flex gap-4">
-//               <div className="w-1/2">
-//                 <label>New Password:</label>
-//                 <input
-//                   type="password"
-//                   name="newPassword"
-//                   value={formData.newPassword}
-//                   onChange={handleChange}
-//                   className="w-full border rounded p-2"
-//                 />
-//               </div>
-
-//               <div className="w-1/2">
-//                 <label>Confirm Password:</label>
-//                 <input
-//                   type="password"
-//                   name="confirmPassword"
-//                   value={formData.confirmPassword}
-//                   onChange={handleChange}
-//                   className="w-full border rounded p-2"
-//                 />
-//               </div>
-//             </div>
-
-//             <button
-//               onClick={handleUpdatePassword}
-//               className="bg-blue-400 text-white px-4 py-2 rounded w-max"
-//             >
-//               Update Password
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Settings;
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MemNavbar from "../../Components/MemNavbar";
 import SideProfile from "../../Components/SideProfile";
-import { Link, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
+import { AuthContext } from "../../context/AuthContext";
+import api from "../../api/axios";
+import Navbar from "../Layout/Navbar";
 
 const Settings = () => {
+  const { user, isAuthenticated, updateUser } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -430,22 +28,115 @@ const Settings = () => {
   const [showBioBox, setShowBioBox] = useState(false);
   const [tempBio, setTempBio] = useState("");
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    let isMounted = true;
+
+    const fetchProfile = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("No authentication token found");
+
+        const response = await api.get("/Auth/me");
+        if (isMounted) {
+          setFormData((prev) => ({
+            ...prev,
+            firstName: response.data.firstName || "",
+            lastName: response.data.lastName || "",
+            email: response.data.email || "",
+            phone: response.data.phone || "",
+            bio: response.data.bio || "",
+          }));
+          updateUser?.({
+            id: response.data.id,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            email: response.data.email,
+            role: response.data.role,
+            membershipId: response.data.membershipId,
+            phone: response.data.phone,
+            bio: response.data.bio,
+            profileImageUrl: response.data.profileImageUrl,
+            createdAt: response.data.createdAt
+          });
+        }
+      } catch (err) {
+        const errorMessage =
+          err.response?.status === 401
+            ? "Session expired. Please log in again."
+            : err.response?.data?.error || err.message || "Failed to load profile";
+        setError(errorMessage);
+        if (err.response?.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, navigate]); // ✅ FIXED: Removed updateUser
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSaveChanges = () => {
-    const { firstName, lastName, email, phone } = formData;
+  const handleSaveChanges = async () => {
+    const { firstName, lastName, email, phone, bio } = formData;
 
-    if (!firstName || !lastName || !email || !phone) {
-      alert("Please fill in all personal information fields.");
+    if (!firstName || !lastName || !email) {
+      alert("Please fill in all required fields (First Name, Last Name, Email).");
       return;
     }
 
-    alert("Profile information updated!");
+    if (!updateUser) {
+      setError("Authentication context error: updateUser is not available");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    try {
+      await api.put("/Auth/profile", { firstName, lastName, email, phone, bio });
+      updateUser({
+        ...user,
+        firstName,
+        lastName,
+        email,
+        phone,
+        bio
+      });
+      alert("Profile information updated!");
+    } catch (err) {
+      const errorMessage =
+        err.response?.status === 401
+          ? "Session expired. Please log in again."
+          : err.response?.data?.message || "Failed to update profile";
+      setError(errorMessage);
+      alert(errorMessage);
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleUpdatePassword = () => {
+  const handleUpdatePassword = async () => {
     const { currentPassword, newPassword, confirmPassword } = formData;
 
     if (!currentPassword || !newPassword || !confirmPassword) {
@@ -454,41 +145,93 @@ const Settings = () => {
     }
 
     if (newPassword !== confirmPassword) {
-      alert("Passwords do not match!");
+      alert("New password and confirm password do not match!");
       return;
     }
 
-    alert("Password updated!");
+    setLoading(true);
+    setError(null);
+    try {
+      await api.put("/Auth/password", { currentPassword, newPassword });
+      alert("Password updated! Please log in again.");
+      setFormData({
+        ...formData,
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/login");
+    } catch (err) {
+      const errorMessage =
+        err.response?.status === 401
+          ? "Session expired. Please log in again."
+          : err.response?.data?.message || "Failed to update password";
+      setError(errorMessage);
+      alert(errorMessage);
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleBioSave = () => {
+  const handleBioSave = async () => {
     if (!tempBio.trim()) {
       alert("Bio cannot be empty.");
       return;
     }
 
-    setFormData({ ...formData, bio: tempBio });
-    setShowBioBox(false);
-    alert("Bio saved!");
+    if (!updateUser) {
+      setError("Authentication context error: updateUser is not available");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    try {
+      await api.put("/Auth/profile", { ...formData, bio: tempBio });
+      setFormData({ ...formData, bio: tempBio });
+      updateUser({ ...user, bio: tempBio });
+      setShowBioBox(false);
+      alert("Bio saved!");
+    } catch (err) {
+      const errorMessage =
+        err.response?.status === 401
+          ? "Session expired. Please log in again."
+          : err.response?.data?.message || "Failed to save bio";
+      setError(errorMessage);
+      alert(errorMessage);
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const tabs = [
     { name: "Account Overview", path: "/account" },
     { name: "Orders", path: "/order" },
     { name: "Wishlist", path: "/wishlist" },
-    { name: "Reviews", path: "/review" },
+    { name: "Reviews", path: "/reviews" },
     { name: "Settings", path: "/setting" },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <MemNavbar />
+      <Navbar />
 
-      <div className="flex gap-8">
+      <div className="flex gap-8 mt-8">
         <SideProfile />
 
         <div className="w-3/4 relative">
-          {/* Tabs */}
           <div className="flex gap-6 border-b border-gray-200 mb-6">
             {tabs.map((tab) => (
               <Link
@@ -505,134 +248,155 @@ const Settings = () => {
             ))}
           </div>
 
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Personal Information</h2>
-            <button
-              onClick={() => {
-                setTempBio(formData.bio);
-                setShowBioBox(true);
-              }}
-              className="bg-blue-200 text-blue-800 px-4 py-1 rounded"
-            >
-              Add Bio
-            </button>
-          </div>
-
-          {/* Bio Popup Box */}
-          {showBioBox && (
-            <div className="absolute top-20 right-0 w-80 bg-white p-4 rounded-lg shadow-lg border z-10">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium text-gray-700">Describe Yourself</h3>
-                <button onClick={() => setShowBioBox(false)}>
-                  <IoClose className="text-xl text-gray-600 hover:text-gray-800" />
+          {loading ? (
+            <p className="text-gray-500">Loading profile...</p>
+          ) : error ? (
+            <p className="text-red-500 mb-4">{error}</p>
+          ) : (
+            <>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">Personal Information</h2>
+                <button
+                  onClick={() => {
+                    setTempBio(formData.bio);
+                    setShowBioBox(true);
+                  }}
+                  className="bg-blue-200 text-blue-800 px-4 py-1 rounded"
+                >
+                  Add Bio
                 </button>
               </div>
-              <textarea
-                rows="3"
-                className="w-full border rounded p-2 mb-2"
-                value={tempBio}
-                onChange={(e) => setTempBio(e.target.value)}
-              />
-              <button
-                onClick={handleBioSave}
-                className="bg-blue-500 text-white px-4 py-1 rounded"
-              >
-                Save
-              </button>
-            </div>
+
+              {showBioBox && (
+                <div className="absolute top-20 right-0 w-80 bg-white p-4 rounded-lg shadow-lg border z-10">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-medium text-gray-700">Describe Yourself</h3>
+                    <button onClick={() => setShowBioBox(false)}>
+                      <IoClose className="text-xl text-gray-600 hover:text-gray-800" />
+                    </button>
+                  </div>
+                  <textarea
+                    rows="3"
+                    className="w-full border rounded p-2 mb-2"
+                    value={tempBio}
+                    onChange={(e) => setTempBio(e.target.value)}
+                  />
+                  <button
+                    onClick={handleBioSave}
+                    disabled={loading}
+                    className={`bg-blue-900 text-white px-4 py-1 rounded ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    Save
+                  </button>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">First Name:</label>
+                  <input
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Last Name:</label>
+                  <input
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Email:</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    disabled
+                    className="w-full border rounded p-2 bg-gray-100 text-gray-500 cursor-not-allowed"
+                  />
+
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Phone Number:</label>
+                  <input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2"
+                  />
+                </div>
+
+                <button
+                  onClick={handleSaveChanges}
+                  disabled={loading}
+                  className={`bg-blue-900 text-white px-4 py-2 rounded w-max ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Save Changes
+                </button>
+
+                <h2 className="text-lg font-semibold mt-6">Change Password</h2>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Current Password:</label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={formData.currentPassword}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2"
+                  />
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="w-1/2">
+                    <label className="block text-sm font-medium text-gray-700">New Password:</label>
+                    <input
+                      type="password"
+                      name="newPassword"
+                      value={formData.newPassword}
+                      onChange={handleChange}
+                      className="w-full border rounded p-2"
+                    />
+                  </div>
+
+                  <div className="w-1/2">
+                    <label className="block text-sm font-medium text-gray-700">Confirm Password:</label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="w-full border rounded p-2"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleUpdatePassword}
+                  disabled={loading}
+                  className={`bg-blue-900 text-white px-4 py-2 rounded w-max ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Update Password
+                </button>
+              </div>
+            </>
           )}
-
-          {/* Form */}
-          <div className="flex flex-col gap-4">
-            <div>
-              <label>First Name:</label>
-              <input
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            </div>
-
-            <div>
-              <label>Last Name:</label>
-              <input
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            </div>
-
-            <div>
-              <label>Email:</label>
-              <input
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            </div>
-
-            <div>
-              <label>Phone Number:</label>
-              <input
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            </div>
-
-            <button
-              onClick={handleSaveChanges}
-              className="bg-blue-400 text-white px-4 py-2 rounded w-max"
-            >
-              Save Changes
-            </button>
-
-            <div>
-              <label>Current Password:</label>
-              <input
-                type="password"
-                name="currentPassword"
-                value={formData.currentPassword}
-                onChange={handleChange}
-                className="w-full border rounded p-2"
-              />
-            </div>
-
-            <div className="flex gap-4">
-              <div className="w-1/2">
-                <label>New Password:</label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
-              </div>
-
-              <div className="w-1/2">
-                <label>Confirm Password:</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full border rounded p-2"
-                />
-              </div>
-            </div>
-
-            <button
-              onClick={handleUpdatePassword}
-              className="bg-blue-400 text-white px-4 py-2 rounded w-max"
-            >
-              Update Password
-            </button>
-          </div>
         </div>
       </div>
     </div>

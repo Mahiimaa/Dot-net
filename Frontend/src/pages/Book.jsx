@@ -7,7 +7,7 @@ import Navbar from './Layout/Navbar';
 import { AuthContext } from '../context/AuthContext';
 import Footer from './Layout/Footer';
 
-const BookCard = ({ book, addToCart, bookmarkBook, isAuthenticated }) => {
+const BookCard = ({ book, addToCart, addToWishlist, isAuthenticated }) => {
   // Parse discountStart and discountEnd as UTC dates
   const parseUTCDate = (dateStr) => {
     if (!dateStr) return null;
@@ -44,15 +44,15 @@ const BookCard = ({ book, addToCart, bookmarkBook, isAuthenticated }) => {
               onClick={() => addToCart(book.id)}
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition shadow-sm"
               title="Add to Cart"
-              aria-label="Add to cart"
+              aria-label="Add book to cart"
             >
               🛒
             </button>
             <button
-              onClick={() => bookmarkBook(book.id)}
+              onClick={() => addToWishlist(book.id)}
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition shadow-sm"
-              title="Bookmark"
-              aria-label="Bookmark"
+              title="Add to Wishlist"
+              aria-label="Add book to wishlist"
             >
               <Heart className="w-5 h-5 text-red-500" />
             </button>
@@ -102,7 +102,7 @@ const BookCard = ({ book, addToCart, bookmarkBook, isAuthenticated }) => {
 };
 
 const Book = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
@@ -141,7 +141,7 @@ const Book = () => {
         // Fetch books with search parameter
         const booksResponse = await api.get('/api/Books', {
           params: {
-            search: searchQuery || undefined, // Add search query to API params
+            search: searchQuery || undefined,
             author: filters.author || undefined,
             genre: filters.genre || undefined,
             availability: filters.availability || undefined,
@@ -161,7 +161,6 @@ const Book = () => {
         const books = booksResponse.data.books || [];
         setBooks(books);
         setTotalBooks(booksResponse.data.total || 0);
-        // Calculate total pages based on server-provided total
         setTotalPages(Math.ceil(booksResponse.data.total / booksPerPage) || 1);
 
         // Fetch announcements
@@ -268,13 +267,17 @@ const Book = () => {
   };
 
   const addToCart = async (bookId) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !user?.id) {
       alert('Please log in to add to cart.');
       navigate('/login');
       return;
     }
     try {
-      await api.post('/api/Cart', { bookId });
+      await api.post('/api/Cart/add', {
+        userId: user.id,
+        bookId,
+        quantity: 1
+      });
       alert('Book added to cart!');
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Failed to add to cart. Please try again.';
@@ -283,19 +286,19 @@ const Book = () => {
     }
   };
 
-  const bookmarkBook = async (bookId) => {
-    if (!isAuthenticated) {
-      alert('Please log in to bookmark.');
+  const addToWishlist = async (bookId) => {
+    if (!isAuthenticated || !user?.id) {
+      alert('Please log in to add to wishlist.');
       navigate('/login');
       return;
     }
     try {
-      await api.post('/api/Bookmarks', { bookId });
-      alert('Book bookmarked!');
+      await api.post('/api/Wishlist/add', { userId: user.id, bookId });
+      alert('Book added to wishlist!');
     } catch (err) {
-      const errorMessage = err.response?.data?.error || 'Failed to bookmark. Please try again.';
+      const errorMessage = err.response?.data?.message || 'Failed to add to wishlist. Please try again.';
       alert(errorMessage);
-      console.error('Bookmark error:', err.response?.status, err.response?.data || err.message);
+      console.error('Wishlist error:', err.response?.status, err.response?.data || err.message);
     }
   };
 
@@ -405,17 +408,18 @@ const Book = () => {
 
               {/* Collapsible Filters */}
               <div className="bg-white p-4 rounded-xl shadow-sm mb-8">
-                <button 
+                <button
                   onClick={toggleFilterSection}
                   className="w-full flex justify-between items-center text-xl font-semibold text-gray-800"
                 >
                   <span>Filter Books</span>
-                  {isFilterExpanded ? 
-                    <ChevronUp className="w-6 h-6" /> : 
+                  {isFilterExpanded ? (
+                    <ChevronUp className="w-6 h-6" />
+                  ) : (
                     <ChevronDown className="w-6 h-6" />
-                  }
+                  )}
                 </button>
-                
+
                 {isFilterExpanded && (
                   <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
@@ -550,7 +554,7 @@ const Book = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="col-span-1 sm:col-span-2 lg:col-span-4 flex justify-end mt-4 space-x-3">
                       <button
                         onClick={handleClearFilters}
@@ -609,7 +613,7 @@ const Book = () => {
                           key={book.id}
                           book={book}
                           addToCart={addToCart}
-                          bookmarkBook={bookmarkBook}
+                          addToWishlist={addToWishlist}
                           isAuthenticated={isAuthenticated}
                         />
                       ))}

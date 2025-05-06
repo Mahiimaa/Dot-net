@@ -29,22 +29,18 @@ namespace Backend.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<object>> Register(RegisterDTO register)
         {
-            // Validate model
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Check if email already exists
             if (await _context.Users.AnyAsync(u => u.Email == register.Email))
             {
                 return Conflict("User with this email already exists.");
             }
 
-            // Generate unique membership ID
             string membershipId = System.Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
 
-            // Create new user
             var user = new User
             {
                 Email = register.Email,
@@ -52,25 +48,22 @@ namespace Backend.Controllers
                 FirstName = register.FirstName,
                 LastName = register.LastName,
                 MembershipId = membershipId,
-                Role = await _context.Users.AnyAsync() ? "User" : "Admin"
+                Role = await _context.Users.AnyAsync() ? "User" : "Admin",
+                CreatedAt = DateTime.UtcNow
             };
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            // Send welcome email
             try
             {
                 await _emailService.SendWelcomeEmailAsync(user.Email, user.FirstName, user.MembershipId);
             }
             catch (Exception ex)
             {
-                // Log the error
                 Console.WriteLine($"Failed to send welcome email: {ex.Message}");
-                // Optionally, include a warning in the response
             }
 
-            // Generate JWT token for immediate login
             var token = _token.GenerateToken(user);
 
             return Ok(new
@@ -83,7 +76,8 @@ namespace Backend.Controllers
                     Role = user.Role,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    MembershipId = user.MembershipId
+                    MembershipId = user.MembershipId,
+                    CreatedAt = user.CreatedAt
                 }
             });
         }
@@ -91,23 +85,19 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<object>> Login(LoginDTO login)
         {
-            // Validate model
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Find user by email
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == login.Email);
 
-            // Check if user exists and password is correct
             if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
             {
                 return Unauthorized("Invalid email or password.");
             }
 
-            // Generate JWT token
             var token = _token.GenerateToken(user);
 
             return Ok(new
@@ -120,7 +110,8 @@ namespace Backend.Controllers
                     Role = user.Role,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    MembershipId = user.MembershipId
+                    MembershipId = user.MembershipId,
+                    CreatedAt = user.CreatedAt
                 }
             });
         }
@@ -130,8 +121,12 @@ namespace Backend.Controllers
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine($"Token Claims: {string.Join(", ", User.Claims.Select(c => $"{c.Type}: {c.Value}"))}");
+            Console.WriteLine($"UserIdClaim: {userIdClaim}");
+
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
             {
+                Console.WriteLine("Invalid user ID in token.");
                 return Unauthorized(new { error = "Invalid user ID in token." });
             }
 
@@ -144,16 +139,78 @@ namespace Backend.Controllers
                     Role = u.Role,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    MembershipId = u.MembershipId
+                    MembershipId = u.MembershipId,
+                    Phone = u.Phone,
+                    Bio = u.Bio,
+                    ProfileImageUrl = u.ProfileImageUrl,
+                    CreatedAt = u.CreatedAt
                 })
                 .FirstOrDefaultAsync();
 
             if (user == null)
             {
+                Console.WriteLine($"User not found for ID: {userId}");
                 return NotFound(new { error = "User not found." });
             }
 
             return Ok(user);
+        }
+
+        [Authorize]
+        [HttpPut("profile")]
+        public async Task<ActionResult> UpdateProfile([FromBody] UpdateProfileDTO profile)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { error = "Invalid user ID in token." });
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found." });
+            }
+
+            user.FirstName = profile.FirstName;
+            user.LastName = profile.LastName;
+            user.Email = profile.Email;
+            user.Phone = profile.Phone;
+            user.Bio = profile.Bio;
+
+            if (await _context.Users.AnyAsync(u => u.Email == profile.Email && u.Id != userId))
+            {
+                return Conflict(new { error = "Email is already in use." });
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Profile updated successfully." });
+        }
+
+        [Authorize]
+        [HttpPut("password")]
+        public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordDTO password)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { error = "Invalid user ID in token." });
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found." });
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(password.CurrentPassword, user.PasswordHash))
+            {
+                return BadRequest(new { error = "Current password is incorrect." });
+            }
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password.NewPassword);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Password updated successfully." });
         }
     }
 }

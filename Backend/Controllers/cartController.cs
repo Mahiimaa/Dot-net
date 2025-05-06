@@ -1,121 +1,9 @@
-// using Microsoft.AspNetCore.Authorization;
-// using Microsoft.AspNetCore.Mvc;
-// using Microsoft.EntityFrameworkCore;
-// using Backend.Data;
-// using Backend.Model;
-// using System.Security.Claims;
-// using System.Threading.Tasks;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-// [Route("api/[controller]")]
-// [ApiController]
-// [Authorize]
-// public class CartController : ControllerBase
-// {
-//     private readonly AuthDbContext _context;
-
-//     public CartController(AuthDbContext context)
-//     {
-//         _context = context;
-//     }
-
-//     [HttpPost]
-//     public async Task<IActionResult> AddToCart([FromBody] CartDTO dto)
-//     {
-//         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-//         var book = await _context.Books.FindAsync(dto.BookId);
-//         if (book == null || book.InStockQty <= book.ReservedQty)
-//             return BadRequest("Book is unavailable.");
-
-//         var existingCartItem = await _context.Carts
-//             .FirstOrDefaultAsync(c => c.UserId == userId && c.BookId == dto.BookId);
-//         if (existingCartItem != null)
-//         {
-//             existingCartItem.Quantity += 1;
-//         }
-//         else
-//         {
-//             var cartItem = new Cart
-//             {
-//                 UserId = userId,
-//                 BookId = dto.BookId,
-//                 Quantity = 1,
-//                 AddedAt = DateTime.UtcNow
-//             };
-//             _context.Carts.Add(cartItem);
-//         }
-
-//         book.ReservedQty += 1;
-//         await _context.SaveChangesAsync();
-
-//         return Ok(new { Message = "Book added to cart" });
-//     }
-// }
-
-// public class CartDTO
-// {
-//     public int BookId { get; set; }
-// }
-=======
->>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120
-
-// [Route("api/[controller]")]
-// [ApiController]
-// [Authorize]
-// public class CartController : ControllerBase
-// {
-//     private readonly AuthDbContext _context;
-
-//     public CartController(AuthDbContext context)
-//     {
-//         _context = context;
-//     }
-
-//     [HttpPost]
-//     public async Task<IActionResult> AddToCart([FromBody] CartDTO dto)
-//     {
-//         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-//         var book = await _context.Books.FindAsync(dto.BookId);
-//         if (book == null || book.InStockQty <= book.ReservedQty)
-//             return BadRequest("Book is unavailable.");
-
-//         var existingCartItem = await _context.Carts
-//             .FirstOrDefaultAsync(c => c.UserId == userId && c.BookId == dto.BookId);
-//         if (existingCartItem != null)
-//         {
-//             existingCartItem.Quantity += 1;
-//         }
-//         else
-//         {
-//             var cartItem = new Cart
-//             {
-//                 UserId = userId,
-//                 BookId = dto.BookId,
-//                 Quantity = 1,
-//                 AddedAt = DateTime.UtcNow
-//             };
-//             _context.Carts.Add(cartItem);
-//         }
-
-//         book.ReservedQty += 1;
-//         await _context.SaveChangesAsync();
-
-//         return Ok(new { Message = "Book added to cart" });
-//     }
-// }
-
-// public class CartDTO
-// {
-//     public int BookId { get; set; }
-// }
-
 using Backend.DTO;
 using Backend.Model;
 using Backend.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -130,6 +18,7 @@ namespace Backend.Controllers
             _context = context;
         }
 
+        [Authorize(Policy = "UserPolicy")]
         [HttpPost("add")]
         public async Task<IActionResult> AddToCart([FromBody] CartDTO cartDTO)
         {
@@ -158,17 +47,46 @@ namespace Backend.Controllers
             return Ok(new { message = "Book added to cart" });
         }
 
+        [Authorize(Policy = "UserPolicy")]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserCart(int userId)
         {
-            var cart = await _context.Carts
-                .Include(c => c.Book) // To get book details too
-                .Where(c => c.UserId == userId)
-                .ToListAsync();
+            try
+            {
+                var cart = await _context.Carts
+                    .Where(c => c.UserId == userId)
+                    .Include(c => c.Book)
+                    .Select(c => new
+                    {
+                        Id = c.Id,
+                        UserId = c.UserId,
+                        BookId = c.BookId,
+                        Quantity = c.Quantity,
+                        Book = c.Book != null ? new
+                        {
+                            Title = c.Book.Title ?? "Untitled",
+                            Price = c.Book.Price,
+                            ImageUrl = c.Book.ImageUrl,
+                            Author = c.Book.Author ?? "Unknown",
+                            IsOnSale = c.Book.IsOnSale,
+                            DiscountPercent = c.Book.DiscountPercent,
+                            DiscountStart = c.Book.DiscountStart,
+                            DiscountEnd = c.Book.DiscountEnd
+                        } : null
+                    })
+                    .ToListAsync();
 
-            return Ok(cart);
+                Console.WriteLine($"Fetched {cart.Count} cart items for user {userId}");
+                return Ok(cart);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching cart: {ex.Message}\n{ex.StackTrace}");
+                return StatusCode(500, new { error = "Failed to fetch cart", details = ex.Message });
+            }
         }
 
+        [Authorize(Policy = "UserPolicy")]
         [HttpDelete("remove/{id}")]
         public async Task<IActionResult> RemoveFromCart(int id)
         {
@@ -182,7 +100,3 @@ namespace Backend.Controllers
         }
     }
 }
-<<<<<<< HEAD
-=======
->>>>>>> 523b181 (Backend work for wishlist)
->>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120
