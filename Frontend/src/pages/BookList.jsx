@@ -9,7 +9,7 @@ const BookList = () => {
   useEffect(() => {
     // Fetching books data from backend
     axios
-      .get("http://localhost:5000/api/books")
+      .get("http://localhost:5127/api/books")
       .then((res) => {
         setBooks(res.data); // Mapping the response data to state
       })

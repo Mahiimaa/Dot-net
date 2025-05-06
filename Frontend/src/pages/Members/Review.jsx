@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import MemNavbar from "../../Components/MemNavbar";
 import SideProfile from "../../Components/SideProfile";
 import { FaStar } from "react-icons/fa";
+import api from "../../api/axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const Review = () => {
   const location = useLocation();
+  const { isAuthenticated } = useContext(AuthContext);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        if (!isAuthenticated) return;
+        const response = await api.get("/api/Reviews/my-reviews");
+        setReviews(response.data);
+      } catch (err) {
+        console.error("Failed to fetch user reviews:", err);
+      }
+    };
+    fetchReviews();
+  }, [isAuthenticated]);
+
 
   const tabs = [
     { name: "Account Overview", path: "/account" },
@@ -14,15 +32,6 @@ const Review = () => {
     { name: "Reviews", path: "/review" },
     { name: "Settings", path: "/setting" },
   ];
-
-  const reviews = Array(3).fill({
-    title: "The invisible life or Addie LaRue",
-    author: "V.E. Schwab",
-    image: "https://via.placeholder.com/80x120", 
-    rating: 5,
-    reviewText:
-      "Absolutely enchanting! I was completely captivated by Addie's journey through time. The prose is beautiful, the characters are complex, and the central premise is explored in such a thoughtful way. Schwab has outdone herself with this masterpiece",
-  });
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -54,7 +63,7 @@ const Review = () => {
           <div className="flex flex-col gap-6">
             {reviews.map((review, idx) => (
               <div key={idx} className="bg-white rounded-xl p-4 shadow border flex gap-4">
-                <img src={review.image} alt={review.title} className="h-32 rounded" />
+                <img src={review.image || 'https://via.placeholder.com/80x120'} alt={review.title} className="h-32 rounded" />
                 <div>
                   <h3 className="font-semibold">{review.title}</h3>
                   <p className="text-gray-500 mb-2">{review.author}</p>

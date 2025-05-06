@@ -112,5 +112,29 @@ namespace Backend.Controllers
             return Ok(new { hasPurchased });
         }
 
+        [Authorize]
+        [HttpGet("my-reviews")]
+        public async Task<IActionResult> GetMyReviews()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var reviews = await _context.Reviews
+                .Include(r => r.Book)
+                .Where(r => r.UserId == userId)
+                .Select(r => new
+                {
+                    r.Id,
+                    r.Rating,
+                    r.Comment,
+                    r.CreatedAt,
+                    r.Book.Title,
+                    r.Book.Author,
+                    Image = r.Book.ImageUrl
+                })
+                .ToListAsync();
+
+            return Ok(reviews);
+        }
+
     }
 }
