@@ -78,7 +78,7 @@ const Navbar = () => {
               >
                 Logout
               </button>
-              <span className="p-2 bg-[brown] text-white rounded-[10px]">
+              <span className="p-2 bg-[brown] text-white rounded-[10px]" onClick={() => navigate('/addcart')}>
                 <FiShoppingCart />
               </span>
               <div className="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center border"

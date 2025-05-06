@@ -3,6 +3,7 @@ using Backend.Model;
 using Backend.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
@@ -17,6 +18,7 @@ namespace Backend.Controllers
             _context = context;
         }
 
+        [Authorize(Policy = "UserPolicy")]
         [HttpPost("add")]
         public async Task<IActionResult> AddToCart([FromBody] CartDTO cartDTO)
         {
@@ -45,17 +47,46 @@ namespace Backend.Controllers
             return Ok(new { message = "Book added to cart" });
         }
 
+        [Authorize(Policy = "UserPolicy")]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserCart(int userId)
         {
-            var cart = await _context.Carts
-                .Include(c => c.Book) // To get book details too
-                .Where(c => c.UserId == userId)
-                .ToListAsync();
+            try
+            {
+                var cart = await _context.Carts
+                    .Where(c => c.UserId == userId)
+                    .Include(c => c.Book)
+                    .Select(c => new
+                    {
+                        Id = c.Id,
+                        UserId = c.UserId,
+                        BookId = c.BookId,
+                        Quantity = c.Quantity,
+                        Book = c.Book != null ? new
+                        {
+                            Title = c.Book.Title ?? "Untitled",
+                            Price = c.Book.Price,
+                            ImageUrl = c.Book.ImageUrl,
+                            Author = c.Book.Author ?? "Unknown",
+                            IsOnSale = c.Book.IsOnSale,
+                            DiscountPercent = c.Book.DiscountPercent,
+                            DiscountStart = c.Book.DiscountStart,
+                            DiscountEnd = c.Book.DiscountEnd
+                        } : null
+                    })
+                    .ToListAsync();
 
-            return Ok(cart);
+                Console.WriteLine($"Fetched {cart.Count} cart items for user {userId}");
+                return Ok(cart);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching cart: {ex.Message}\n{ex.StackTrace}");
+                return StatusCode(500, new { error = "Failed to fetch cart", details = ex.Message });
+            }
         }
 
+        [Authorize(Policy = "UserPolicy")]
         [HttpDelete("remove/{id}")]
         public async Task<IActionResult> RemoveFromCart(int id)
         {

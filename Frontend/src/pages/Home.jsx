@@ -11,13 +11,17 @@ export default function HomePage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // Set isLoggedIn to true if token exists
-  }, []);
+    if (!token) {
+      navigate("/login"); // Redirect to login if not logged in
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
     // Clear token and user data from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("resetEmail"); // Clean up any leftover reset email
     setIsLoggedIn(false);
+    setMenuOpen(false); 
     navigate("/login");
   };
 

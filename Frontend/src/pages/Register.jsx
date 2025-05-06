@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import api from "../api/axios";
 
 const Register = () => {
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,33 +27,49 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
+  
+    // Client-side validation
+    if (!formData.firstName || !formData.lastName || !formData.email) {
+      setError("Please fill in all required fields.");
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+  
     try {
-      const response = await axios.post("http://localhost:5127/Auth/register", {
+      const response = await api.post("/Auth/register", {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
-        confirmPassword: formData.confirmPassword,
+        confirmPassword: formData.confirmPassword, 
       });
-
       const { token, user } = response.data;
-      localStorage.setItem("token", token);
+      login(token, user);
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
-        navigate("/login");
+        navigate(user.role === "Admin" ? "/dashboard" : "/");
       }, 2000);
     } catch (err) {
+      console.error("Registration error:", err.response?.data);
       if (err.response) {
         if (err.response.status === 409) {
           setError("An account with this email already exists.");
         } else if (err.response.status === 400) {
-          setError("Please provide valid registration details.");
+          // Improved error handling for validation errors
+          const errors = err.response.data.errors;
+          if (errors) {
+            const errorMessages = Object.values(errors).flat().join(", ");
+            setError(errorMessages || "Please provide valid registration details.");
+          } else {
+            setError(err.response.data.message || "Please provide valid registration details.");
+          }
         } else {
           setError(err.response.data.message || "Registration failed. Please try again.");
         }
@@ -59,6 +77,12 @@ const Register = () => {
         setError("Unable to connect to the server. Please check your connection.");
       }
     }
+  };
+
+  const handleSocialLogin = (provider) => {
+    // TODO: Implement social login (Google/Facebook)
+    // Example: Redirect to backend OAuth endpoint (/Auth/google or /Auth/facebook)
+    alert(`Social login with ${provider} is not implemented yet.`);
   };
 
   return (
@@ -137,7 +161,6 @@ const Register = () => {
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
             required
           />
-          {/* <div className="text-right text-xs text-green-600 cursor-pointer">Forgot password?</div> */}
           <button
             type="submit"
             className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
@@ -147,10 +170,16 @@ const Register = () => {
         </form>
         <div className="my-4 text-sm text-gray-500">OR</div>
         <div className="flex justify-center gap-4">
-          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+          <button
+            onClick={() => handleSocialLogin("Facebook")}
+            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
+          >
             <FaFacebookF className="text-blue-600" />
           </button>
-          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+          <button
+            onClick={() => handleSocialLogin("Google")}
+            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
+          >
             <FcGoogle />
           </button>
         </div>
@@ -184,7 +213,7 @@ const Register = () => {
           />
         </svg>
       </div>
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;

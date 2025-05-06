@@ -1,395 +1,14 @@
-// // // import React from "react";
-// // // import { Link, useLocation, useNavigate } from "react-router-dom";
-// // // import MemNavbar from "../../Components/MemNavbar";
-// // // import SideProfile from "../../Components/SideProfile";
-// // // import { FaHeart } from "react-icons/fa";
-
-// // // const Wishlist = () => {
-// // //   const location = useLocation();
-// // //   const navigate = useNavigate();
-
-// // //   const tabs = [
-// // //     { name: "Account Overview", path: "/account" },
-// // //     { name: "Orders", path: "/order" },
-// // //     { name: "Wishlist", path: "/wishlist" },
-// // //     { name: "Reviews", path: "/review" },
-// // //     { name: "Settings", path: "/setting" },
-// // //   ];
-
-// // //   const wishlistItems = Array(6).fill({
-// // //     title: "The Great Adventure",
-// // //     price: 935,
-// // //     image: "https://via.placeholder.com/100x150", // Replace with actual image
-// // //     author: "John Strass",
-// // //     originalPrice: 1100,
-// // //     rating: 5,
-// // //     reviews: 1,
-// // //   });
-
-// // //   const handleAddToCart = (item) => {
-// // //     navigate("/addcart", { state: { item } });
-// // //   };
-
-// // //   return (
-// // //     <div className="min-h-screen bg-gray-50 p-6">
-// // //       <MemNavbar />
-
-// // //       <div className="flex gap-8">
-// // //         <SideProfile />
-
-// // //         <div className="w-3/4">
-// // //           {/* Tabs */}
-// // //           <div className="flex gap-6 border-b border-gray-200 mb-6">
-// // //             {tabs.map((tab) => (
-// // //               <Link
-// // //                 key={tab.name}
-// // //                 to={tab.path}
-// // //                 className={`pb-2 border-b-2 ${
-// // //                   location.pathname === tab.path
-// // //                     ? "border-brown-500 text-brown-700 font-medium"
-// // //                     : "text-gray-500"
-// // //                 }`}
-// // //               >
-// // //                 {tab.name}
-// // //               </Link>
-// // //             ))}
-// // //           </div>
-
-// // //           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-// // //             My Wishlist <FaHeart className="text-pink-500" />
-// // //           </h2>
-
-// // //           <div className="grid grid-cols-3 gap-6">
-// // //             {wishlistItems.map((item, idx) => (
-// // //               <div key={idx} className="bg-white rounded-xl p-4 shadow border">
-// // //                 <img
-// // //                   src={item.image}
-// // //                   alt={item.title}
-// // //                   className="mx-auto h-40 mb-3"
-// // //                 />
-// // //                 <h4 className="text-center text-sm font-semibold">
-// // //                   {item.title}
-// // //                 </h4>
-// // //                 <p className="text-center text-blue-700 font-medium mb-2">
-// // //                   Rs. {item.price}
-// // //                 </p>
-// // //                 <div className="flex items-center justify-between">
-// // //                   <FaHeart className="text-red-500 text-lg" />
-// // //                   <button
-// // //                     onClick={() => handleAddToCart(item)}
-// // //                     className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
-// // //                   >
-// // //                     Add to cart
-// // //                   </button>
-// // //                 </div>
-// // //               </div>
-// // //             ))}
-// // //           </div>
-// // //         </div>
-// // //       </div>
-// // //     </div>
-// // //   );
-// // // };
-
-// // // export default Wishlist;
-
-// // import React, { useEffect, useState } from "react";
-// // import { Link, useLocation, useNavigate } from "react-router-dom";
-// // import MemNavbar from "../../Components/MemNavbar";
-// // import SideProfile from "../../Components/SideProfile";
-// // import { FaHeart } from "react-icons/fa";
-
-// // const Wishlist = () => {
-// //   const location = useLocation();
-// //   const navigate = useNavigate();
-
-// //   const tabs = [
-// //     { name: "Account Overview", path: "/account" },
-// //     { name: "Orders", path: "/order" },
-// //     { name: "Wishlist", path: "/wishlist" },
-// //     { name: "Reviews", path: "/review" },
-// //     { name: "Settings", path: "/setting" },
-// //   ];
-
-// //   // ✅ State for wishlist items
-// //   const [wishlistItems, setWishlistItems] = useState([]);
-
-// //   // ✅ Load wishlist from localStorage on mount
-// //   useEffect(() => {
-// //     const storedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-// //     setWishlistItems(storedWishlist);
-// //   }, []);
-
-// //   // ✅ Save wishlist to localStorage whenever it changes
-// //   useEffect(() => {
-// //     localStorage.setItem("wishlist", JSON.stringify(wishlistItems));
-// //   }, [wishlistItems]);
-
-// //   // ✅ Add to Cart handler
-// //   const handleAddToCart = (item) => {
-// //     // Get existing cart
-// //     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-// //     // Check if item already exists
-// //     const exists = storedCart.find((cartItem) => cartItem.title === item.title);
-
-// //     if (!exists) {
-// //       storedCart.push({ ...item, id: Date.now(), quantity: 1 });
-// //       localStorage.setItem("cart", JSON.stringify(storedCart));
-// //     }
-
-// //     navigate("/addcart");
-// //   };
-
-// //   // ✅ Remove from wishlist
-// //   const handleRemoveFromWishlist = (title) => {
-// //     const updated = wishlistItems.filter((item) => item.title !== title);
-// //     setWishlistItems(updated);
-// //   };
-
-// //   return (
-// //     <div className="min-h-screen bg-gray-50 p-6">
-// //       <MemNavbar />
-
-// //       <div className="flex gap-8">
-// //         <SideProfile />
-
-// //         <div className="w-3/4">
-// //           {/* Tabs */}
-// //           <div className="flex gap-6 border-b border-gray-200 mb-6">
-// //             {tabs.map((tab) => (
-// //               <Link
-// //                 key={tab.name}
-// //                 to={tab.path}
-// //                 className={`pb-2 border-b-2 ${
-// //                   location.pathname === tab.path
-// //                     ? "border-brown-500 text-brown-700 font-medium"
-// //                     : "text-gray-500"
-// //                 }`}
-// //               >
-// //                 {tab.name}
-// //               </Link>
-// //             ))}
-// //           </div>
-
-// //           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-// //             My Wishlist <FaHeart className="text-pink-500" />
-// //           </h2>
-
-// //           {wishlistItems.length === 0 ? (
-// //             <p className="text-gray-500">No items in wishlist.</p>
-// //           ) : (
-// //             <div className="grid grid-cols-3 gap-6">
-// //               {wishlistItems.map((item, idx) => (
-// //                 <div
-// //                   key={idx}
-// //                   className="bg-white rounded-xl p-4 shadow border"
-// //                 >
-// //                   <img
-// //                     src={item.image}
-// //                     alt={item.title}
-// //                     className="mx-auto h-40 mb-3"
-// //                   />
-// //                   <h4 className="text-center text-sm font-semibold">
-// //                     {item.title}
-// //                   </h4>
-// //                   <p className="text-center text-blue-700 font-medium mb-2">
-// //                     Rs. {item.price}
-// //                   </p>
-// //                   <div className="flex items-center justify-between">
-// //                     {/* Remove from wishlist */}
-// //                     <button
-// //                       onClick={() => handleRemoveFromWishlist(item.title)}
-// //                       className="text-red-500 text-sm"
-// //                     >
-// //                       Remove
-// //                     </button>
-
-// //                     {/* Add to cart */}
-// //                     <button
-// //                       onClick={() => handleAddToCart(item)}
-// //                       className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
-// //                     >
-// //                       Add to cart
-// //                     </button>
-// //                   </div>
-// //                 </div>
-// //               ))}
-// //             </div>
-// //           )}
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default Wishlist;
-
-
-// import React, { useEffect, useState } from "react";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import MemNavbar from "../../Components/MemNavbar";
-// import SideProfile from "../../Components/SideProfile";
-// import { FaHeart } from "react-icons/fa";
-// import axios from "axios";
-
-// const Wishlist = () => {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-
-//   const tabs = [
-//     { name: "Account Overview", path: "/account" },
-//     { name: "Orders", path: "/order" },
-//     { name: "Wishlist", path: "/wishlist" },
-//     { name: "Reviews", path: "/review" },
-//     { name: "Settings", path: "/setting" },
-//   ];
-
-//   // State for wishlist items
-//   const [wishlistItems, setWishlistItems] = useState([]);
-
-//   // Get user id (replace this with actual user ID management)
-//   const currentUserId = 1;  // Hardcoded for example purposes, replace with real user ID logic.
-
-//   // Get wishlist items from backend
-//   // useEffect(() => {
-//   //   const fetchWishlist = async () => {
-//   //     try {
-//   //       const response = await axios.get(`/api/wishlist/user/${currentUserId}`);
-//   //       setWishlistItems(response.data); // Set the wishlist items
-//   //     } catch (error) {
-//   //       console.error("Failed to fetch wishlist", error);
-//   //     }
-//   //   };
-
-//   //   fetchWishlist();
-//   // }, [currentUserId]);
-//   useEffect(() => {
-//     const fetchWishlist = async () => {
-//       try {
-//         const response = await axios.get(`/api/wishlist/user/${currentUserId}`);
-//         console.log("Fetched wishlist response:", response.data); // ✅ Check this in your browser console
-//         setWishlistItems(response.data);
-//       } catch (error) {
-//         console.error("Failed to fetch wishlist", error);
-//       }
-//     };
-  
-//     fetchWishlist();
-//   }, [currentUserId]);
-  
-
-//   // Add to wishlist handler
-//   const handleAddToWishlist = async (bookId) => {
-//     try {
-//       const response = await axios.post("/api/wishlist/add", {
-//         userId: currentUserId,
-//         bookId: bookId,
-//       });
-//       alert(response.data.message); // Show message returned from backend
-//       setWishlistItems([...wishlistItems, { bookId }]); // Update state to reflect added item
-//     } catch (error) {
-//       alert(error.response?.data?.message || "Failed to add to wishlist");
-//     }
-//   };
-
-//   // Remove from wishlist handler
-//   const handleRemoveFromWishlist = async (id) => {
-//     try {
-//       const response = await axios.delete(`/api/wishlist/remove/${id}`);
-//       alert(response.data.message); // Show message returned from backend
-//       setWishlistItems(wishlistItems.filter((item) => item.id !== id)); // Remove item from wishlist state
-//     } catch (error) {
-//       console.error("Failed to remove from wishlist", error);
-//     }
-//   };
-
-//   // Render the wishlist
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-6">
-//       <MemNavbar />
-
-//       <div className="flex gap-8">
-//         <SideProfile />
-
-//         <div className="w-3/4">
-//           {/* Tabs */}
-//           <div className="flex gap-6 border-b border-gray-200 mb-6">
-//             {tabs.map((tab) => (
-//               <Link
-//                 key={tab.name}
-//                 to={tab.path}
-//                 className={`pb-2 border-b-2 ${
-//                   location.pathname === tab.path
-//                     ? "border-brown-500 text-brown-700 font-medium"
-//                     : "text-gray-500"
-//                 }`}
-//               >
-//                 {tab.name}
-//               </Link>
-//             ))}
-//           </div>
-
-//           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-//             My Wishlist <FaHeart className="text-pink-500" />
-//           </h2>
-
-//           {Array.isArray(wishlistItems) && wishlistItems.length === 0 ? (
-//             <p className="text-gray-500">No items in wishlist.</p>
-//           ) : (
-//             <div className="grid grid-cols-3 gap-6">
-//               {Array.isArray(wishlistItems) &&
-//                 wishlistItems.map((item, idx) => (
-//                   <div key={idx} className="bg-white rounded-xl p-4 shadow border">
-//                     <img
-//                       src={item.image || "https://via.placeholder.com/100x150"}
-//                       alt={item.title}
-//                       className="mx-auto h-40 mb-3"
-//                     />
-//                     <h4 className="text-center text-sm font-semibold">
-//                       {item.title}
-//                     </h4>
-//                     <p className="text-center text-blue-700 font-medium mb-2">
-//                       Rs. {item.price}
-//                     </p>
-//                     <div className="flex items-center justify-between">
-//                       {/* Remove from wishlist */}
-//                       <button
-//                         onClick={() => handleRemoveFromWishlist(item.id)}
-//                         className="text-red-500 text-sm"
-//                       >
-//                         Remove
-//                       </button>
-
-//                       {/* Add to cart */}
-//                       <button
-//                         onClick={() => handleAddToCart(item)}
-//                         className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"
-//                       >
-//                         Add to cart
-//                       </button>
-//                     </div>
-//                   </div>
-//                 ))}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Wishlist;
-
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import MemNavbar from "../../Components/MemNavbar";
 import SideProfile from "../../Components/SideProfile";
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import Navbar from "../Layout/Navbar";
 
 const Wishlist = () => {
+  const { isAuthenticated, user } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -397,77 +16,167 @@ const Wishlist = () => {
     { name: "Account Overview", path: "/account" },
     { name: "Orders", path: "/order" },
     { name: "Wishlist", path: "/wishlist" },
-    { name: "Reviews", path: "/review" },
-    { name: "Settings", path: "/setting" },
+    { name: "Reviews", path: "/reviews" },
+    { name: "Settings", path: "/settings" },
   ];
 
   // State for wishlist items
   const [wishlistItems, setWishlistItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Get user id (replace this with actual user ID management)
-  const currentUserId = 1; // Hardcoded for example purposes, replace with real user ID logic.
+  // Get user ID from AuthContext
+  const currentUserId = user?.id;
 
   useEffect(() => {
+    if (!isAuthenticated || !currentUserId) {
+      navigate("/login");
+      return;
+    }
+
     const fetchWishlist = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get(`/api/wishlist/user/${currentUserId}`);
+        const response = await axios.get(`http://localhost:5127/api/Wishlist/user/${currentUserId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         console.log("Fetched wishlist response:", response.data);
 
-        // ✅ Flatten the data from backend
+        // Flatten the data from backend
         const flattenedData = response.data.map((item) => ({
           id: item.id,
           bookId: item.bookId,
           title: item.book?.title || "Untitled",
           price: item.book?.price || 0,
-          image: item.book?.image || "https://via.placeholder.com/100x150",
+          image: item.book?.imageUrl
+            ? `http://localhost:5127/${item.book.imageUrl}`
+            : "https://via.placeholder.com/100x150",
         }));
 
         setWishlistItems(flattenedData);
       } catch (error) {
-        console.error("Failed to fetch wishlist", error);
+        const errorMessage =
+          error.response?.data?.error || "Failed to fetch wishlist. Please try again.";
+        setError(errorMessage);
+        console.error("Failed to fetch wishlist:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchWishlist();
-  }, [currentUserId]);
+  }, [currentUserId, isAuthenticated, navigate]);
 
   // Add to wishlist handler
   const handleAddToWishlist = async (bookId) => {
+    if (!isAuthenticated || !currentUserId) {
+      navigate("/login");
+      return;
+    }
     try {
-      const response = await axios.post("/api/wishlist/add", {
-        userId: currentUserId,
-        bookId: bookId,
-      });
+      const response = await axios.post(
+        "http://localhost:5127/api/Wishlist/add",
+        {
+          userId: currentUserId,
+          bookId: bookId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       alert(response.data.message);
-      // Optionally, re-fetch the wishlist
-      window.location.reload();
+      // Re-fetch wishlist to update the UI
+      const fetchWishlist = async () => {
+        try {
+          const response = await axios.get(`http://localhost:5127/api/Wishlist/user/${currentUserId}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          const flattenedData = response.data.map((item) => ({
+            id: item.id,
+            bookId: item.bookId,
+            title: item.book?.title || "Untitled",
+            price: item.book?.price || 0,
+            image: item.book?.imageUrl
+              ? `http://localhost:5127/${item.book.imageUrl}`
+              : "https://via.placeholder.com/100x150",
+          }));
+          setWishlistItems(flattenedData);
+        } catch (error) {
+          const errorMessage =
+            error.response?.data?.error || "Failed to fetch wishlist after adding.";
+          alert(errorMessage);
+          console.error("Failed to fetch wishlist:", error);
+        }
+      };
+      fetchWishlist();
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to add to wishlist");
+      const errorMessage =
+        error.response?.data?.message || "Failed to add to wishlist. Please try again.";
+      alert(errorMessage);
+      console.error("Add to wishlist error:", error);
     }
   };
 
   // Remove from wishlist handler
   const handleRemoveFromWishlist = async (id) => {
     try {
-      const response = await axios.delete(`/api/wishlist/remove/${id}`);
+      const response = await axios.delete(`http://localhost:5127/api/Wishlist/remove/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       alert(response.data.message);
       setWishlistItems(wishlistItems.filter((item) => item.id !== id));
     } catch (error) {
-      console.error("Failed to remove from wishlist", error);
+      const errorMessage =
+        error.response?.data?.message || "Failed to remove from wishlist. Please try again.";
+      alert(errorMessage);
+      console.error("Remove from wishlist error:", error);
     }
   };
 
-  // Dummy add to cart handler
-  const handleAddToCart = (item) => {
-    alert(`Added ${item.title} to cart!`);
+  // Add to cart handler
+  const handleAddToCart = async (item) => {
+    if (!isAuthenticated || !currentUserId) {
+      navigate("/login");
+      return;
+    }
+    try {
+      await axios.post(
+        "http://localhost:5127/api/Cart/add",
+        {
+          userId: currentUserId,
+          bookId: item.bookId,
+          quantity: 1
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      alert(`Added ${item.title} to cart!`);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Failed to add to cart. Please try again.";
+      alert(errorMessage);
+      console.error("Add to cart error:", error);
+    }
   };
 
   // Render the wishlist
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <MemNavbar />
+      <Navbar />
 
-      <div className="flex gap-8">
+      <div className="flex gap-8 mt-8">
         <SideProfile />
 
         <div className="w-3/4">
@@ -492,7 +201,11 @@ const Wishlist = () => {
             My Wishlist <FaHeart className="text-pink-500" />
           </h2>
 
-          {Array.isArray(wishlistItems) && wishlistItems.length === 0 ? (
+          {loading ? (
+            <p className="text-gray-500">Loading wishlist...</p>
+          ) : error ? (
+            <p className="text-red-500">{error}</p>
+          ) : Array.isArray(wishlistItems) && wishlistItems.length === 0 ? (
             <p className="text-gray-500">No items in wishlist.</p>
           ) : (
             <div className="grid grid-cols-3 gap-6">
@@ -501,14 +214,16 @@ const Wishlist = () => {
                   key={item.id}
                   className="bg-white rounded-xl p-4 shadow border"
                 >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="mx-auto h-40 mb-3"
-                  />
-                  <h4 className="text-center text-sm font-semibold">
-                    {item.title}
-                  </h4>
+                  <Link to={`/books/${item.bookId}`}>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="mx-auto h-40 mb-3"
+                    />
+                    <h4 className="text-center text-sm font-semibold hover:underline">
+                      {item.title}
+                    </h4>
+                  </Link>
                   <p className="text-center text-blue-700 font-medium mb-2">
                     Rs. {item.price}
                   </p>
@@ -519,7 +234,6 @@ const Wishlist = () => {
                     >
                       Remove
                     </button>
-
                     <button
                       onClick={() => handleAddToCart(item)}
                       className="border px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-100"

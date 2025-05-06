@@ -45,12 +45,33 @@ namespace Backend.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserWishlist(int userId)
         {
-            var wishlist = await _context.Wishlists
-                .Where(w => w.UserId == userId)
-                .Include(w => w.Book) // ensure Book navigation property is loaded
-                .ToListAsync();
+            try
+            {
+                var wishlist = await _context.Wishlists
+                    .Where(w => w.UserId == userId)
+                    .Include(w => w.Book)
+                    .Select(w => new
+                    {
+                        Id = w.Id,
+                        UserId = w.UserId,
+                        BookId = w.BookId,
+                        Book = w.Book != null ? new
+                        {
+                            Title = w.Book.Title ?? "Untitled",
+                            Price = w.Book.Price,
+                            ImageUrl = w.Book.ImageUrl
+                        } : null
+                    })
+                    .ToListAsync();
 
-            return Ok(wishlist);
+                Console.WriteLine($"Fetched {wishlist.Count} wishlist items for user {userId}");
+                return Ok(wishlist);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching wishlist: {ex.Message}\n{ex.StackTrace}");
+                return StatusCode(500, new { error = "Failed to fetch wishlist", details = ex.Message });
+            }
         }
 
         // Remove book from wishlist
