@@ -3,6 +3,7 @@ using System;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250505124344_addOrderFlow")]
+    partial class addOrderFlow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,11 +276,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("OrderId");
 
-<<<<<<< HEAD
-                    b.ToTable("OrderItem");
-=======
                     b.ToTable("OrderItems");
->>>>>>> 274995eacf13faf860667b0564f8c18583212b6b
                 });
 
             modelBuilder.Entity("Backend.Model.Review", b =>

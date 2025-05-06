@@ -23,12 +23,16 @@ import Account from './pages/Members/Account';
 import Wishlist from './pages/Members/Wishlist';
 import Order from './pages/Members/Order';
 import AddCart from './pages/Members/Addcart';
-import Review from './pages/Members/Review';
+// import Review from './pages/Members/Review';
 import Settings from './pages/Members/Settings';
 import Genres from './pages/Genres';
 import './App.css';
 import { useContext } from 'react';
 import Book from './pages/Book';
+import Review from './pages/Members/Review';
+import Reviews from './pages/Review';
+import Addcart from './pages/Members/Addcart';
+import StaffOrderPortal from './pages/StaffOrderPortal';
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -67,8 +71,9 @@ function App() {
           <Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/settings" element={<Settings/>} />
           <Route path="/order" element={<Order/>} />
+          <Route path="/staff/orders" element={<StaffOrderPortal />} />
           <Route path="/addcart" element={<AddCart/>} />
-          <Route path="/review" element={<Review />} />
+          <Route path="/reviews" element={<Review />} />
           <Route path="*" element={<div>404 - Page Not Found</div>} />
 
 

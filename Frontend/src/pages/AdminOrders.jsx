@@ -1,24 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminNav from "../Components/AdminNavbar";
 import AdminTop from "../Components/AdminTop";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 function AdminOrders() {
+    const { isAuthenticated, user } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showPickupModal, setShowPickupModal] = useState(false);
-    const [showVerifyModal, setShowVerifyModal] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState(null);
-    const [pickupDate, setPickupDate] = useState("");
-    const [note, setNote] = useState("");
-    const [claimCode, setClaimCode] = useState("");
-    const [membershipId, setMembershipId] = useState("");
+    const [error, setError] = useState(null);
 
+    // Check authentication and role
+    useEffect(() => {
+        if (!isAuthenticated || !["Staff", "Admin"].includes(user.role)) {
+            navigate("/login");
+        }
+    }, [isAuthenticated, user.role, navigate]);
+
+    // Fetch all orders
     const fetchOrders = async () => {
         try {
-            const res = await axios.get("http://localhost:5127/api/orders");
+            const res = await axios.get("http://localhost:5127/api/Order/all", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
             setOrders(res.data);
         } catch (err) {
+            const errorMessage =
+                err.response?.data?.error || "Failed to fetch orders. Please try again.";
+            setError(errorMessage);
             console.error("Failed to fetch orders:", err);
         } finally {
             setLoading(false);
@@ -26,72 +39,82 @@ function AdminOrders() {
     };
 
     useEffect(() => {
-        fetchOrders();
-    }, []);
+        if (isAuthenticated) {
+            fetchOrders();
+        }
+    }, [isAuthenticated]);
 
-    const handleDelete = async (orderId) => {
+    // Handle order cancellation
+    const handleCancel = async (orderId) => {
+        if (!window.confirm("Are you sure you want to cancel this order?")) return;
         try {
-            await axios.delete(`http://localhost:5127/api/orders/${orderId}`);
-            setOrders(orders.filter((o) => o.id !== orderId));
+            await axios.delete(`http://localhost:5127/api/Order/cancel/${orderId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            setOrders((prev) =>
+                prev.map((o) =>
+                    o.id === orderId ? { ...o, status: "Cancelled" } : o
+                )
+            );
+            alert("Order cancelled successfully!");
         } catch (err) {
+            const errorMessage =
+                err.response?.data?.error || "Failed to cancel order. Please try again.";
+            alert(errorMessage);
+            console.error("Cancel failed:", err);
+        }
+    };
+
+    // Handle order deletion
+    const handleDelete = async (orderId) => {
+        if (!window.confirm("Are you sure you want to permanently delete this order?")) return;
+        try {
+            await axios.delete(`http://localhost:5127/api/Order/${orderId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            setOrders((prev) => prev.filter((o) => o.id !== orderId));
+            alert("Order deleted successfully!");
+        } catch (err) {
+            const errorMessage =
+                err.response?.data?.error || "Failed to delete order. Please try again.";
+            alert(errorMessage);
             console.error("Delete failed:", err);
         }
     };
 
-    const openPickupModal = (order) => {
-        setSelectedOrder(order);
-        setPickupDate("");
-        setNote("");
-        setShowPickupModal(true);
-    };
-
-    const handlePickup = async () => {
-        try {
-            await axios.put(`http://localhost:5127/api/orders/${selectedOrder.id}/pickup`, {
-                pickupDate: new Date(pickupDate).toISOString(),
-                note
-            });
-            await fetchOrders();
-            setShowPickupModal(false);
-        } catch (err) {
-            console.error("Pickup update failed:", err);
-        }
-    };
-
-    const openVerifyModal = (order) => {
-        setSelectedOrder(order);
-        setClaimCode(order.claimCode);
-        setMembershipId("");
-        setShowVerifyModal(true);
-    };
-
-    const handleVerify = async () => {
-        try {
-            await axios.post(`http://localhost:5127/api/orders/verify`, {
-                claimCode,
-                membershipId
-            });
-            await fetchOrders();
-            setShowVerifyModal(false);
-        } catch (err) {
-            console.error("Verification failed:", err);
+    // Map status to display text
+    const getStatusDisplay = (status) => {
+        switch (status) {
+            case "Pending":
+                return "Processing";
+            case "Fulfilled":
+                return "Fulfilled";
+            case "Cancelled":
+                return "Cancelled";
+            default:
+                return status;
         }
     };
 
     return (
         <div className="h-screen flex">
             <AdminNav />
-            <div className='flex-1 flex flex-col'>
+            <div className="flex-1 flex flex-col">
                 <AdminTop />
                 <div className="p-6">
                     <h2 className="text-center text-lg font-semibold mb-4">Orders</h2>
+                    {error && <p className="text-red-500 mb-4">{error}</p>}
                     <div className="overflow-auto">
                         <table className="min-w-full table-auto border border-gray-300">
                             <thead className="bg-black text-white text-sm">
                                 <tr>
                                     <th className="px-4 py-2 text-left">Order ID</th>
                                     <th className="px-4 py-2 text-left">Customer Name</th>
-                                    <th className="px-4 py-2 text-left">Book Name</th>
+                                    <th className="px-4 py-2 text-left">Books</th>
                                     <th className="px-4 py-2 text-left">Claim Code</th>
                                     <th className="px-4 py-2 text-left">Total Amount</th>
                                     <th className="px-4 py-2 text-left">Status</th>
@@ -101,36 +124,50 @@ function AdminOrders() {
                             </thead>
                             <tbody>
                                 {loading ? (
-                                    <tr><td colSpan="8" className="text-center py-6">Loading...</td></tr>
+                                    <tr>
+                                        <td colSpan="8" className="text-center py-6">
+                                            Loading...
+                                        </td>
+                                    </tr>
                                 ) : orders.length === 0 ? (
-                                    <tr><td colSpan="8" className="text-center py-6">No orders found.</td></tr>
+                                    <tr>
+                                        <td colSpan="8" className="text-center py-6">
+                                            No orders found.
+                                        </td>
+                                    </tr>
                                 ) : (
                                     orders.map((o) => (
                                         <tr key={o.id} className="border-t">
                                             <td className="px-4 py-2">{o.id}</td>
-                                            <td className="px-4 py-2">{o.customerName}</td>
-                                            <td className="px-4 py-2">{o.bookName}</td>
+                                            <td className="px-4 py-2">{o.userName}</td>
+                                            <td className="px-4 py-2">
+                                                {o.books.length > 1
+                                                    ? `${o.books.length} items`
+                                                    : o.books[0]?.book?.title || "N/A"}
+                                            </td>
                                             <td className="px-4 py-2">{o.claimCode}</td>
-                                            <td className="px-4 py-2">{o.totalAmount}</td>
-                                            <td className="px-4 py-2">{o.status}</td>
-                                            <td className="px-4 py-2">{o.orderDate?.slice(0, 10)}</td>
+                                            <td className="px-4 py-2">{o.totalAmount.toFixed(2)}</td>
+                                            <td className="px-4 py-2">{getStatusDisplay(o.status)}</td>
+                                            <td className="px-4 py-2">
+                                                {new Date(o.orderDate).toLocaleDateString()}
+                                            </td>
                                             <td className="px-4 py-2 space-y-2">
                                                 {o.status === "Pending" && (
-                                                    <button onClick={() => openPickupModal(o)}
-                                                        className="bg-green-600 text-white px-4 py-1 rounded w-full">
-                                                        Ready for Pickup
+                                                    <button
+                                                        onClick={() => handleCancel(o.id)}
+                                                        className="bg-red-600 text-white px-4 py-1 rounded w-full"
+                                                    >
+                                                        Cancel
                                                     </button>
                                                 )}
-                                                {o.status === "ReadyForPickup" && (
-                                                    <button onClick={() => openVerifyModal(o)}
-                                                        className="bg-blue-600 text-white px-4 py-1 rounded w-full">
-                                                        Verify Claim
+                                                {user.role === "Admin" && (
+                                                    <button
+                                                        onClick={() => handleDelete(o.id)}
+                                                        className="bg-red-800 text-white px-4 py-1 rounded w-full"
+                                                    >
+                                                        Delete
                                                     </button>
                                                 )}
-                                                <button onClick={() => handleDelete(o.id)}
-                                                    className="bg-red-600 text-white px-4 py-1 rounded w-full">
-                                                    Delete
-                                                </button>
                                             </td>
                                         </tr>
                                     ))
@@ -138,68 +175,6 @@ function AdminOrders() {
                             </tbody>
                         </table>
                     </div>
-                    {showPickupModal && (
-                        <div className="fixed inset-0 bg-gray-800/40 flex items-center justify-center z-50">
-                            <div className="bg-white rounded-md p-6 w-[90%] max-w-xl border">
-                                <h2 className="text-center text-lg font-semibold mb-4">Mark as Ready for Pickup</h2>
-                                <form className="grid grid-cols-1 gap-4">
-                                    <div>
-                                        <label className="block font-medium">Pickup Date</label>
-                                        <input type="date" value={pickupDate}
-                                            onChange={(e) => setPickupDate(e.target.value)}
-                                            className="w-full border p-2 rounded" required />
-                                    </div>
-                                    <div>
-                                        <label className="block font-medium">Note / Message (optional)</label>
-                                        <textarea value={note} onChange={(e) => setNote(e.target.value)}
-                                            className="w-full border p-2 rounded"
-                                            placeholder="e.g., Bring ID when picking up" />
-                                    </div>
-                                    <div className="flex justify-center gap-4 mt-2">
-                                        <button type="button" onClick={handlePickup}
-                                            className="bg-[#5c2314] text-white px-6 py-2 rounded">
-                                            Confirm
-                                        </button>
-                                        <button type="button" onClick={() => setShowPickupModal(false)}
-                                            className="bg-gray-600 text-white px-6 py-2 rounded">
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    )}
-                    {showVerifyModal && (
-                        <div className="fixed inset-0 bg-gray-800/40 flex items-center justify-center z-50">
-                            <div className="bg-white rounded-md p-6 w-[90%] max-w-xl border">
-                                <h2 className="text-center text-lg font-semibold mb-4">Verify Claim Code</h2>
-                                <form className="grid grid-cols-1 gap-4">
-                                    <div>
-                                        <label className="block font-medium">Claim Code</label>
-                                        <input type="text" value={claimCode}
-                                            onChange={(e) => setClaimCode(e.target.value)}
-                                            className="w-full border p-2 rounded" required />
-                                    </div>
-                                    <div>
-                                        <label className="block font-medium">Membership ID</label>
-                                        <input type="text" value={membershipId}
-                                            onChange={(e) => setMembershipId(e.target.value)}
-                                            className="w-full border p-2 rounded" required />
-                                    </div>
-                                    <div className="flex justify-center gap-4 mt-2">
-                                        <button type="button" onClick={handleVerify}
-                                            className="bg-[#5c2314] text-white px-6 py-2 rounded">
-                                            Verify
-                                        </button>
-                                        <button type="button" onClick={() => setShowVerifyModal(false)}
-                                            className="bg-gray-600 text-white px-6 py-2 rounded">
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@ import Review from './Review';
 function BookDetail() {
   const { id } = useParams();
   const bookId = parseInt(id);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -21,11 +21,12 @@ function BookDetail() {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isBookmarking, setIsBookmarking] = useState(false);
   const [hasPurchased, setHasPurchased] = useState(false);
+  const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
 
   // Memoize isAuthenticated to prevent unnecessary re-renders
   const stableIsAuthenticated = useMemo(() => isAuthenticated, [isAuthenticated]);
 
-  // Fetch book, reviews, user, and bookmark status
+  // Fetch book, reviews, user, and wishlist status
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -79,10 +80,14 @@ function BookDetail() {
             console.warn('Purchase check failed:', err.response?.status, err.response?.data || err.message);
           }
           try {
-            const bookmarksResponse = await api.get(`/api/Bookmarks?bookId=${bookId}`);
-            setWishlisted(bookmarksResponse.data.some(b => b.bookId === bookId));
-          } catch (bookmarkErr) {
-            console.warn('Bookmarks fetch failed:', bookmarkErr.response?.status, bookmarkErr.response?.data || bookmarkErr.message);
+            const wishlistResponse = await api.get(`http://localhost:5127/api/Wishlist/user/${user?.id}`, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            });
+            setWishlisted(wishlistResponse.data.some(b => b.bookId === bookId));
+          } catch (wishlistErr) {
+            console.warn('Wishlist fetch failed:', wishlistErr.response?.status, wishlistErr.response?.data || wishlistErr.message);
           }
         }
       } catch (err) {
@@ -97,7 +102,7 @@ function BookDetail() {
       }
     };
     fetchData();
-  }, [bookId, stableIsAuthenticated]);
+  }, [bookId, stableIsAuthenticated, user?.id]);
 
   // Calculate discount
   const isDiscountActive =
@@ -126,7 +131,15 @@ function BookDetail() {
     if (isAddingToCart) return;
     setIsAddingToCart(true);
     try {
-      await api.post('/api/Cart', { bookId });
+      await api.post('http://localhost:5127/api/Cart/add', {
+        userId: user.id,
+        bookId: bookId,
+        quantity: 1
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       alert('Book added to cart!');
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to add to cart.');
@@ -136,25 +149,49 @@ function BookDetail() {
     }
   };
 
-  const toggleWishlist = async () => {
+  const toggleWishlistStatus = async () => {
     if (!stableIsAuthenticated) {
       navigate('/login');
       return;
     }
-    if (isBookmarking) return;
-    setIsBookmarking(true);
+    if (!user?.id) {
+      alert('User information is missing. Please log in again.');
+      navigate('/login');
+      return;
+    }
+    if (isTogglingWishlist) return;
+    setIsTogglingWishlist(true);
     try {
       if (wishlisted) {
-        await api.delete(`/api/Bookmarks/${bookId}`);
+        // Find the wishlist item ID to delete
+        const wishlistResponse = await api.get(`http://localhost:5127/api/Wishlist/user/${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const wishlistItem = wishlistResponse.data.find(b => b.bookId === bookId);
+        if (wishlistItem) {
+          await api.delete(`http://localhost:5127/api/Wishlist/remove/${wishlistItem.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          alert('Book removed from wishlist!');
+        }
       } else {
-        await api.post('/api/Bookmarks', { bookId });
+        await api.post('http://localhost:5127/api/Wishlist/add', { userId: user.id, bookId }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        alert('Book added to wishlist!');
       }
       setWishlisted(!wishlisted);
     } catch (err) {
-      alert(err.response?.data?.error || 'Failed to update wishlist.');
-      console.error('Bookmark error:', err.response?.status, err.response?.data || err.message);
+      alert(err.response?.data?.message || 'Failed to update wishlist.');
+      console.error('Wishlist error:', err.response?.status, err.response?.data || err.message);
     } finally {
-      setIsBookmarking(false);
+      setIsTogglingWishlist(false);
     }
   };
 
@@ -215,8 +252,9 @@ function BookDetail() {
             <div className="mt-6 space-y-4">
               <button
                 className="w-full flex items-center justify-center gap-2 bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                onClick={toggleWishlist}
-                disabled={isBookmarking || !stableIsAuthenticated}
+                onClick={toggleWishlistStatus}
+                disabled={isTogglingWishlist || !stableIsAuthenticated}
+                aria-label={wishlisted ? 'Remove book from wishlist' : 'Add book to wishlist'}
               >
                 <Heart className={`w-5 h-5 ${wishlisted ? 'fill-white' : ''}`} />
                 {wishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
@@ -226,6 +264,7 @@ function BookDetail() {
                   className="flex-1 bg-green-900 text-white py-3 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
                   onClick={addToCart}
                   disabled={isAddingToCart || book?.availability !== 'Available'}
+                  aria-label="Add book to cart"
                 >
                   Add to Cart
                 </button>
@@ -233,6 +272,7 @@ function BookDetail() {
                   className="flex-1 bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                   onClick={addToCart}
                   disabled={isAddingToCart || book?.availability !== 'Available'}
+                  aria-label="Buy book now"
                 >
                   Buy Now
                 </button>

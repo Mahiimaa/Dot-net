@@ -19,12 +19,16 @@ const Sidebar = () => {
     { name: "Discounts & Sales", icon: <Percent size={18} />, path: "/discounts" },
     { name: "Announcements", icon: <Megaphone size={18} />, path: "/announcements" },
     { name: "Orders", icon: <ShoppingCart size={18} />, path: "/adminOrders" },
+    { name: "Order Portal", icon: <ShoppingCart size={18} />, path: "/staff/orders" },
     { name: "Review", icon: <MessageSquare size={18} />, path: "/adminReview" },
     { name: "Settings", icon: <Settings size={18} />, path: "/adminSettings" },
+    
   ];
 
   return (
-      <div className="w-60 bg-[#07375c] text-white flex flex-col h-screen">
+    <div className="w-60 bg-[#07375c] text-white flex flex-col h-full">
+
+
         <div className="text-2xl font-bold p-4 border-b border-gray-500">Foliana</div>
         <nav className="flex flex-col flex-grow">
           {navItems.map((item) => (

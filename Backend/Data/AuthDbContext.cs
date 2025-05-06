@@ -18,6 +18,7 @@ public class AuthDbContext : DbContext
     public DbSet<Announcement> Announcements { get; set; }
 
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Cart> Carts { get; set; }
 
@@ -62,6 +63,7 @@ public class AuthDbContext : DbContext
         .HasMany(o => o.OrderItems)
         .WithOne(oi => oi.Order)
         .HasForeignKey(oi => oi.OrderId);
+
 
         modelBuilder.Entity<OrderItem>()
             .HasOne(oi => oi.Book)
