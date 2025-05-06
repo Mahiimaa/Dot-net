@@ -11,7 +11,7 @@ import AdminOrders from './pages/AdminOrders';
 import AdminReview from './pages/AdminReview';
 import AdminSettings from './pages/AdminSettings';
 import Home from './pages/Home';
-import ProtectedRoute from "./Components/ProtectedRoute";
+// import ProtectedRoute from "./Components/ProtectedRoute";
 import BookList from "./pages/BookList";
 import Layout from "./pages/Layout/layout";
 import Navbar from './pages/Layout/Navbar';
@@ -24,12 +24,16 @@ import Account from './pages/Members/Account';
 import Wishlist from './pages/Members/Wishlist';
 import Order from './pages/Members/Order';
 import AddCart from './pages/Members/Addcart';
-import Review from './pages/Members/Review';
+// import Review from './pages/Members/Review';
 import Settings from './pages/Members/Settings';
 import Genres from './pages/Genres';
 import './App.css';
 import { useContext } from 'react';
 import Book from './pages/Book';
+import Review from './pages/Members/Review';
+import Reviews from './pages/Review';
+import Addcart from './pages/Members/Addcart';
+import StaffOrderPortal from './pages/StaffOrderPortal';
 
 
 // ProtectedRoute Component
@@ -61,7 +65,7 @@ function App() {
           <Route path="/order" element={<Order/>}/>
           <Route path="/wishlist" element={<Wishlist/>}/>
           <Route path="/Review" element={<Reviews/>}/>
-          <Route path="/Addcart" element={<Addcart/>}/>
+          {/* <Route path="/Addcart" element={<Addcart/>}/> */}
           <Route path="/setting" element={<Settings/>}/>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/otpverification" element={<OtpVerification />} />
@@ -75,8 +79,9 @@ function App() {
           <Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/settings" element={<Settings/>} />
           <Route path="/order" element={<Order/>} />
+          <Route path="/staff/orders" element={<StaffOrderPortal />} />
           <Route path="/addcart" element={<AddCart/>} />
-          <Route path="/review" element={<Review />} />
+          <Route path="/reviews" element={<Review />} />
           <Route path="*" element={<div>404 - Page Not Found</div>} />
 
 

@@ -1,18 +1,18 @@
-import React, { useState, useContext } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-import { FaFacebookF } from 'react-icons/fa';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import React, { useState, useContext } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebookF } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import api from "../api/axios";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -22,44 +22,46 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
+
+    // Client-side validation
+    if (!formData.email || !formData.password) {
+      setError("Please fill in all required fields.");
+      return;
+    }
 
     try {
-      const response = await axios.post('http://localhost:5127/Auth/login', {
+      const response = await api.post("/Auth/login", {
         email: formData.email,
         password: formData.password,
       });
 
       const { token, user } = response.data;
       login(token, user); // Use AuthContext login
-      setSuccess('Login successful! Redirecting...');
+      setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
-<<<<<<< HEAD
-        // Check if user role is admin, navigate to dashboard, else to home
-        if (user.role === "Admin") {
-          navigate("/");
-=======
-        if (user.role === 'Admin') {
-          navigate('/dashboard');
->>>>>>> c09de56424264ad8ac758808609d42f22a8bcb88
-        } else {
-          navigate('/');
-        }
+        navigate(user.role === "Admin" ? "/dashboard" : "/");
       }, 2000);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401) {
-          setError('Incorrect email or password.');
+          setError("Incorrect email or password.");
         } else if (err.response.status === 400) {
-          setError('Please provide valid email and password.');
+          setError(err.response.data.message || "Please provide valid email and password.");
         } else {
-          setError(err.response.data.message || 'Login failed. Please try again.');
+          setError(err.response.data.message || "Login failed. Please try again.");
         }
       } else {
-        setError('Unable to connect to the server. Please check your connection.');
+        setError("Unable to connect to the server. Please check your connection.");
       }
     }
+  };
+
+  const handleSocialLogin = (provider) => {
+    // TODO: Implement social login (Google/Facebook)
+    // Example: Redirect to backend OAuth endpoint (/Auth/google or /Auth/facebook)
+    alert(`Social login with ${provider} is not implemented yet.`);
   };
 
   return (
@@ -107,7 +109,7 @@ const Login = () => {
           />
           <div
             className="text-right text-xs text-green-600 cursor-pointer"
-            onClick={() => navigate('/forgotpassword')}
+            onClick={() => navigate("/forgotpassword")}
           >
             Forgot password?
           </div>
@@ -120,10 +122,16 @@ const Login = () => {
         </form>
         <div className="my-4 text-sm text-gray-500">OR</div>
         <div className="flex justify-center gap-4">
-          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+          <button
+            onClick={() => handleSocialLogin("Facebook")}
+            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
+          >
             <FaFacebookF className="text-blue-600" />
           </button>
-          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+          <button
+            onClick={() => handleSocialLogin("Google")}
+            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
+          >
             <FcGoogle />
           </button>
         </div>

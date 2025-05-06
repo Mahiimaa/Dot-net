@@ -21,12 +21,7 @@ export default function HomePage() {
     localStorage.removeItem("token");
     localStorage.removeItem("resetEmail"); // Clean up any leftover reset email
     setIsLoggedIn(false);
-<<<<<<< HEAD
-    setMenuOpen(false); // Close mobile menu on logout
-    navigate("/login"); // Redirect to login page after logout
-=======
     navigate("/login");
->>>>>>> c09de56424264ad8ac758808609d42f22a8bcb88
   };
 
   return (

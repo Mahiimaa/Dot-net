@@ -43,11 +43,13 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
+        ValidIssuer = "Foliana",
+        ValidAudience = "FolianaAPI",
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.ASCII.GetBytes(
-                builder.Configuration["JwtSettings:Signaturekey"] ?? "YourSecretKey")
+                builder.Configuration["JwtSettings:Signaturekey"] ?? "the_signature_key_is_foliana_super_secret_key")
         )
     };
 });
@@ -56,6 +58,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireStaffRole", policy => policy.RequireRole("Staff"));
     options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
 });
 
@@ -66,13 +69,12 @@ builder.Services.AddSignalR();
 
 var app = builder.Build();
 
- app.UseDeveloperExceptionPage();
+app.UseDeveloperExceptionPage();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-   
 }
 
 app.UseHttpsRedirection();

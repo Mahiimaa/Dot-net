@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import MemNavbar from "../../Components/MemNavbar";
 import SideProfile from "../../Components/SideProfile";
 import { FaStar } from "react-icons/fa";
+import Navbar from "../Layout/Navbar";
 
 const Review = () => {
   const location = useLocation();
@@ -11,7 +12,7 @@ const Review = () => {
     { name: "Account Overview", path: "/account" },
     { name: "Orders", path: "/order" },
     { name: "Wishlist", path: "/wishlist" },
-    { name: "Reviews", path: "/review" },
+    { name: "Reviews", path: "/reviews" },
     { name: "Settings", path: "/setting" },
   ];
 
@@ -26,9 +27,9 @@ const Review = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <MemNavbar />
+      <Navbar />
 
-      <div className="flex gap-8">
+      <div className="flex gap-8 mt-8">
         <SideProfile />
 
         <div className="w-3/4">
