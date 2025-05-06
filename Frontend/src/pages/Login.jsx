@@ -38,10 +38,16 @@ const Login = () => {
       });
 
       const { token, user } = response.data;
-      login(token, user); // Use AuthContext login
+      login(token, user);
       setSuccess("Login successful! Redirecting...");
       setTimeout(() => {
+        if (user.role === "Admin") {
+          navigate("/");
+        } else {
+          navigate('/');
+        }
         navigate(user.role === "Admin" ? "/dashboard" : "/");
+
       }, 2000);
     } catch (err) {
       if (err.response) {

@@ -19,6 +19,8 @@ function BookDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isBookmarking, setIsBookmarking] = useState(false);
+  const [hasPurchased, setHasPurchased] = useState(false);
   const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
 
   // Memoize isAuthenticated to prevent unnecessary re-renders
@@ -71,7 +73,12 @@ function BookDetail() {
               }
             }
           }
-
+          try {
+            const purchaseCheck = await api.get(`/api/Orders/has-purchased/${bookId}`);
+            setHasPurchased(purchaseCheck.data.hasPurchased);
+          } catch (err) {
+            console.warn('Purchase check failed:', err.response?.status, err.response?.data || err.message);
+          }
           try {
             const wishlistResponse = await api.get(`http://localhost:5127/api/Wishlist/user/${user?.id}`, {
               headers: {
@@ -366,6 +373,7 @@ function BookDetail() {
                   currentUser={currentUser}
                   isAuthenticated={stableIsAuthenticated}
                   navigate={navigate}
+                  hasPurchased={hasPurchased}
                 />
               )}
             </div>

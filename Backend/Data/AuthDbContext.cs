@@ -58,11 +58,12 @@ public class AuthDbContext : DbContext
         modelBuilder.Entity<Review>()
             .HasIndex(r => new { r.UserId, r.BookId })
             .IsUnique();
-        
+
         modelBuilder.Entity<Order>()
-            .HasMany(o => o.OrderItems)
-            .WithOne(oi => oi.Order)
-            .HasForeignKey(oi => oi.OrderId);
+        .HasMany(o => o.OrderItems)
+        .WithOne(oi => oi.Order)
+        .HasForeignKey(oi => oi.OrderId);
+
 
         modelBuilder.Entity<OrderItem>()
             .HasOne(oi => oi.Book)

@@ -21,6 +21,7 @@ export default function HomePage() {
     localStorage.removeItem("token");
     localStorage.removeItem("resetEmail"); // Clean up any leftover reset email
     setIsLoggedIn(false);
+    setMenuOpen(false); 
     navigate("/login");
   };
 

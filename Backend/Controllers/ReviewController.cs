@@ -55,6 +55,14 @@ namespace Backend.Controllers
                 return BadRequest(new { error = "Book not found." });
             }
 
+            var hasPurchased = await _context.Orders
+                .Include(o => o.OrderItems)
+                .AnyAsync(o => o.UserId == userId && o.OrderItems.Any(i => i.BookId == review.BookId));
+
+            if (!hasPurchased)
+            {
+                return Forbid("You can only review books you have purchased.");
+            }
             review.UserId = userId;
             review.CreatedAt = DateTime.UtcNow;
 
@@ -86,5 +94,47 @@ namespace Backend.Controllers
 
             return NoContent();
         }
+
+        [Authorize]
+        [HttpGet("has-purchased/{bookId}")]
+        public async Task<IActionResult> HasPurchased(int bookId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var hasPurchased = await _context.Orders
+                .Include(o => o.OrderItems)
+                .AnyAsync(o =>
+                    o.UserId == userId &&
+                    o.OrderItems.Any(oi => oi.BookId == bookId) &&
+                    o.Status == "Completed" // Optional: only allow after completed payment
+                );
+
+            return Ok(new { hasPurchased });
+        }
+
+        [Authorize]
+        [HttpGet("my-reviews")]
+        public async Task<IActionResult> GetMyReviews()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            var reviews = await _context.Reviews
+                .Include(r => r.Book)
+                .Where(r => r.UserId == userId)
+                .Select(r => new
+                {
+                    r.Id,
+                    r.Rating,
+                    r.Comment,
+                    r.CreatedAt,
+                    r.Book.Title,
+                    r.Book.Author,
+                    Image = r.Book.ImageUrl
+                })
+                .ToListAsync();
+
+            return Ok(reviews);
+        }
+
     }
 }
