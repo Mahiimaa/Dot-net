@@ -32,7 +32,7 @@ const Review = () => {
     { name: "Orders", path: "/order" },
     { name: "Wishlist", path: "/wishlist" },
     { name: "Reviews", path: "/reviews" },
-    { name: "Settings", path: "/setting" },
+    { name: "Settings", path: "/settings" },
   ];
 
   return (
