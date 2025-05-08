@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
+  
     // Client-side validation
     if (!formData.firstName || !formData.lastName || !formData.email) {
       setError("Please fill in all required fields.");
@@ -41,7 +41,7 @@ const Register = () => {
       setError("Password must be at least 8 characters long.");
       return;
     }
-
+  
     try {
       const response = await api.post("/Auth/register", {
         firstName: formData.firstName,
@@ -50,19 +50,26 @@ const Register = () => {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
-
       const { token, user } = response.data;
-      login(token, user); // Store token and user in AuthContext
+      login(token, user);
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
         navigate(user.role === "Admin" ? "/dashboard" : "/login");
       }, 2000);
     } catch (err) {
+      console.error("Registration error:", err.response?.data);
       if (err.response) {
         if (err.response.status === 409) {
           setError("An account with this email already exists.");
         } else if (err.response.status === 400) {
-          setError(err.response.data.message || "Please provide valid registration details.");
+          // Improved error handling for validation errors
+          const errors = err.response.data.errors;
+          if (errors) {
+            const errorMessages = Object.values(errors).flat().join(", ");
+            setError(errorMessages || "Please provide valid registration details.");
+          } else {
+            setError(err.response.data.message || "Please provide valid registration details.");
+          }
         } else {
           setError(err.response.data.message || "Registration failed. Please try again.");
         }
@@ -206,7 +213,7 @@ const Register = () => {
           />
         </svg>
       </div>
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;

@@ -3,6 +3,7 @@ using System;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506030038_addedReview")]
+    partial class addedReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +50,7 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Announcements", (string)null);
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("Backend.Model.Book", b =>
@@ -153,7 +156,7 @@ namespace Backend.Migrations
                     b.HasIndex("ISBN")
                         .IsUnique();
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Backend.Model.Cart", b =>
@@ -183,7 +186,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Backend.Model.Discount", b =>
@@ -212,7 +215,7 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discounts", (string)null);
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("Backend.Model.Order", b =>
@@ -258,7 +261,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Backend.Model.OrderItem", b =>
@@ -288,9 +291,6 @@ namespace Backend.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
-
-                    b.ToTable("OrderItems", (string)null);
-
                 });
 
             modelBuilder.Entity("Backend.Model.Review", b =>
@@ -328,7 +328,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Backend.Model.User", b =>
@@ -392,7 +392,7 @@ namespace Backend.Migrations
                     b.HasIndex("MembershipId")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Backend.Model.Wishlist", b =>
@@ -419,7 +419,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("Wishlists", (string)null);
+                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("BookDiscount", b =>
@@ -434,7 +434,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("DiscountsId");
 
-                    b.ToTable("BookDiscount", (string)null);
+                    b.ToTable("BookDiscount");
                 });
 
             modelBuilder.Entity("Backend.Model.Cart", b =>
@@ -494,7 +494,15 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Model.Wishlist", b =>
