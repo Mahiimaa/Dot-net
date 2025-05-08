@@ -287,7 +287,10 @@ namespace Backend.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.ToTable("OrderItems");
+
                     b.ToTable("OrderItems", (string)null);
+
                 });
 
             modelBuilder.Entity("Backend.Model.Review", b =>
@@ -491,15 +494,7 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Backend.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Book");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Model.Wishlist", b =>

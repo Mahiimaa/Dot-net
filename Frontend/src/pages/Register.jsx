@@ -48,13 +48,13 @@ const Register = () => {
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
-        confirmPassword: formData.confirmPassword, 
+        confirmPassword: formData.confirmPassword,
       });
       const { token, user } = response.data;
       login(token, user);
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/");
+        navigate(user.role === "Admin" ? "/dashboard" : "/login");
       }, 2000);
     } catch (err) {
       console.error("Registration error:", err.response?.data);

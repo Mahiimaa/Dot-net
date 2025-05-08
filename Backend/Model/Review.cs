@@ -10,6 +10,8 @@ namespace Backend.Model
         [Required]
         public int BookId { get; set; }
 
+        public Book Book { get; set; }
+
         [Required]
         public int UserId { get; set; }
         public string MemberName { get; set; } = string.Empty;
@@ -20,8 +22,5 @@ namespace Backend.Model
         public string Comment { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        public Book Book { get; set; }
-        public User User { get; set; }
     }
 }
