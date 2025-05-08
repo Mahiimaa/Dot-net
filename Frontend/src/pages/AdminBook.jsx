@@ -35,6 +35,9 @@ function AdminBook() {
     });
     const [editingBookId, setEditingBookId] = useState(null);
     const [errors, setErrors] = useState({});
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const booksPerPage = 10;
 
     const fetchBooks = async () => {
         try {
@@ -137,14 +140,44 @@ function AdminBook() {
         }
     };
 
+    const filteredBooks = books.filter(book =>
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Calculate pagination
+    const indexOfLastBook = currentPage * booksPerPage;
+    const indexOfFirstBook = indexOfLastBook - booksPerPage;
+    const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
+    const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+
+    // Handle page change
+    const paginate = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
+
     return (
         <div className="h-screen flex">
             <AdminNav />
             <div className='flex-1 flex flex-col'>
                 <AdminTop />
                 <div className="p-6">
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex flex-col justify-between items-center mb-4">
                         <h2 className="text-lg font-semibold">Books</h2>
+                        <div className="flex items-center gap-4 justify-between w-full mb-4">
+                            <input
+                                type="text"
+                                placeholder="Search by title, author, or ISBN"
+                                className="border p-2 rounded focus:ring-2 focus:ring-[#1b3a57] border-gray-300"
+                                value={searchTerm}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setCurrentPage(1); // Reset to first page on search
+                                }}
+                            />
                         <button className="bg-[#1b3a57] text-white px-4 py-2 rounded hover:bg-[#0d2a40] transition" onClick={() => setShowModal(true)}>
                             Add New Book
                         </button>
@@ -256,6 +289,28 @@ function AdminBook() {
                         </table>
                     </div>
                 </div>
+                {totalPages > 1 && (
+                        <div className="flex justify-center items-center mt-4 gap-2">
+                            <button
+                                onClick={() => paginate(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="px-3 py-1 bg-[#1b3a57] text-white rounded disabled:bg-gray-300 hover:bg-[#0d2a40]"
+                            >
+                                Previous
+                            </button>
+                            <span className="text-sm">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <button
+                                onClick={() => paginate(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="px-3 py-1 bg-[#1b3a57] text-white rounded disabled:bg-gray-300 hover:bg-[#0d2a40]"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
+                    </div>
                 {showModal && (
                     <div className="fixed inset-0 bg-gray-900/30 flex items-center justify-center z-50">
                         <div className="bg-white rounded-md p-6 w-[90%] max-w-4xl shadow-lg">

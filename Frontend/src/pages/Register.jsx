@@ -48,13 +48,14 @@ const Register = () => {
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
+        confirmPassword: formData.confirmPassword,
       });
 
       const { token, user } = response.data;
       login(token, user); // Store token and user in AuthContext
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/");
+        navigate(user.role === "Admin" ? "/dashboard" : "/login");
       }, 2000);
     } catch (err) {
       if (err.response) {

@@ -273,11 +273,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("OrderId");
 
-<<<<<<< HEAD
-                    b.ToTable("OrderItem");
-=======
                     b.ToTable("OrderItems");
->>>>>>> 274995eacf13faf860667b0564f8c18583212b6b
                 });
 
             modelBuilder.Entity("Backend.Model.Review", b =>
@@ -481,15 +477,7 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Backend.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Book");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Model.Wishlist", b =>
