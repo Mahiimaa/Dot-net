@@ -21,21 +21,37 @@ namespace Backend.Controllers
 
         // GET: api/Reviews?bookId={id}
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviews(int bookId)
+        public async Task<ActionResult<IEnumerable<object>>> GetReviews([FromQuery] int? bookId = null)
         {
-            var reviews = await _context.Reviews
-                .Where(r => r.BookId == bookId)
-                .Select(r => new
-                {
-                    r.Id,
-                    r.BookId,
-                    r.UserId,
-                    MemberName = r.MemberName ?? "Anonymous",
-                    r.Rating,
-                    r.Comment,
-                    r.CreatedAt
-                })
+            var query = _context.Reviews
+                .GroupJoin(
+                    _context.Books,
+                    review => review.BookId,
+                    book => book.Id,
+                    (review, books) => new { review, books })
+                .SelectMany(
+                    rb => rb.books.DefaultIfEmpty(),
+                    (rb, book) => new
+                    {
+                        rb.review.Id,
+                        rb.review.BookId,
+                        rb.review.UserId,
+                        MemberName = rb.review.MemberName ?? "Anonymous",
+                        rb.review.Rating,
+                        Comment = rb.review.Comment,
+                        rb.review.CreatedAt,
+                        BookTitle = book != null ? book.Title : "Unknown Book"
+                    });
+
+            if (bookId.HasValue)
+            {
+                query = query.Where(r => r.BookId == bookId.Value);
+            }
+
+            var reviews = await query
+                .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
+
             return Ok(reviews);
         }
 

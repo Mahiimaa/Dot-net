@@ -25,6 +25,11 @@ const Review = () => {
         setLoading(true);
         setError(null);
         const response = await api.get(`/api/Reviews/my-reviews?page=${page}&pageSize=${pageSize}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Reviews data:', data);
         setReviews(response.data.reviews);
         setTotalReviews(response.data.totalReviews);
       } catch (err) {
