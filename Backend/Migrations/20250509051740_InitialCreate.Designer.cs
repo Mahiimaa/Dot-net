@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250508045903_AddedBookNavigation")]
-    partial class AddedBookNavigation
+    [Migration("20250509051740_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -340,6 +340,9 @@ namespace Backend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -368,6 +371,9 @@ namespace Backend.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("VerificationOtp")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -474,11 +480,13 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Model.Review", b =>
                 {
-                    b.HasOne("Backend.Model.Book", null)
+                    b.HasOne("Backend.Model.Book", "Book")
                         .WithMany("Reviews")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Backend.Model.Wishlist", b =>

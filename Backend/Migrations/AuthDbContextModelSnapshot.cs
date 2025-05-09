@@ -47,7 +47,7 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Announcements", (string)null);
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("Backend.Model.Book", b =>
@@ -153,7 +153,7 @@ namespace Backend.Migrations
                     b.HasIndex("ISBN")
                         .IsUnique();
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Backend.Model.Cart", b =>
@@ -183,7 +183,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Backend.Model.Discount", b =>
@@ -212,7 +212,7 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discounts", (string)null);
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("Backend.Model.Order", b =>
@@ -223,25 +223,11 @@ namespace Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BookName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("ClaimCode")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("PickupDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
@@ -258,7 +244,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Backend.Model.OrderItem", b =>
@@ -288,9 +274,6 @@ namespace Backend.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
-
-                    b.ToTable("OrderItems", (string)null);
-
                 });
 
             modelBuilder.Entity("Backend.Model.Review", b =>
@@ -328,7 +311,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Backend.Model.User", b =>
@@ -353,6 +336,9 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -384,6 +370,9 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("VerificationOtp")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -392,7 +381,7 @@ namespace Backend.Migrations
                     b.HasIndex("MembershipId")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Backend.Model.Wishlist", b =>
@@ -419,7 +408,7 @@ namespace Backend.Migrations
                     b.HasIndex("UserId", "BookId")
                         .IsUnique();
 
-                    b.ToTable("Wishlists", (string)null);
+                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("BookDiscount", b =>
@@ -434,7 +423,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("DiscountsId");
 
-                    b.ToTable("BookDiscount", (string)null);
+                    b.ToTable("BookDiscount");
                 });
 
             modelBuilder.Entity("Backend.Model.Cart", b =>
