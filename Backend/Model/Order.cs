@@ -6,7 +6,7 @@ namespace Backend.Model
         public int UserId { get; set; }
         public User User { get; set; }
         public DateTime OrderDate { get; set; }
-        public string Status { get; set; } // Pending, Fulfilled, Cancelled
+        public string Status { get; set; } 
         public decimal TotalAmount { get; set; }
         public string ClaimCode { get; set; }
         public List<OrderItem> OrderItems { get; set; }
