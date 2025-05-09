@@ -14,6 +14,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [otp, setOtp] = useState("");
+  const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
@@ -79,6 +81,28 @@ const Register = () => {
     }
   };
 
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await api.post("/Auth/verify-email", {
+        email: formData.email,
+        otp: otp,
+      });
+      const { token, user } = response.data;
+      login(token, user);
+      setSuccess("Email verified successfully! Redirecting...");
+      setTimeout(() => {
+        navigate(user.role === "Admin" ? "/dashboard" : "/home");
+      }, 2000);
+    } catch (err) {
+      console.error("OTP verification error:", err.response?.data);
+      setError(err.response?.data.message || "Invalid OTP. Please try again.");
+    }
+  };
+
   const handleSocialLogin = (provider) => {
     // TODO: Implement social login (Google/Facebook)
     // Example: Redirect to backend OAuth endpoint (/Auth/google or /Auth/facebook)
@@ -115,6 +139,7 @@ const Register = () => {
             {success}
           </div>
         )}
+        {!isVerificationStep ? (
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -168,6 +193,27 @@ const Register = () => {
             Create account
           </button>
         </form>
+        ) : (
+          <form className="flex flex-col gap-4" onSubmit={handleOtpSubmit}>
+            <input
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
+            >
+              Verify Email
+            </button>
+          </form>
+        )}
+        {!isVerificationStep && (
+          <>
         <div className="my-4 text-sm text-gray-500">OR</div>
         <div className="flex justify-center gap-4">
           <button
@@ -183,6 +229,8 @@ const Register = () => {
             <FcGoogle />
           </button>
         </div>
+        </>
+        )}
       </div>
       <div className="absolute -bottom-10 w-full z-0">
         <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />

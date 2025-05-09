@@ -40,6 +40,7 @@ namespace Backend.Controllers
             }
 
             string membershipId = System.Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+            string otp = new Random().Next(100000, 999999).ToString();
 
             var user = new User
             {
@@ -49,11 +50,52 @@ namespace Backend.Controllers
                 LastName = register.LastName,
                 MembershipId = membershipId,
                 Role = await _context.Users.AnyAsync() ? "User" : "Admin",
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                IsEmailVerified = false,
+                VerificationOtp = otp,
+                OtpExpiration = DateTime.UtcNow.AddMinutes(10)
             };
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+
+            try
+            {
+                await _emailService.SendVerificationEmailAsync(user.Email, user.FirstName, otp);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to send verification email: {ex.Message}");
+            }
+
+            return Ok(new { message = "Registration successful. Please verify your email with the OTP sent." });
+        }
+
+        [HttpPost("verify-email")]
+        public async Task<ActionResult<object>> VerifyEmail(VerifyEmailDTO model)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            if (user.IsEmailVerified)
+            {
+                return BadRequest("Email is already verified.");
+            }
+
+            if (user.VerificationOtp != model.Otp || user.OtpExpiration < DateTime.UtcNow)
+            {
+                return BadRequest("Invalid or expired OTP.");
+            }
+
+            user.IsEmailVerified = true;
+            user.VerificationOtp = null;
+            user.OtpExpiration = null;
+            await _context.SaveChangesAsync();
+
+            var token = _token.GenerateToken(user);
 
             try
             {
@@ -63,8 +105,6 @@ namespace Backend.Controllers
             {
                 Console.WriteLine($"Failed to send welcome email: {ex.Message}");
             }
-
-            var token = _token.GenerateToken(user);
 
             return Ok(new
             {
@@ -96,6 +136,10 @@ namespace Backend.Controllers
             if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
             {
                 return Unauthorized("Invalid email or password.");
+            }
+            if (!user.IsEmailVerified)
+            {
+                return BadRequest("Please verify your email before logging in.");
             }
 
             var token = _token.GenerateToken(user);
