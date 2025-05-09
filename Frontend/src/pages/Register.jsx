@@ -52,12 +52,8 @@ const Register = () => {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
-      const { token, user } = response.data;
-      login(token, user);
-      setSuccess("Registration successful! Redirecting...");
-      setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/login");
-      }, 2000);
+      setSuccess("Registration successful! Please check your email for the OTP.");
+      setIsVerificationStep(true);
     } catch (err) {
       console.error("Registration error:", err.response?.data);
       if (err.response) {
@@ -93,13 +89,27 @@ const Register = () => {
       });
       const { token, user } = response.data;
       login(token, user);
-      setSuccess("Email verified successfully! Redirecting...");
+      setSuccess("Email verified successfully! Redirecting to login...");
       setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/home");
+        navigate("/login");
       }, 2000);
     } catch (err) {
       console.error("OTP verification error:", err.response?.data);
       setError(err.response?.data.message || "Invalid OTP. Please try again.");
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      await api.post("/Auth/resend-otp", {
+        email: formData.email,
+      });
+      setSuccess("OTP resent successfully! Please check your email.");
+    } catch (err) {
+      console.error("Resend OTP error:", err.response?.data);
+      setError(err.response?.data.message || "Failed to resend OTP. Please try again.");
     }
   };
 
@@ -209,6 +219,13 @@ const Register = () => {
               className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
             >
               Verify Email
+            </button>
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              className="text-sm text-[#c7916c] hover:underline"
+            >
+              Resend OTP
             </button>
           </form>
         )}

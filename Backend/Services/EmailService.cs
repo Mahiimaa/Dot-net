@@ -102,11 +102,22 @@ namespace Backend.Services
             var emailSettings = _configuration.GetSection("EmailSettings");
             using (var client = new SmtpClient())
             {
+                try{
                 await client.ConnectAsync(emailSettings["SmtpServer"], int.Parse(emailSettings["SmtpPort"]), MailKit.Security.SecureSocketOptions.StartTls);
                 await client.AuthenticateAsync(emailSettings["SmtpUsername"], emailSettings["SmtpPassword"]);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
+                }
+                catch (Exception ex)
+            {
+                Console.WriteLine($"Email sending failed: {ex.Message}");
+                throw; // Let the caller handle or log this
             }
+                finally
+            {
+                await client.DisconnectAsync(true);
+            }
+                }
         }
     }
 }

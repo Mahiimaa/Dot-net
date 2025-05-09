@@ -7,7 +7,8 @@ using Backend.DTO;
 using Backend.Model;
 using Backend.Services;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
+
 
 namespace Backend.Controllers 
 {
@@ -33,6 +34,17 @@ namespace Backend.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if (register.Password != register.ConfirmPassword)
+            {
+                Console.WriteLine("Passwords do not match.");
+                return BadRequest(new { message = "Passwords do not match." });
+            }
+
+            if (register.Password.Length < 8)
+            {
+                Console.WriteLine("Password too short.");
+                return BadRequest(new { message = "Password must be at least 8 characters long." });
+            }
 
             if (await _context.Users.AnyAsync(u => u.Email == register.Email))
             {
@@ -40,7 +52,7 @@ namespace Backend.Controllers
             }
 
             string membershipId = System.Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
-            string otp = new Random().Next(100000, 999999).ToString();
+            string otp = GenerateOtp();
 
             var user = new User
             {
@@ -66,6 +78,9 @@ namespace Backend.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to send verification email: {ex.Message}");
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return StatusCode(500, new { message = "Failed to send verification email. Please try again." });
             }
 
             return Ok(new { message = "Registration successful. Please verify your email with the OTP sent." });
@@ -120,6 +135,43 @@ namespace Backend.Controllers
                     CreatedAt = user.CreatedAt
                 }
             });
+        }
+
+        [HttpPost("resend-otp")]
+        public async Task<ActionResult<object>> ResendOtp([FromBody] ResendOtpDTO request)
+        {
+            if (!ModelState.IsValid || string.IsNullOrEmpty(request.Email))
+            {
+                return BadRequest(new { message = "Email is required." });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            if (user.IsEmailVerified)
+            {
+                return BadRequest(new { message = "Email is already verified." });
+            }
+
+            // Generate new OTP
+            string otp = new Random().Next(100000, 999999).ToString();
+            user.VerificationOtp = otp;
+            user.OtpExpiration = DateTime.UtcNow.AddMinutes(10);
+            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _emailService.SendVerificationEmailAsync(user.Email, user.FirstName, otp);
+                return Ok(new { message = "OTP resent successfully. Please check your email." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to send verification email: {ex.Message}");
+                return StatusCode(500, new { message = "Failed to send OTP. Please try again later." });
+            }
         }
 
         [HttpPost("login")]
@@ -255,6 +307,13 @@ namespace Backend.Controllers
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password.NewPassword);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Password updated successfully." });
+        }
+        private string GenerateOtp()
+        {
+            byte[] randomBytes = new byte[4];
+            RandomNumberGenerator.Fill(randomBytes);
+            int number = BitConverter.ToInt32(randomBytes, 0) & 0x7FFFFFFF;
+            return (number % 900000 + 100000).ToString();
         }
     }
 }
