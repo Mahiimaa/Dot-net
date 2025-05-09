@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import api from '../api/axios';
 
-function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navigate, hasPurchased }) {
+function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navigate, hasPurchased, isCheckingPurchase }) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
@@ -19,13 +19,20 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
         bookId: book.id,
         rating,
         comment,
-        memberName: currentUser?.name || 'User',
       };
-      const response = await api.post('/api/Reviews', newReview);
-      setReviews([...reviews, { ...newReview, id: response.data.id, userId: currentUser?.id || 'unknown' }]);
+      console.log('Submitting review:', newReview);
+      const response = await api.post('http://localhost:5127/api/Reviews', newReview);
+      console.log('Review submission response:', response.data);
+      const reviewsResponse = await api.get(`http://localhost:5127/api/Reviews?bookId=${book.id}`);
+      setReviews(reviewsResponse.data || []);
       setComment('');
       setRating(0);
     } catch (err) {
+      console.error('Review submission error:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message,
+      });
       alert(err.response?.data?.error || 'Failed to submit review.');
       console.error('Review error:', err.response?.status, err.response?.data || err.message);
     } finally {
@@ -39,7 +46,7 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
       return;
     }
     try {
-      await api.delete(`/api/Reviews/${reviewId}`);
+      await api.delete(`http://localhost:5127/api/Reviews/${reviewId}`);
       setReviews(reviews.filter(review => review.id !== reviewId));
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to delete review.');
@@ -69,6 +76,10 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
 
   return (
     <div className="space-y-8">
+      {isCheckingPurchase ? (
+      <p className="text-gray-600">Checking purchase status...</p>
+    ) : (
+      <>
       <div>
         <h3 className="text-xl font-semibold text-gray-900 mb-3">Average Rating</h3>
         <div className="flex items-center gap-4">
@@ -143,6 +154,8 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
           ))
         )}
       </div>
+      </>
+    )}
     </div>
   );
 }
