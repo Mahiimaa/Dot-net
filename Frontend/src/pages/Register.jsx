@@ -52,19 +52,9 @@ const Register = () => {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
-
-      const { token, user } = response.data;
-      login(token, user);
-      setSuccess("Registration successful! Redirecting...");
-      setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/login");
-      }, 2000);
-
-      setSuccess("Registration successful! Please check your email for the OTP.");
+       setSuccess("Registration successful! Please check your email for the OTP.");
       setIsVerificationStep(true);
-
     } catch (err) {
-      console.error("Registration error:", err.response?.data);
       if (err.response) {
         if (err.response.status === 409) {
           setError("An account with this email already exists.");
