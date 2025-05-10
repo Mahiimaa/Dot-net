@@ -21,11 +21,11 @@ function AdminDashboard() {
         try {
           const [booksRes, inventoryRes, discountsRes, announcementsRes, ordersRes] =
             await Promise.all([
-              axios.get("http://localhost:5000/api/books"),
-              axios.get("http://localhost:5000/api/inventory"),
-              axios.get("http://localhost:5000/api/discounts"),
-              axios.get("http://localhost:5000/api/announcements"),
-              axios.get("http://localhost:5000/api/orders"),
+              axios.get("http://localhost:5127/api/books"),
+              axios.get("http://localhost:5127/api/inventory"),
+              axios.get("http://localhost:5127/api/discounts"),
+              axios.get("http://localhost:5127/api/announcements"),
+              axios.get("http://localhost:5127/api/orders"),
             ]);
     
           const readyOrders = ordersRes.data.filter(
