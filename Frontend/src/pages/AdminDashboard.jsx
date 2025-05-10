@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import AdminNav from "../Components/AdminNavbar"
 import AdminTop from "../Components/AdminTop"
-import { PackageCheck, DollarSign, BookOpenText, Megaphone, ClipboardList, Gift, ShoppingCart } from "lucide-react";
+import { PackageCheck, DollarSign, BookOpenText, Megaphone, ClipboardList, Gift, ShoppingCart, Users } from "lucide-react";
 import axios from "axios";
 
 function AdminDashboard() {
@@ -13,44 +13,77 @@ function AdminDashboard() {
         orders: 0,
         readyOrders: 0,
         revenue: 0,
+        users: 0,
       });
 
       const [recentOrders, setRecentOrders] = useState([]);
+      const [isLoading, setIsLoading] = useState(true);
+      const [error, setError] = useState(null);
     
       const fetchDashboardStats = async () => {
+        setIsLoading(true);
+        setError(null);
         try {
-          const [booksRes, inventoryRes, discountsRes, announcementsRes, ordersRes] =
+          const token = localStorage.getItem("token");
+          const config = {
+            headers: { Authorization: `Bearer ${token}` }
+    };
+          const [booksRes, inventoryRes, discountsRes, announcementsRes, ordersRes, usersRes] =
             await Promise.all([
-              axios.get("http://localhost:5000/api/books"),
-              axios.get("http://localhost:5000/api/inventory"),
-              axios.get("http://localhost:5000/api/discounts"),
-              axios.get("http://localhost:5000/api/announcements"),
-              axios.get("http://localhost:5000/api/orders"),
+              axios.get("http://localhost:5127/api/books", config),
+              axios.get("http://localhost:5127/api/inventory" , config),
+              axios.get("http://localhost:5127/api/discounts", config),
+              axios.get("http://localhost:5127/api/announcements", config),
+              axios.get("http://localhost:5127/api/Order/all", config),
+              axios.get("http://localhost:5127/api/users", config),
             ]);
-    
-          const readyOrders = ordersRes.data.filter(
-            (order) => order.status === "Ready for Pickup"
-          );
-          const totalRevenue = ordersRes.data.reduce(
-            (sum, o) => sum + Number(o.totalAmount || 0),
-            0
-          );
-    
-          const recent = ordersRes.data.slice(0, 5); // latest 5
-    
-          setStats({
-            books: booksRes.data.length,
-            inventory: inventoryRes.data.length,
-            discounts: discountsRes.data.length,
-            announcements: announcementsRes.data.length,
-            orders: ordersRes.data.length,
-            readyOrders: readyOrders.length,
-            revenue: totalRevenue,
-          });
-    
+            if (!booksRes.data || !ordersRes.data) {
+              throw new Error("Invalid data from API");
+            }
+            const booksData = booksRes.data?.books || booksRes.data || [];
+            const inventoryData = inventoryRes.data?.inventory || inventoryRes.data || [];
+            const discountsData = discountsRes.data?.discounts || discountsRes.data || [];
+            const announcementsData = announcementsRes.data?.announcements || announcementsRes.data || [];
+            const ordersData = ordersRes.data?.orders || ordersRes.data || [];
+            const usersData = usersRes.data?.users || usersRes.data || [];
+
+            console.log("Processed booksData:", booksData);
+            console.log("Processed ordersData:", ordersData);
+
+            const readyOrders = ordersData.filter(order => order.Status === "Ready for Pickup") || [];
+            const totalRevenue = ordersData.reduce((sum, o) => sum + Number(o.totalAmount || 0), 0) || 0;
+            const recent = ordersData.slice(0, 5).map(o => {
+            console.log("Order books for ID", o.id, ":", o.books); // Detailed logging
+            return {
+              id: o.id,
+              customerName: o.userName,
+              bookName: o.books?.map(book => book.book?.title).filter(Boolean).join(", ") || "N/A",
+              totalAmount: o.totalAmount,
+              status: o.status
+            };
+          }) || [];
+
+           console.log("Recent Orders:", recent);
+            setStats({
+              books: booksData.length || 0,
+              inventory: inventoryData.length || 0,
+              discounts: discountsData.length || 0,
+              announcements: announcementsData.length || 0,
+              orders: ordersData.length || 0,
+              readyOrders: readyOrders.length,
+              revenue: totalRevenue,
+              users: usersData.length || 0,
+            });
           setRecentOrders(recent);
+          setIsLoading(false);
         } catch (err) {
-          console.error("Failed to load dashboard stats", err);
+          console.error("Failed to load dashboard stats", {
+            message: err.message,
+            status: err.response?.status,
+            data: err.response?.data,
+          });
+          setError(`Failed to load dashboard data: ${err.response?.status || err.message}`);
+          setIsLoading(false);
         }
       };
     
@@ -63,6 +96,12 @@ function AdminDashboard() {
         <div className='flex-1 flex flex-col'>
         <AdminTop />
         <div className="p-6 space-y-8 overflow-y-auto">
+          {isLoading ? (
+            <p className="text-center text-gray-500">Loading dashboard...</p>
+          ) : error ? (
+            <p className="text-center text-red-500">{error}</p>
+          ) : (
+            <>
           {/* Dashboard Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <StatCard label="Total Books" value={stats.books} icon={<BookOpenText />} color="bg-blue-100" />
@@ -72,6 +111,12 @@ function AdminDashboard() {
             <StatCard label="Total Orders" value={stats.orders} icon={<ShoppingCart />} color="bg-sky-100" />
             <StatCard label="Ready for Pickup" value={stats.readyOrders} icon={<ClipboardList />} color="bg-green-100" />
             <StatCard label="Total Revenue" value={`Rs. ${stats.revenue}`} icon={<DollarSign />} color="bg-emerald-100" />
+            <StatCard
+                  label="Total Users"
+                  value={stats.users}
+                  icon={<Users />}
+                  color="bg-indigo-100"
+                />
           </div>
 
           {/* Recent Orders */}
@@ -116,6 +161,8 @@ function AdminDashboard() {
               </div>
             )}
           </div>
+          </>
+          )}
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ import {
 
 const Sidebar = () => {
   const navItems = [
-    { name: "Home", icon: <Home size={18} />, path: "/" },
+    { name: "Home", icon: <Home size={18} />, path: "/dashboard" },
     { name: "Books", icon: <BookOpen size={18} />, path: "/adminbook" },
     { name: "Inventory", icon: <Package size={18} />, path: "/inventory" },
     { name: "Discounts & Sales", icon: <Percent size={18} />, path: "/discounts" },
