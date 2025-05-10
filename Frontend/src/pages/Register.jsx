@@ -14,6 +14,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [otp, setOtp] = useState("");
+  const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
@@ -48,14 +50,19 @@ const Register = () => {
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
-        confirmPassword: formData.confirmPassword, 
+        confirmPassword: formData.confirmPassword,
       });
+
       const { token, user } = response.data;
       login(token, user);
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/");
+        navigate(user.role === "Admin" ? "/dashboard" : "/login");
       }, 2000);
+
+      setSuccess("Registration successful! Please check your email for the OTP.");
+      setIsVerificationStep(true);
+
     } catch (err) {
       console.error("Registration error:", err.response?.data);
       if (err.response) {
@@ -76,6 +83,42 @@ const Register = () => {
       } else {
         setError("Unable to connect to the server. Please check your connection.");
       }
+    }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await api.post("/Auth/verify-email", {
+        email: formData.email,
+        otp: otp,
+      });
+      const { token, user } = response.data;
+      login(token, user);
+      setSuccess("Email verified successfully! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      console.error("OTP verification error:", err.response?.data);
+      setError(err.response?.data.message || "Invalid OTP. Please try again.");
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      await api.post("/Auth/resend-otp", {
+        email: formData.email,
+      });
+      setSuccess("OTP resent successfully! Please check your email.");
+    } catch (err) {
+      console.error("Resend OTP error:", err.response?.data);
+      setError(err.response?.data.message || "Failed to resend OTP. Please try again.");
     }
   };
 
@@ -115,6 +158,7 @@ const Register = () => {
             {success}
           </div>
         )}
+        {!isVerificationStep ? (
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -168,6 +212,34 @@ const Register = () => {
             Create account
           </button>
         </form>
+        ) : (
+          <form className="flex flex-col gap-4" onSubmit={handleOtpSubmit}>
+            <input
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
+            >
+              Verify Email
+            </button>
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              className="text-sm text-[#c7916c] hover:underline"
+            >
+              Resend OTP
+            </button>
+          </form>
+        )}
+        {!isVerificationStep && (
+          <>
         <div className="my-4 text-sm text-gray-500">OR</div>
         <div className="flex justify-center gap-4">
           <button
@@ -183,6 +255,8 @@ const Register = () => {
             <FcGoogle />
           </button>
         </div>
+        </>
+        )}
       </div>
       <div className="absolute -bottom-10 w-full z-0">
         <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />

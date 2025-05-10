@@ -11,7 +11,7 @@ namespace Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    // [Authorize(Roles = "Admin")] // Removed temporarily for testing; re-add for production
+    // [Authorize(Roles = "Admin")] 
     public class BooksController : ControllerBase
     {
         private readonly AuthDbContext _context;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { GiSpellBook } from "react-icons/gi";
 import axios from 'axios';
 
 const Navbar = () => {
@@ -32,20 +33,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
-          <svg
-            className="w-6 h-6 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-            />
-          </svg>
+        <GiSpellBook className="w-8 h-8 text-green-700" />
           <span className="text-xl font-bold text-green-700">Foliana</span>
         </div>
 

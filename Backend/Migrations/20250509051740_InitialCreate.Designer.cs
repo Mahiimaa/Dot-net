@@ -12,10 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-:Backend/Migrations/20250506052142_initialMigrations.Designer.cs
+<<<<<<<< HEAD:Backend/Migrations/20250506052142_initialMigrations.Designer.cs
     [Migration("20250506052142_initialMigrations")]
     partial class initialMigrations
-
+========
     [Migration("20250509051740_InitialCreate")]
     partial class InitialCreate
 >>>>>>>> 42a0cdedc2dd44e6c5811c55d1a2fd5fccbd3733:Backend/Migrations/20250509051740_InitialCreate.Designer.cs

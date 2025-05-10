@@ -40,6 +40,9 @@ public class User {
     public string? Phone { get; set; }
     public string? Bio { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsEmailVerified { get; set; }
+    public string? VerificationOtp { get; set; }
 }
 
 // internal class keyAttribute : Attribute
