@@ -30,9 +30,11 @@ import './App.css';
 import { useContext } from 'react';
 import Book from './pages/Book';
 import Review from './pages/Members/Review';
+import Aboutus from './pages/Aboutus';
 import Reviews from './pages/Review';
 import Addcart from './pages/Members/Addcart';
 import StaffOrderPortal from './pages/StaffOrderPortal';
+import Bestseller from './pages/Bestseller';
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -54,9 +56,10 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Layout/>} />
+          <Route path="/layout" element={<Layout/>} />
           <Route path="/BookList" element={<BookList/>} />
           <Route path="/" element={<Home />} />
+          <Route path="/bestsellers" element={<Bestseller />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
@@ -74,6 +77,7 @@ function App() {
           <Route path="/staff/orders" element={<StaffOrderPortal />} />
           <Route path="/addcart" element={<AddCart/>} />
           <Route path="/reviews" element={<Review />} />
+          <Route path="/aboutus" element={<Aboutus/>}/>
           <Route path="*" element={<div>404 - Page Not Found</div>} />
 
 

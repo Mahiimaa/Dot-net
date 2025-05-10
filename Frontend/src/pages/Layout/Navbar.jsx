@@ -51,6 +51,7 @@ const Navbar = () => {
           <a href="/book" className="text-gray-600 hover:text-green-700 transition">Books</a>
           <a href="/authors" className="text-gray-600 hover:text-green-700 transition">Authors</a>
           <a href="/genres" className="text-gray-600 hover:text-green-700 transition">Genres</a>
+          <a href="/aboutus" className='text-gray-600 hover:text-greeb-700 transition'> About US</a>
           <button className="bg-teal-100 text-teal-800 px-4 py-1 rounded-full hover:bg-teal-200 transition">
             Shop
           </button>
