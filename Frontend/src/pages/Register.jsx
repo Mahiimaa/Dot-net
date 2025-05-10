@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF } from "react-icons/fa";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import api from "../api/axios";
 
 const Register = () => {
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -12,6 +14,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [otp, setOtp] = useState("");
+  const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
@@ -25,14 +29,23 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
+  
+    // Client-side validation
+    if (!formData.firstName || !formData.lastName || !formData.email) {
+      setError("Please fill in all required fields.");
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+  
     try {
-      const response = await axios.post("http://localhost:5127/Auth/register", {
+      const response = await api.post("/Auth/register", {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -41,17 +54,29 @@ const Register = () => {
       });
 
       const { token, user } = response.data;
-      localStorage.setItem("token", token);
+      login(token, user);
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
-        navigate("/login");
+        navigate(user.role === "Admin" ? "/dashboard" : "/login");
       }, 2000);
+
+      setSuccess("Registration successful! Please check your email for the OTP.");
+      setIsVerificationStep(true);
+
     } catch (err) {
+      console.error("Registration error:", err.response?.data);
       if (err.response) {
         if (err.response.status === 409) {
           setError("An account with this email already exists.");
         } else if (err.response.status === 400) {
-          setError("Please provide valid registration details.");
+          // Improved error handling for validation errors
+          const errors = err.response.data.errors;
+          if (errors) {
+            const errorMessages = Object.values(errors).flat().join(", ");
+            setError(errorMessages || "Please provide valid registration details.");
+          } else {
+            setError(err.response.data.message || "Please provide valid registration details.");
+          }
         } else {
           setError(err.response.data.message || "Registration failed. Please try again.");
         }
@@ -59,6 +84,48 @@ const Register = () => {
         setError("Unable to connect to the server. Please check your connection.");
       }
     }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await api.post("/Auth/verify-email", {
+        email: formData.email,
+        otp: otp,
+      });
+      const { token, user } = response.data;
+      login(token, user);
+      setSuccess("Email verified successfully! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      console.error("OTP verification error:", err.response?.data);
+      setError(err.response?.data.message || "Invalid OTP. Please try again.");
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      await api.post("/Auth/resend-otp", {
+        email: formData.email,
+      });
+      setSuccess("OTP resent successfully! Please check your email.");
+    } catch (err) {
+      console.error("Resend OTP error:", err.response?.data);
+      setError(err.response?.data.message || "Failed to resend OTP. Please try again.");
+    }
+  };
+
+  const handleSocialLogin = (provider) => {
+    // TODO: Implement social login (Google/Facebook)
+    // Example: Redirect to backend OAuth endpoint (/Auth/google or /Auth/facebook)
+    alert(`Social login with ${provider} is not implemented yet.`);
   };
 
   return (
@@ -91,6 +158,7 @@ const Register = () => {
             {success}
           </div>
         )}
+        {!isVerificationStep ? (
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -137,7 +205,6 @@ const Register = () => {
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
             required
           />
-          {/* <div className="text-right text-xs text-green-600 cursor-pointer">Forgot password?</div> */}
           <button
             type="submit"
             className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
@@ -145,15 +212,51 @@ const Register = () => {
             Create account
           </button>
         </form>
+        ) : (
+          <form className="flex flex-col gap-4" onSubmit={handleOtpSubmit}>
+            <input
+              type="text"
+              name="otp"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
+            >
+              Verify Email
+            </button>
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              className="text-sm text-[#c7916c] hover:underline"
+            >
+              Resend OTP
+            </button>
+          </form>
+        )}
+        {!isVerificationStep && (
+          <>
         <div className="my-4 text-sm text-gray-500">OR</div>
         <div className="flex justify-center gap-4">
-          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+          <button
+            onClick={() => handleSocialLogin("Facebook")}
+            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
+          >
             <FaFacebookF className="text-blue-600" />
           </button>
-          <button className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition">
+          <button
+            onClick={() => handleSocialLogin("Google")}
+            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
+          >
             <FcGoogle />
           </button>
         </div>
+        </>
+        )}
       </div>
       <div className="absolute -bottom-10 w-full z-0">
         <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />
@@ -184,7 +287,7 @@ const Register = () => {
           />
         </svg>
       </div>
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;

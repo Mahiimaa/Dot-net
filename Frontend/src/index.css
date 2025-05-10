@@ -118,3 +118,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* index.css */
+
+/* Hide horizontal scrollbar */
+.custom-hide-scrollbar {
+  /* Hide horizontal scrollbar in all browsers */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.custom-hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import api from '../api/axios';
 
-function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navigate }) {
+function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navigate, hasPurchased, isCheckingPurchase }) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
@@ -19,13 +19,20 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
         bookId: book.id,
         rating,
         comment,
-        memberName: currentUser?.name || 'User',
       };
-      const response = await api.post('/api/Reviews', newReview);
-      setReviews([...reviews, { ...newReview, id: response.data.id, userId: currentUser?.id || 'unknown' }]);
+      console.log('Submitting review:', newReview);
+      const response = await api.post('http://localhost:5127/api/Reviews', newReview);
+      console.log('Review submission response:', response.data);
+      const reviewsResponse = await api.get(`http://localhost:5127/api/Reviews?bookId=${book.id}`);
+      setReviews(reviewsResponse.data || []);
       setComment('');
       setRating(0);
     } catch (err) {
+      console.error('Review submission error:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message,
+      });
       alert(err.response?.data?.error || 'Failed to submit review.');
       console.error('Review error:', err.response?.status, err.response?.data || err.message);
     } finally {
@@ -39,7 +46,7 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
       return;
     }
     try {
-      await api.delete(`/api/Reviews/${reviewId}`);
+      await api.delete(`http://localhost:5127/api/Reviews/${reviewId}`);
       setReviews(reviews.filter(review => review.id !== reviewId));
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to delete review.');
@@ -69,6 +76,10 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
 
   return (
     <div className="space-y-8">
+      {isCheckingPurchase ? (
+      <p className="text-gray-600">Checking purchase status...</p>
+    ) : (
+      <>
       <div>
         <h3 className="text-xl font-semibold text-gray-900 mb-3">Average Rating</h3>
         <div className="flex items-center gap-4">
@@ -82,30 +93,39 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
         </p>
       </div>
 
-      {isAuthenticated && (
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Share Your Thoughts</h3>
-          <div className="mb-4">
-            <p className="text-gray-700 mb-2">Your Rating</p>
-            {renderStars(rating, true, setRating)}
+      {isAuthenticated ? (
+        hasPurchased ? (
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Share Your Thoughts</h3>
+            <div className="mb-4">
+              <p className="text-gray-700 mb-2">Your Rating</p>
+              {renderStars(rating, true, setRating)}
+            </div>
+            <textarea
+              className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="4"
+              placeholder="Write your review..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              aria-label="Write your review"
+            />
+            <button
+              className="mt-4 bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              onClick={handleAddComment}
+              disabled={isSubmittingReview || !comment.trim() || rating < 1}
+            >
+              Submit Review
+            </button>
           </div>
-          <textarea
-            className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows="4"
-            placeholder="Write your review..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            aria-label="Write your review"
-          />
-          <button
-            className="mt-4 bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-            onClick={handleAddComment}
-            disabled={isSubmittingReview || !comment.trim() || rating < 1}
-          >
-            Submit Review
-          </button>
-        </div>
+        ) : (
+          <p className="text-sm text-gray-500 italic">
+            You must purchase this book to leave a review.
+          </p>
+        )
+      ) : (
+        <p className="text-sm text-gray-500 italic">Please log in to leave a review.</p>
       )}
+
 
       <div className="space-y-6">
         {reviews.length === 0 ? (
@@ -134,6 +154,8 @@ function Review({ book, reviews, setReviews, currentUser, isAuthenticated, navig
           ))
         )}
       </div>
+      </>
+    )}
     </div>
   );
 }

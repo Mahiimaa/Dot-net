@@ -36,6 +36,13 @@ public class User {
     public string MembershipId { get; set; } = string.Empty;
     public string? ResetOtp { get; set; } // Store the OTP
     public DateTime? OtpExpiration { get; set; } // OTP expiration time
+    public string? ProfileImageUrl { get; set; }
+    public string? Phone { get; set; }
+    public string? Bio { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsEmailVerified { get; set; }
+    public string? VerificationOtp { get; set; }
 }
 
 // internal class keyAttribute : Attribute

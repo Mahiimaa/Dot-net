@@ -9,4 +9,11 @@ public class UserDTO {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string MembershipId { get; set; } = string.Empty; 
+    public string? ProfileImageUrl { get; set; }
+    public string? Phone { get; set; } // Added
+    public string? Bio { get; set; }
+    public DateTime CreatedAt { get; set; }
+
+    
+
 }
