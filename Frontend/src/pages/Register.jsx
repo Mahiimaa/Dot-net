@@ -54,7 +54,7 @@ const Register = () => {
       login(token, user);
       setSuccess("Registration successful! Redirecting...");
       setTimeout(() => {
-        navigate(user.role === "Admin" ? "/dashboard" : "/");
+        navigate(user.role === "Admin" ? "/dashboard" : "/login");
       }, 2000);
     } catch (err) {
       console.error("Registration error:", err.response?.data);
