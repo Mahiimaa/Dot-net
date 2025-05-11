@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { GiSpellBook } from "react-icons/gi";
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
   // Check authentication status on component mount
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -27,6 +27,8 @@ const Navbar = () => {
     setMenuOpen(false); // Close mobile menu on logout
     navigate('/login');
   };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <nav className="bg-white shadow-md px-4 py-3 md:px-8">
@@ -47,11 +49,21 @@ const Navbar = () => {
 
         {/* Navigation Links - Desktop */}
         <div className="hidden md:flex space-x-6 items-center">
-          <a href="/" className="text-gray-600 hover:text-green-700 transition">Home</a>
-          <a href="/book" className="text-gray-600 hover:text-green-700 transition">Books</a>
-          <a href="/authors" className="text-gray-600 hover:text-green-700 transition">Authors</a>
-          <a href="/genres" className="text-gray-600 hover:text-green-700 transition">Genres</a>
-          <a href="/aboutus" className='text-gray-600 hover:text-greeb-700 transition'> About US</a>
+          <a href="/" className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/') ? 'text-green-700 font-semibold' : ''
+            }`} > Home</a>
+          <a href="/book" className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/book') ? 'text-green-700 font-semibold' : ''
+            }`}>Books</a>
+          <a href="/authors" className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/authors') ? 'text-green-700 font-semibold' : ''
+            }`}>Authors</a>
+          <a href="/genres" className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/genres') ? 'text-green-700 font-semibold' : ''
+            }`}>Genres</a>
+          <a href="/aboutus" className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/aboutus') ? 'text-green-700 font-semibold' : ''
+            }`}> About US</a>
           <button className="bg-teal-100 text-teal-800 px-4 py-1 rounded-full hover:bg-teal-200 transition">
             Shop
           </button>
@@ -104,11 +116,47 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden mt-3 flex flex-col space-y-3">
-          <a href="#" className="text-gray-600 hover:text-green-700">Home</a>
-          <a href="#" className="text-gray-600 hover:text-green-700">Books</a>
-          <a href="#" className="text-gray-600 hover:text-green-700">Authors</a>
-          <a href="#" className="text-gray-600 hover:text-green-700">Genres</a>
-          <button className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full hover:bg-teal-200 transition w-max">
+         <a
+            href="/"
+            className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/') ? 'text-green-700 font-semibold' : ''
+            }`}
+          >
+            Home
+          </a>
+          <a
+            href="/book"
+            className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/book') ? 'text-green-700 font-semibold' : ''
+            }`}
+          >
+            Books
+          </a>
+          <a
+            href="/authors"
+            className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/authors') ? 'text-green-700 font-semibold' : ''
+            }`}
+          >
+            Authors
+          </a>
+          <a
+            href="/genres"
+            className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/genres') ? 'text-green-700 font-semibold' : ''
+            }`}
+          >
+            Genres
+          </a>
+          <a
+            href="/aboutus"
+            className={`text-gray-600 hover:text-green-700 transition ${
+              isActive('/aboutus') ? 'text-green-700 font-semibold' : ''
+            }`}
+          >
+            About Us
+          </a>
+          <button className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full hover:bg-teal这场-200 transition w-max">
             Shop
           </button>
           {isLoggedIn ? (
