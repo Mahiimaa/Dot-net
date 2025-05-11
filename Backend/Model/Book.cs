@@ -52,6 +52,7 @@ namespace Backend.Model
         public bool IsBestseller { get; set; } = false;
         public bool IsAwardWinner { get; set; } = false;
         public bool IsComingSoon { get; set; } = false;
+        public bool IsFeatured { get; set; } = false;
         public DateTime? PublishDate { get; set; }
 
         public List<Discount> Discounts { get; set; } = new();

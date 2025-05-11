@@ -45,6 +45,7 @@ namespace Backend.DTO
         public bool IsBestseller { get; set; } = false;
         public bool IsAwardWinner { get; set; } = false;
         public bool IsComingSoon { get; set; } = false;
+        public bool IsFeatured { get; set; } = false;
         public DateTime? PublishDate { get; set; }
         public int? TotalSold { get; set; }
     }
