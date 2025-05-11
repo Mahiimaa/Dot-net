@@ -66,6 +66,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddSignalR();
+builder.Services.AddHostedService<CleanupService>(); // Register CleanupService
 
 var app = builder.Build();
 

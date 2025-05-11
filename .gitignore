@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # === BACKEND (.NET) ===
 Backend/bin/
 Backend/obj/
@@ -6,6 +5,8 @@ Backend/obj/
 *.suo
 *.userosscache
 *.sln.docstates
+# EF Core migrations
+Backend/Migrations/
 
 # === FRONTEND (Node/React) ===
 Frontend/node_modules/
@@ -30,23 +31,5 @@ Thumbs.db
 # === OTHERS ===
 *.cache
 *.tmp
-=======
-<<<<<<< HEAD
-Backend/obj/
-Backend/bin/
-=======
-# Backend build folders
-Backend/obj/
-Backend/bin/
-
-# Frontend dependencies and builds
-Frontend/node_modules/
-dist/
 build/
-.vscode/
-.DS_Store
-
-# Logs
-*.log
->>>>>>> 3363d76d12ef93236d4a5a22be94c3cbeed93120
->>>>>>> c09de56424264ad8ac758808609d42f22a8bcb88
+dist/

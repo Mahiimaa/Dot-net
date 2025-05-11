@@ -20,7 +20,7 @@ const Account = () => {
     { name: "Account Overview", path: "/account" },
     { name: "Orders", path: "/order" },
     { name: "Wishlist", path: "/wishlist" },
-    { name: "Reviews", path: "/reviews" },
+    { name: "Reviews", path: "/review" },
     { name: "Settings", path: "/settings" },
   ];
 
