@@ -25,7 +25,9 @@ public class UsersController : ControllerBase
                 {
                     u.Id,
                     u.FirstName,
-                    u.LastName
+                    u.LastName,
+                    u.Role,
+                    u.Email
                 })
                 .ToListAsync();
             return Ok(users);
