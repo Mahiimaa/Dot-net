@@ -60,7 +60,7 @@ function Discounts() {
         setStartDate("");
         setEndDate("");
         setOnSale(false);
-        setEditSelectedBooks([]);
+        setSelectedBooks([]);
         } catch (err) {
         console.error("Add discount failed:", err);
         }
@@ -257,6 +257,7 @@ function Discounts() {
                 </div>
                 <div className="col-span-2">
                 <label className="block font-medium">Applicable Books</label>
+                {Array.isArray(books) && books.length > 0 ? (
                 <select
                     multiple
                     className="w-full border p-2 rounded"
@@ -271,6 +272,9 @@ function Discounts() {
                     </option>
                     ))}
                 </select>
+                ) : (
+                      <p className="text-gray-500">No books available</p>
+                    )}
                 </div>
 
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
@@ -357,6 +361,7 @@ function Discounts() {
                 </div>
                 <div className="col-span-2">
                     <label className="block font-medium">Applicable Books</label>
+                    {Array.isArray(books) && books.length > 0 ? (
                     <select
                         multiple
                         className="w-full border p-2 rounded"
@@ -371,6 +376,9 @@ function Discounts() {
                         </option>
                         ))}
                     </select>
+                    ) : (
+                      <p className="text-gray-500">No books available</p>
+                    )}
                     </div>
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
                 <button

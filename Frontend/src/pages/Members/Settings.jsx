@@ -225,10 +225,10 @@ const Settings = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-
-      <div className="flex gap-8 mt-8">
+      <div className="max-w-7xl mx-auto p-6">
+      <div className="flex gap-6 mt-8">
         <SideProfile />
 
         <div className="w-3/4 relative">
@@ -398,6 +398,7 @@ const Settings = () => {
             </>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

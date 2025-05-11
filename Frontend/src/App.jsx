@@ -1,8 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { SignalRProvider } from './context/SignalRContext';
 import { useContext } from 'react';
-import ProtectedRoute from './Components/ProtectedRoute';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
@@ -29,10 +28,26 @@ import Settings from './pages/Members/Settings';
 import Genres from './pages/Genres';
 import Book from './pages/Book';
 import Review from './pages/Members/Review';
+import Aboutus from './pages/Aboutus';
 import Reviews from './pages/Review';
 import StaffOrderPortal from './pages/StaffOrderPortal';
 import BroadcastMessages from './Components/BroadcastMessages';
+import Bestseller from './pages/Bestseller';
 import './App.css';
+
+// ProtectedRoute Component
+const ProtectedRoute = ({ children, adminOnly, allowedRoles = [] }) => {
+  const { isAuthenticated, user } = useContext(AuthContext);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  // If adminOnly is true, set allowedRoles to ['Admin']
+  const roles = adminOnly ? ['Admin'] : allowedRoles;
+  if (roles.length > 0 && user?.role && !roles.includes(user.role)) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
 function RoutesWithNotifications() {
   const { isAuthenticated, user, loading } = useContext(AuthContext);
@@ -54,9 +69,11 @@ function RoutesWithNotifications() {
     <>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Layout />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/layout" element={<Layout />} />
         <Route path="/BookList" element={<BookList />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/bestsellers" element={<Bestseller />} />
+        <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
@@ -71,12 +88,19 @@ function RoutesWithNotifications() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/order" element={<Order />} />
-        <Route path="/staff/orders" element={<StaffOrderPortal />} />
         <Route path="/addcart" element={<AddCart />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
 
-        {/* Admin Routes (Protected) */}
+        {/* Protected Routes */}
+        <Route
+          path="/staff/orders"
+          element={
+            <ProtectedRoute allowedRoles={['Admin', 'Staff']}>
+              <StaffOrderPortal />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={

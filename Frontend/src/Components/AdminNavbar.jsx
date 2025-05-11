@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import {
   Home,
   BookOpen,
@@ -11,19 +12,18 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
-import { AuthContext } from "../context/AuthContext";
 
 const Sidebar = () => {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); 
-    navigate("/login"); 
+    logout();
+    navigate("/login");
   };
 
-  const navItems = [
-    { name: "Home", icon: <Home size={18} />, path: "/" },
+  const allNavItems = [
+    { name: "Home", icon: <Home size={18} />, path: "/dashboard" },
     { name: "Books", icon: <BookOpen size={18} />, path: "/adminbook" },
     { name: "Inventory", icon: <Package size={18} />, path: "/inventory" },
     { name: "Discounts & Sales", icon: <Percent size={18} />, path: "/discounts" },
@@ -33,6 +33,10 @@ const Sidebar = () => {
     { name: "Review", icon: <MessageSquare size={18} />, path: "/adminReview" },
     { name: "Settings", icon: <Settings size={18} />, path: "/adminSettings" },
   ];
+
+  const navItems = user?.role === "Staff"
+    ? allNavItems.filter(item => item.path === "/staff/orders")
+    : allNavItems;
 
   return (
     <div className="w-60 bg-[#07375c] text-white flex flex-col h-full">

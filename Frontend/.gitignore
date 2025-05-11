@@ -11,6 +11,9 @@ dist
 dist-ssr
 *.local
 
+# Migrations
+Backend/Migrations/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

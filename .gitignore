@@ -1,11 +1,15 @@
 # === BACKEND (.NET) ===
 Backend/bin/
 Backend/obj/
+
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 # EF Core migrations
+Backend/Migrations/
+
+# === EF Core Migrations ===
 Backend/Migrations/
 
 # === FRONTEND (Node/React) ===

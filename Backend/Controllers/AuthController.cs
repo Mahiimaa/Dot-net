@@ -314,5 +314,72 @@ namespace Backend.Controllers
             int number = BitConverter.ToInt32(randomBytes, 0) & 0x7FFFFFFF;
             return (number % 900000 + 100000).ToString();
         }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpPost("assign-staff/{userId}")]
+        public async Task<IActionResult> AssignStaffRole(int userId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { error = "User identity not found." });
+            }
+
+            var currentUserId = int.Parse(userIdClaim.Value);
+            var currentUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == currentUserId);
+            if (currentUser == null || currentUser.Role != "Admin")
+            {
+                return Unauthorized(new { error = "Only admins can assign staff roles." });
+            }
+
+            var userToUpdate = await _context.Users.FindAsync(userId);
+            if (userToUpdate == null)
+            {
+                return NotFound(new { error = "User not found." });
+            }
+
+            if (userToUpdate.Role == "Admin")
+            {
+                return BadRequest(new { error = "Cannot change the role of an admin." });
+            }
+
+            userToUpdate.Role = "Staff";
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"User {userToUpdate.FirstName} {userToUpdate.LastName} has been assigned the Staff role." });
+        }
+        
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpPost("remove-staff/{userId}")]
+        public async Task<IActionResult> RemoveStaffRole(int userId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { error = "User identity not found." });
+            }
+            var currentUserId = int.Parse(userIdClaim.Value);
+            var currentUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == currentUserId);
+            if (currentUser == null || currentUser.Role != "Admin")
+            {
+                return Unauthorized(new { error = "Only admins can remove staff role." });
+            }
+
+            var userToUpdate = await _context.Users.FindAsync(userId);
+            if (userToUpdate == null)
+            {
+                return NotFound(new { error = "User not found." });
+            }
+
+            if (userToUpdate.Role != "Staff")
+            {
+                return BadRequest(new { error = "User is not a staff member." });
+            }
+
+            userToUpdate.Role = "User"; 
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"User {userToUpdate.FirstName} {userToUpdate.LastName}'s staff role has been removed." });
+        }
     }
 }
