@@ -25,13 +25,13 @@ const Review = () => {
         setLoading(true);
         setError(null);
         const response = await api.get(`/api/Reviews/my-reviews?page=${page}&pageSize=${pageSize}`);
-        if (!response.ok) {
+        if (!response.status === 200) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        const data = await response.data;
         console.log('Reviews data:', data);
-        setReviews(response.data.reviews);
-        setTotalReviews(response.data.totalReviews);
+        setReviews(data.reviews);
+        setTotalReviews(data.totalReviews);
       } catch (err) {
         console.error("Failed to fetch user reviews:", err);
         setError("Failed to load reviews. Please try again later.");
