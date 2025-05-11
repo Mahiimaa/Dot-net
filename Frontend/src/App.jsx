@@ -37,12 +37,12 @@ import StaffOrderPortal from './pages/StaffOrderPortal';
 import Bestseller from './pages/Bestseller';
 
 // ProtectedRoute Component
-const ProtectedRoute = ({ children, adminOnly = false }) => {
+const ProtectedRoute = ({ children, allowedRoles=[]}) => {
   const { isAuthenticated, user } = useContext(AuthContext);
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  if (adminOnly && user?.role !== 'Admin') {
+  if (allowedRoles.length > 0 && user?.role && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
   return children;
@@ -74,7 +74,6 @@ function App() {
           <Route path="/wishlist" element={<Wishlist/>} />
           <Route path="/settings" element={<Settings/>} />
           <Route path="/order" element={<Order/>} />
-          <Route path="/staff/orders" element={<StaffOrderPortal />} />
           <Route path="/addcart" element={<AddCart/>} />
           <Route path="/reviews" element={<Review />} />
           <Route path="/aboutus" element={<Aboutus/>}/>
@@ -128,6 +127,14 @@ function App() {
             element={
               <ProtectedRoute adminOnly>
                 <AdminOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/orders"
+            element={
+              <ProtectedRoute allowedRoles={['Admin', 'Staff']}>
+                <StaffOrderPortal />
               </ProtectedRoute>
             }
           />
