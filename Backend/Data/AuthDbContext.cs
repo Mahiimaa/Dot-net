@@ -23,8 +23,7 @@ public class AuthDbContext : DbContext
     public DbSet<Cart> Carts { get; set; }
 
     public DbSet<Wishlist> Wishlists { get; set; }
-
-    //public DbSet<Bookmark> Bookmarks { get; set; }
+    public DbSet<BroadcastMessage> BroadcastMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

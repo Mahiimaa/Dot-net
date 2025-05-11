@@ -6,6 +6,8 @@ Backend/obj/
 *.suo
 *.userosscache
 *.sln.docstates
+# EF Core migrations
+Backend/Migrations/
 
 # === EF Core Migrations ===
 Backend/Migrations/
@@ -33,3 +35,5 @@ Thumbs.db
 # === OTHERS ===
 *.cache
 *.tmp
+build/
+dist/

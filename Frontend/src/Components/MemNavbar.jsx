@@ -8,14 +8,12 @@ const MemberNavbar = () => {
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
-      logout(); // Clears token, user, and updates AuthContext
+      logout(); 
       navigate("/login"); // Redirect to login
     }
   };
 
-  // Use profile image from AuthContext or fallback to localStorage
   const userProfileImage = user?.profileImageUrl || localStorage.getItem("profileImage");
-  // Use user's first name initial for placeholder
   const placeholderInitial = user?.firstName?.charAt(0)?.toUpperCase() || "U";
 
   return (
@@ -24,7 +22,7 @@ const MemberNavbar = () => {
       <nav className="flex items-center space-x-6 text-gray-600">
         <Link to="/">Home</Link>
         <Link to="/books">Books</Link>
-        {/* Uncomment when routes are implemented */}
+        
         {/* <Link to="/authors">Authors</Link> */}
         {/* <Link to="/genres">Genres</Link> */}
         <button

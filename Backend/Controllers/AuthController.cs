@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
@@ -8,9 +7,9 @@ using Backend.Model;
 using Backend.Services;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
-
-namespace Backend.Controllers 
+namespace Backend.Controllers
 {
     [Route("Auth")]
     [ApiController]
@@ -156,8 +155,7 @@ namespace Backend.Controllers
                 return BadRequest(new { message = "Email is already verified." });
             }
 
-            // Generate new OTP
-            string otp = new Random().Next(100000, 999999).ToString();
+            string otp = GenerateOtp();
             user.VerificationOtp = otp;
             user.OtpExpiration = DateTime.UtcNow.AddMinutes(10);
             await _context.SaveChangesAsync();
@@ -308,6 +306,7 @@ namespace Backend.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Password updated successfully." });
         }
+
         private string GenerateOtp()
         {
             byte[] randomBytes = new byte[4];

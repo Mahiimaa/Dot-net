@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -29,6 +30,35 @@ namespace Backend.Controllers
             _context = context;
             _hubContext = hubContext;
             _emailService = emailService;
+        }
+
+        // Get recent broadcast messages (public, but filtered by role)
+        [HttpGet("broadcasts")]
+        public async Task<IActionResult> GetRecentBroadcasts()
+        {
+            try
+            {
+                // Fetch messages from the last 24 hours
+                var cutoffTime = DateTime.UtcNow.AddHours(-24);
+                var messages = await _context.BroadcastMessages
+                    .Where(b => b.CreatedAt >= cutoffTime)
+                    .OrderByDescending(b => b.CreatedAt)
+                    .Take(5) // Limit to recent 5 messages
+                    .Select(b => new
+                    {
+                        b.Id,
+                        b.Message,
+                        b.CreatedAt
+                    })
+                    .ToListAsync();
+
+                return Ok(messages);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching broadcasts: {ex.Message}\n{ex.StackTrace}");
+                return StatusCode(500, new { error = "Failed to fetch broadcasts", details = ex.Message });
+            }
         }
 
         // Get all orders (staff or admin only)
@@ -175,10 +205,6 @@ namespace Backend.Controllers
                     claimCode,
                     bookNames);
 
-                // Broadcast order
-                string broadcastMessage = $"New order placed by {user.FirstName} {user.LastName}: {totalBooks} books!";
-                await _hubContext.Clients.All.SendAsync("orderBroadcast", broadcastMessage);
-
                 return Ok(new { message = "Order placed successfully", claimCode });
             }
             catch (Exception ex)
@@ -316,7 +342,33 @@ namespace Backend.Controllers
                 }
 
                 order.Status = "Fulfilled";
+
+                // Prepare and broadcast a more polished message with book titles
+                var bookTitles = order.OrderItems.Select(oi => oi.Book.Title).Distinct().ToList();
+                string broadcastMessage = bookTitles.Count > 1
+                    ? $"📚A book lover just grabbed these titles: {string.Join(", ", bookTitles)}! Check them out before they're gone!"
+                    : $"📖 Someone just picked up \"{bookTitles.First()}\"! Add it to your wishlist before it sells out!";
+
+                // Check for duplicate messages within 5 minutes
+                var recentMessage = await _context.BroadcastMessages
+                    .Where(b => b.CreatedAt >= DateTime.UtcNow.AddMinutes(-5) && b.Message == broadcastMessage)
+                    .FirstOrDefaultAsync();
+                if (recentMessage == null)
+                {
+                    // Save broadcast message to database
+                    var broadcast = new BroadcastMessage
+                    {
+                        Message = broadcastMessage,
+                        CreatedAt = DateTime.UtcNow,
+                        ExpiresAt = DateTime.UtcNow.AddHours(24) // Set expiration to 24 hours
+                    };
+                    _context.BroadcastMessages.Add(broadcast);
+                }
+
                 await _context.SaveChangesAsync();
+
+                // Broadcast to all connected clients
+                await _hubContext.Clients.All.SendAsync("orderBroadcast", broadcastMessage);
 
                 // Return order details for frontend
                 var orderResponse = new
@@ -374,5 +426,4 @@ namespace Backend.Controllers
         [RegularExpression(@"^[A-F0-9]{8}$", ErrorMessage = "Membership ID must be an 8-character alphanumeric string.")]
         public string MembershipId { get; set; }
     }
-    
 }
