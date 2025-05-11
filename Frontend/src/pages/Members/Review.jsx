@@ -25,13 +25,13 @@ const Review = () => {
         setLoading(true);
         setError(null);
         const response = await api.get(`/api/Reviews/my-reviews?page=${page}&pageSize=${pageSize}`);
-        if (!response.ok) {
+        if (!response.status === 200) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        const data = await response.data;
         console.log('Reviews data:', data);
-        setReviews(response.data.reviews);
-        setTotalReviews(response.data.totalReviews);
+        setReviews(data.reviews);
+        setTotalReviews(data.totalReviews);
       } catch (err) {
         console.error("Failed to fetch user reviews:", err);
         setError("Failed to load reviews. Please try again later.");
@@ -53,10 +53,10 @@ const Review = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-
-      <div className="flex gap-8 mt-8">
+      <div className="max-w-7xl mx-auto p-6">
+      <div className="flex gap-6 mt-8">
         <SideProfile />
 
         <div className="w-3/4">
@@ -138,6 +138,7 @@ const Review = () => {
           </>
         )}
         </div>
+      </div>
       </div>
     </div>
   );
