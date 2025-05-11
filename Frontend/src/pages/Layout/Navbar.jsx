@@ -25,7 +25,7 @@ const Navbar = () => {
     localStorage.removeItem('resetEmail'); // Clean up any leftover reset email
     setIsLoggedIn(false);
     setMenuOpen(false); // Close mobile menu on logout
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -120,7 +120,7 @@ const Navbar = () => {
             </button>
           ) : (
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/')}
               className="bg-blue-900 text-white px-4 py-2 rounded-[10px] hover:bg-blue-800 transition w-max"
             >
               Login

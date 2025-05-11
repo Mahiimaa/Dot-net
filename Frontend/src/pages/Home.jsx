@@ -68,7 +68,7 @@ export default function HomePage() {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
     if (!token) {
-      navigate("/login");
+      navigate("/");
     }
   }, [navigate]);
 
