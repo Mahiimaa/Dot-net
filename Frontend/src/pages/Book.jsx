@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Heart, ChevronDown, ChevronUp } from 'lucide-react';
 import * as signalR from '@microsoft/signalr';
 import api from '../api/axios';
@@ -104,6 +104,7 @@ const BookCard = ({ book, addToCart, addToWishlist, isAuthenticated }) => {
 const Book = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [books, setBooks] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [broadcastMessage, setBroadcastMessage] = useState('');
@@ -120,7 +121,7 @@ const Book = () => {
     publisher: '',
   });
   const [sortBy, setSortBy] = useState('');
-  const [activeTab, setActiveTab] = useState('All Books');
+  const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'All Books');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalBooks, setTotalBooks] = useState(0);
@@ -131,6 +132,13 @@ const Book = () => {
 
   // SignalR connection state
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
+
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+      setCurrentPage(1); 
+    }
+  }, [location.state]);
 
   // Fetch books and announcements
   useEffect(() => {

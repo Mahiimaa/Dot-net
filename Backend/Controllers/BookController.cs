@@ -39,6 +39,7 @@ namespace Backend.Controllers
             [FromQuery] string? publisher,
             [FromQuery] string? sortBy,
             [FromQuery] string? tab,
+            [FromQuery] bool? isFeatured,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 6)
         {
@@ -73,6 +74,8 @@ namespace Backend.Controllers
                 query = query.Where(b => b.Format == format);
             if (!string.IsNullOrEmpty(publisher))
                 query = query.Where(b => b.Publisher == publisher);
+            if (isFeatured.HasValue) 
+                query = query.Where(b => b.IsFeatured == isFeatured.Value);
 
             // Tabs
             if (!string.IsNullOrEmpty(tab))
@@ -140,6 +143,7 @@ namespace Backend.Controllers
                     b.IsBestseller,
                     b.IsAwardWinner,
                     b.IsComingSoon,
+                    b.IsFeatured,
                     b.PublishDate,
                     b.TotalSold,
                     Rating = b.Reviews.Any() ? Math.Round(b.Reviews.Average(r => r.Rating)) : 0
@@ -189,6 +193,7 @@ namespace Backend.Controllers
                     b.IsBestseller,
                     b.IsAwardWinner,
                     b.IsComingSoon,
+                    b.IsFeatured,
                     b.PublishDate,
                     b.TotalSold,
                     Rating = b.Reviews.Any() ? Math.Round(b.Reviews.Average(r => r.Rating)) : 0
@@ -232,7 +237,6 @@ namespace Backend.Controllers
                     }
                     catch (Exception ex)
                     {
-                        // Log image upload error
                         Console.WriteLine($"Image upload failed: {ex.Message}");
                         return BadRequest(new { error = "Failed to upload image.", details = ex.Message });
                     }
@@ -265,6 +269,7 @@ namespace Backend.Controllers
                     IsBestseller = dto.IsBestseller,
                     IsAwardWinner = dto.IsAwardWinner,
                     IsComingSoon = dto.IsComingSoon,
+                    IsFeatured = dto.IsFeatured,
                     PublishDate = dto.PublishDate.HasValue ? DateTime.SpecifyKind(dto.PublishDate.Value, DateTimeKind.Utc) : null,
                     TotalSold = dto.TotalSold ?? 0
                 };
@@ -352,6 +357,7 @@ namespace Backend.Controllers
                 book.IsBestseller = dto.IsBestseller;
                 book.IsAwardWinner = dto.IsAwardWinner;
                 book.IsComingSoon = dto.IsComingSoon;
+                book.IsFeatured = dto.IsFeatured;
                 book.PublishDate = dto.PublishDate.HasValue ? DateTime.SpecifyKind(dto.PublishDate.Value, DateTimeKind.Utc) : book.PublishDate;
                 book.TotalSold = dto.TotalSold ?? book.TotalSold;
 
