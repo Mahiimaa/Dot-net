@@ -173,9 +173,9 @@ const AddCart = () => {
   const total = subtotal; // Final total computed by backend
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 w-full">
       <Navbar />
-      <div className="mt-8">
+      <div className="mt-6">
         <h2 className="text-2xl font-semibold mb-6">Your Cart</h2>
         {loading ? (
           <p className="text-gray-500">Loading cart...</p>

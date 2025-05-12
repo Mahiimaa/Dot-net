@@ -358,7 +358,7 @@ const Orders = () => {
               </div>
               <button
                 onClick={closeModal}
-                className="mt-6 w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-700"
+                className="mt-6 w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-800"
               >
                 Close
               </button>

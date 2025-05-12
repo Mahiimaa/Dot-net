@@ -33,6 +33,7 @@ import Reviews from './pages/Review';
 import StaffOrderPortal from './pages/StaffOrderPortal';
 import BroadcastMessages from './Components/BroadcastMessages';
 import Bestseller from './pages/Bestseller';
+import Shop from "./pages/Shop";
 import './App.css';
 
 // ProtectedRoute Component
@@ -90,6 +91,7 @@ function RoutesWithNotifications() {
         <Route path="/order" element={<Order />} />
         <Route path="/addcart" element={<AddCart />} />
         <Route path="/reviews" element={<Reviews />} />
+        <Route path ="/shop" element={<Shop />}/>
         <Route path="*" element={<div>404 - Page Not Found</div>} />
 
         {/* Protected Routes */}
@@ -144,7 +146,7 @@ function RoutesWithNotifications() {
         <Route
           path="/adminOrders"
           element={
-            <ProtectedRoute adminOnly>
+            <ProtectedRoute allowedRoles={['Admin', 'Staff']}>
               <AdminOrders />
             </ProtectedRoute>
           }

@@ -182,10 +182,10 @@ function AdminOrders() {
                 ) : (
                   filteredOrders.map((o) => (
                     <tr key={o.id} className="border-t"
-                    onClick={() => openModal(o)}>
+                    >
                       <td className="px-4 py-2">{o.id}</td>
                       <td className="px-4 py-2">{o.userName}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2" onClick={() => openModal(o)}>
                         {o.books.length > 1
                           ? `${o.books.length} items`
                           : o.books[0]?.book?.title || "N/A"}
