@@ -48,7 +48,7 @@ const Login = () => {
         } else {
           navigate("/");
         }
-      }, 2000);
+      }, 200);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401) {

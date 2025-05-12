@@ -14,6 +14,8 @@ function AdminOrders() {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Check authentication and role
   useEffect(() => {
@@ -118,6 +120,16 @@ function AdminOrders() {
     }
   };
 
+    const openModal = (order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrder(null);
+  };
+
   return (
     <div className="h-screen flex">
       <AdminNav />
@@ -169,7 +181,8 @@ function AdminOrders() {
                   </tr>
                 ) : (
                   filteredOrders.map((o) => (
-                    <tr key={o.id} className="border-t">
+                    <tr key={o.id} className="border-t"
+                    onClick={() => openModal(o)}>
                       <td className="px-4 py-2">{o.id}</td>
                       <td className="px-4 py-2">{o.userName}</td>
                       <td className="px-4 py-2">
@@ -178,7 +191,7 @@ function AdminOrders() {
                           : o.books[0]?.book?.title || "N/A"}
                       </td>
                       <td className="px-4 py-2">{o.claimCode}</td>
-                      <td className="px-4 py-2">{o.totalAmount.toFixed(2)}</td>
+                      <td className="px-4 py-2">Rs.{o.totalAmount.toFixed(2)}</td>
                       <td className="px-4 py-2">
                         {getStatusDisplay(o.status)}
                       </td>
@@ -211,6 +224,69 @@ function AdminOrders() {
           </div>
         </div>
       </div>
+      {isModalOpen && selectedOrder && (
+        <div className="fixed inset-0 bg-[rgba(243,244,246,0.6)] bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <h3 className="text-lg font-semibold mb-4">Order Details</h3>
+            <div className="space-y-4">
+              <p>
+                <strong>Order ID:</strong> {selectedOrder.id}
+              </p>
+              <p>
+                <strong>Customer Name:</strong> {selectedOrder.userName}
+              </p>
+              <p>
+                <strong>Claim Code:</strong> {selectedOrder.claimCode}
+              </p>
+              <p>
+                <strong>Total Amount:</strong> Rs.
+                {selectedOrder.totalAmount.toFixed(2)}
+              </p>
+              <p>
+                <strong>Status:</strong> {getStatusDisplay(selectedOrder.status)}
+              </p>
+              <p>
+                <strong>Order Date:</strong>{" "}
+                {new Date(selectedOrder.orderDate).toLocaleDateString()}
+              </p>
+              <div>
+                <strong>Books:</strong>
+                <ul className="list-disc pl-5 mt-2">
+                  {selectedOrder.books.map((item, index) => (
+                    <li key={index}>
+                      {item.book?.title || "N/A"} (Quantity: {item.quantity})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end space-x-4">
+              {selectedOrder.status === "Pending" && (
+                <button
+                  onClick={() => handleCancel(selectedOrder.id)}
+                  className="bg-red-600 text-white px-4 py-2 rounded"
+                >
+                  Cancel Order
+                </button>
+              )}
+              {user.role === "Admin" && (
+                <button
+                  onClick={() => handleDelete(selectedOrder.id)}
+                  className="bg-red-800 text-white px-4 py-2 rounded"
+                >
+                  Delete Order
+                </button>
+              )}
+              <button
+                onClick={closeModal}
+                className="bg-gray-300 text-black px-4 py-2 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

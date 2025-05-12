@@ -23,7 +23,7 @@ import Authors from './pages/Authors';
 import Account from './pages/Members/Account';
 import Wishlist from './pages/Members/Wishlist';
 import Order from './pages/Members/Order';
-import AddCart from './pages/Members/AddCart';
+import AddCart from './pages/Members/Addcart';
 import Settings from './pages/Members/Settings';
 import Genres from './pages/Genres';
 import Book from './pages/Book';
