@@ -153,6 +153,37 @@ function BookDetail() {
     }
   };
 
+  const buyNow = async () => {
+  if (!stableIsAuthenticated) {
+    navigate('/login');
+    return;
+  }
+  if (isAddingToCart) return;
+  setIsAddingToCart(true);
+  try {
+    await api.post(
+      'http://localhost:5127/api/Cart/add',
+      {
+        userId: user.id,
+        bookId: bookId,
+        quantity: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    alert('Proceed to checkout to complete the order placement.');
+    navigate('/addCart');
+  } catch (err) {
+    alert(err.response?.data?.error || 'Failed to process order.');
+    console.error('Buy Now error:', err.response?.status, err.response?.data || err.message);
+  } finally {
+    setIsAddingToCart(false);
+  }
+};
+
   const toggleWishlistStatus = async () => {
     if (!stableIsAuthenticated) {
       navigate('/login');
@@ -274,7 +305,7 @@ function BookDetail() {
                 </button>
                 <button
                   className="flex-1 bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                  onClick={addToCart}
+                  onClick={buyNow}
                   disabled={isAddingToCart || book?.availability !== 'Available'}
                   aria-label="Buy book now"
                 >

@@ -64,9 +64,11 @@ const Navbar = () => {
           <a href="/aboutus" className={`text-gray-600 hover:text-green-700 transition ${
               isActive('/aboutus') ? 'text-green-700 font-semibold' : ''
             }`}> About US</a>
-          <button className="bg-teal-100 text-teal-800 px-4 py-1 rounded-full hover:bg-teal-200 transition">
+            <a
+          className="bg-teal-100 text-teal-800 px-4 py-1 rounded-full hover:bg-teal-200 transition"
+          href="/shop">
             Shop
-          </button>
+          </a>
         </div>
 
         {/* User Section */}
@@ -156,9 +158,11 @@ const Navbar = () => {
           >
             About Us
           </a>
-          <button className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full hover:bg-teal这场-200 transition w-max">
+          <a
+         className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full hover:bg-teal这场-200 transition w-max"
+          href="/shop">
             Shop
-          </button>
+          </a>
           {isLoggedIn ? (
             <button
               onClick={handleLogout}

@@ -14,13 +14,7 @@ import {
 } from "lucide-react";
 
 const Sidebar = () => {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const { user} = useContext(AuthContext);
 
   const allNavItems = [
     { name: "Home", icon: <Home size={18} />, path: "/dashboard" },
@@ -35,7 +29,7 @@ const Sidebar = () => {
   ];
 
   const navItems = user?.role === "Staff"
-    ? allNavItems.filter(item => item.path === "/staff/orders")
+    ? allNavItems.filter(item => item.path === "/staff/orders" || item.path ===  "/adminOrders")
     : allNavItems;
 
   return (
@@ -56,13 +50,6 @@ const Sidebar = () => {
             {item.name}
           </NavLink>
         ))}
-        <button
-          onClick={handleLogout}
-          className="flex items-center px-4 py-3 gap-3 text-sm hover:bg-[#0b4f82]"
-        >
-          <LogOut size={18} />
-          Logout
-        </button>
       </nav>
     </div>
   );

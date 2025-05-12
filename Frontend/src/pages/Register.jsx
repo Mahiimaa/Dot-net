@@ -91,7 +91,7 @@ const Register = () => {
       setSuccess("Email verified successfully! Redirecting to login...");
       setTimeout(() => {
         navigate("/login");
-      }, 2000);
+      }, 200);
     } catch (err) {
       console.error("OTP verification error:", err.response?.data);
       setError(err.response?.data.message || "Invalid OTP. Please try again.");

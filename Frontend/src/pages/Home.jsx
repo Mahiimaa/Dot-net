@@ -18,13 +18,13 @@ export default function HomePage() {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-    if (!token) {
-      navigate("/login");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   setIsLoggedIn(!!token);
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, [navigate]);
 
   // Fetch Best Sellers and Featured Books
   useEffect(() => {
@@ -32,22 +32,20 @@ export default function HomePage() {
       setLoading(true);
       setError(null);
       try {
-        // Fetch Best Sellers (isBestseller=true)
         const bestSellersResponse = await api.get('/api/Books', {
           params: {
             tab: 'Bestsellers',
             page: 1,
-            pageSize: 10, // Adjust as needed
+            pageSize: 10,
           },
         });
         setBestSellers(bestSellersResponse.data.books || []);
 
-        // Fetch Featured Books (isFeatured=true)
         const featuredResponse = await api.get('/api/Books', {
           params: {
-            isFeatured: true, // Add query parameter to filter by isFeatured
+            isFeatured: true,
             page: 1,
-            pageSize: 3, // Limit to 3 for display
+            pageSize: 3, 
           },
         });
         setFeaturedBooks(featuredResponse.data.books || []);
@@ -94,12 +92,12 @@ export default function HomePage() {
           <p className="text-gray-600 max-w-xl mb-6">
             Discover a world of literary treasures and explore our vast selection of books
           </p>
-          <button
-            onClick={() => navigate("/books")}
+          <a
+            href="/shop"
             className="bg-[#f29d7e] text-white px-6 py-2 rounded-full text-lg hover:bg-[#f28663] transition"
           >
             Shop Now
-          </button>
+          </a>
         </section>
 
         {/* Best Sellers Section */}
