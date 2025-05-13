@@ -26,6 +26,11 @@ function BookDetail() {
 
   const stableIsAuthenticated = useMemo(() => isAuthenticated, [isAuthenticated]);
 
+  const parseUTCDate = (dateStr) => {
+    if (!dateStr) return null;
+    return new Date(dateStr + (dateStr.endsWith('Z') ? '' : 'Z'));
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -108,17 +113,15 @@ function BookDetail() {
     fetchData();
   }, [bookId, stableIsAuthenticated, user?.id]);
 
-  // Calculate discount
   const isDiscountActive =
     book?.isOnSale &&
-    (!book.discountStart || new Date(book.discountStart + 'Z') <= new Date()) &&
-    (!book.discountEnd || new Date(book.discountEnd + 'Z') >= new Date());
+    (!book.discountStart || parseUTCDate(book.discountStart) <= new Date()) &&
+    (!book.discountEnd || parseUTCDate(book.discountEnd) >= new Date());
 
   const discountedPrice = isDiscountActive
     ? (book?.price * (1 - book.discountPercent / 100)).toFixed(2)
     : book?.price;
 
-  // Update average rating when reviews change
   useEffect(() => {
     if (book && reviews.length > 0) {
       const avgRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;

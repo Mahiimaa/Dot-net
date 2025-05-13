@@ -24,6 +24,12 @@ function Discounts() {
     const [books, setBooks] = useState([]);
     const [selectedBooks, setSelectedBooks] = useState([]);
     const [editSelectedBooks, setEditSelectedBooks] = useState([]);
+    const [booksLoading, setBooksLoading] = useState(true);
+    const [booksError, setBooksError] = useState(null);
+    const [searchAddBooks, setSearchAddBooks] = useState(""); 
+    const [searchEditBooks, setSearchEditBooks] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedDiscount, setSelectedDiscount] = useState(null);
 
 
     const fetchDiscounts = async () => {
@@ -76,6 +82,7 @@ function Discounts() {
         setEditOnSale(discount.onSale);
         setShowAddModal(false);
         setShowEditModal(true);
+        setSearchEditBooks("");
       };
 
       const handleUpdateDiscount = async () => {
@@ -96,6 +103,7 @@ function Discounts() {
           setDiscounts(updatedList);
           setShowEditModal(false);
           setEditingDiscount(null);
+          setSearchEditBooks("");
         } catch (err) {
           console.error("Update discount failed:", err);
         }
@@ -103,12 +111,29 @@ function Discounts() {
       
       const fetchBooks = async () => {
         try {
-          const res = await axios.get("http://localhost:5127/api/books");
-          setBooks(res.data);
+            setBooksLoading(true);
+            setBooksError(null);
+            const res = await axios.get("http://localhost:5127/api/books");
+            console.log("Books response:", res.data);
+            const booksArray = res.data.books || res.data.Books; // Check both cases
+            if (res.data && Array.isArray(booksArray)) {
+            setBooks(booksArray);
+            if (booksArray.length === 0) {
+                setBooksError("No books found in the database.");
+            }
+            } else {
+            console.error("Unexpected response structure:", res.data);
+            setBooksError("Books data is not in the expected format");
+            setBooks([]);
+            }
         } catch (err) {
-          console.error("Failed to fetch books:", err);
+            console.error("Failed to fetch books:", err);
+            setBooksError(`Failed to fetch books: ${err.message}`);
+            setBooks([]);
+        } finally {
+            setBooksLoading(false);
         }
-      };
+        };
       
       const handleDeleteDiscount = async (id) => {
         if (!window.confirm("Are you sure you want to delete this discount?")) return;
@@ -131,6 +156,41 @@ function Discounts() {
         setEditSelectedBooks([]);
         setShowEditModal(false);
       };
+
+      const filterBooks = (books, searchTerm) => {
+        if (!searchTerm) return books;
+        return books.filter((b) =>
+            b.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    };
+
+    const handleSelectAllAdd = (e) => {
+        const filteredBooks = filterBooks(books, searchAddBooks);
+        if (e.target.checked) {
+            setSelectedBooks(filteredBooks.map((b) => String(b.id)));
+        } else {
+            setSelectedBooks([]);
+        }
+    };
+
+    const handleSelectAllEdit = (e) => {
+        const filteredBooks = filterBooks(books, searchEditBooks);
+        if (e.target.checked) {
+            setEditSelectedBooks(filteredBooks.map((b) => String(b.id)));
+        } else {
+            setEditSelectedBooks([]);
+        }
+    };
+
+    const handleRowClick = (discount) => {
+        setSelectedDiscount(discount);
+        setShowPopup(true);
+    };
+
+    const closePopup = () => {
+        setShowPopup(false);
+        setSelectedDiscount(null);
+    };
       
       
   return (
@@ -172,7 +232,7 @@ function Discounts() {
                 ) : (
                 discounts.map((d) => (
                     <tr key={d.id} className="border-t">
-                    <td className="px-4 py-2">{d.title}</td>
+                    <td className="px-4 py-2" onClick={() => handleRowClick(d)}>{d.title}</td>
                     <td className="px-4 py-2">{d.discountPercent}%</td>
                     <td className="px-4 py-2">{d.startDate?.slice(0, 10)}</td>
                     <td className="px-4 py-2">{d.endDate?.slice(0, 10)}</td>
@@ -257,24 +317,55 @@ function Discounts() {
                 </div>
                 <div className="col-span-2">
                 <label className="block font-medium">Applicable Books</label>
-                {Array.isArray(books) && books.length > 0 ? (
-                <select
-                    multiple
-                    className="w-full border p-2 rounded"
-                    value={selectedBooks}
-                    onChange={(e) =>
-                    setSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
-                    }
-                >
-                    {books.map((b) => (
-                    <option key={b.id} value={b.id}>
-                        {b.title}
-                    </option>
-                    ))}
-                </select>
-                ) : (
-                      <p className="text-gray-500">No books available</p>
-                    )}
+                {booksLoading ? (
+                                            <p className="text-gray-500">Loading books...</p>
+                                        ) : booksError ? (
+                                            <div className="text-red-500">
+                                                {booksError}
+                                                <button
+                                                    onClick={fetchBooks}
+                                                    className="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
+                                                >
+                                                    Retry
+                                                </button>
+                                            </div>
+                                        ) : books.length > 0 ? (
+                                            <>
+                                                {/* Search Input for Add Modal */}
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search books..."
+                                                    value={searchAddBooks}
+                                                    onChange={(e) => setSearchAddBooks(e.target.value)}
+                                                    className="w-full border p-2 rounded mb-2"
+                                                />
+                                                {/* Select All Checkbox for Add Modal */}
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedBooks.length === filterBooks(books, searchAddBooks).length && filterBooks(books, searchAddBooks).length > 0}
+                                                        onChange={handleSelectAllAdd}
+                                                    />
+                                                    <label>Select All</label>
+                                                </div>
+                                                <select
+                                                    multiple
+                                                    className="w-full border p-2 rounded h-40"
+                                                    value={selectedBooks}
+                                                    onChange={(e) =>
+                                                        setSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
+                                                    }
+                                                >
+                                                    {filterBooks(books, searchAddBooks).map((b) => (
+                                                        <option key={b.id} value={b.id}>
+                                                            {b.title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </>
+                                        ) : (
+                                            <p className="text-gray-500">No books available. Please add books first.</p>
+                                        )}
                 </div>
 
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
@@ -361,24 +452,55 @@ function Discounts() {
                 </div>
                 <div className="col-span-2">
                     <label className="block font-medium">Applicable Books</label>
-                    {Array.isArray(books) && books.length > 0 ? (
-                    <select
-                        multiple
-                        className="w-full border p-2 rounded"
-                        value={editSelectedBooks}
-                        onChange={(e) =>
-                        setEditSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
-                        }
-                    >
-                        {books.map((b) => (
-                        <option key={b.id} value={b.id}>
-                            {b.title}
-                        </option>
-                        ))}
-                    </select>
-                    ) : (
-                      <p className="text-gray-500">No books available</p>
-                    )}
+                   {booksLoading ? (
+                                            <p className="text-gray-500">Loading books...</p>
+                                        ) : booksError ? (
+                                            <div className="text-red-500">
+                                                {booksError}
+                                                <button
+                                                    onClick={fetchBooks}
+                                                    className="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
+                                                >
+                                                    Retry
+                                                </button>
+                                            </div>
+                                        ) : books.length > 0 ? (
+                                            <>
+                                                {/* Search Input for Edit Modal */}
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search books..."
+                                                    value={searchEditBooks}
+                                                    onChange={(e) => setSearchEditBooks(e.target.value)}
+                                                    className="w-full border p-2 rounded mb-2"
+                                                />
+                                                {/* Select All Checkbox for Edit Modal */}
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={editSelectedBooks.length === filterBooks(books, searchEditBooks).length && filterBooks(books, searchEditBooks).length > 0}
+                                                        onChange={handleSelectAllEdit}
+                                                    />
+                                                    <label>Select All</label>
+                                                </div>
+                                                <select
+                                                    multiple
+                                                    className="w-full border p-2 rounded h-40"
+                                                    value={editSelectedBooks}
+                                                    onChange={(e) =>
+                                                        setEditSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
+                                                    }
+                                                >
+                                                    {filterBooks(books, searchEditBooks).map((b) => (
+                                                        <option key={b.id} value={b.id}>
+                                                            {b.title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </>
+                                        ) : (
+                                            <p className="text-gray-500">No books available. Please add books first.</p>
+                                        )}
                     </div>
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
                 <button
@@ -400,7 +522,58 @@ function Discounts() {
             </div>
         </div>
         )}
-
+        {showPopup && selectedDiscount && (
+                        <div className="fixed inset-0 bg-gray-800/40 flex items-center justify-center z-50">
+                            <div className="bg-white rounded-md p-6 w-[90%] max-w-2xl border overflow-auto max-h-[80vh]">
+                                <h2 className="text-center text-lg font-semibold mb-4">
+                                    Discount Details
+                                </h2>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <strong>Title:</strong> {selectedDiscount.title}
+                                    </div>
+                                    <div>
+                                        <strong>Discount (%):</strong> {selectedDiscount.discountPercent}%
+                                    </div>
+                                    <div>
+                                        <strong>Start Date:</strong> {selectedDiscount.startDate?.slice(0, 10)}
+                                    </div>
+                                    <div>
+                                        <strong>End Date:</strong> {selectedDiscount.endDate?.slice(0, 10)}
+                                    </div>
+                                    <div className="col-span-2">
+                                        <strong>On Sale:</strong> {selectedDiscount.onSale ? (
+                                            <Check className="text-green-600 w-5 h-5 inline-block" />
+                                        ) : (
+                                            <X className="text-red-600 w-5 h-5 inline-block" />
+                                        )}
+                                    </div>
+                                    <div className="col-span-2">
+                                        <strong>Applicable Books:</strong>
+                                        {selectedDiscount.bookIds && selectedDiscount.bookIds.length > 0 ? (
+                                            <ul className="list-disc pl-5">
+                                                {books
+                                                    .filter((b) => selectedDiscount.bookIds.includes(b.id))
+                                                    .map((b) => (
+                                                        <li key={b.id}>{b.title}</li>
+                                                    ))}
+                                            </ul>
+                                        ) : (
+                                            <p>No books assigned</p>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex justify-end">
+                                    <button
+                                        onClick={closePopup}
+                                        className="bg-gray-600 text-white px-6 py-2 rounded"
+                                    >
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
         </div>
         </div></div>
   )
