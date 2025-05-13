@@ -64,7 +64,7 @@ export default function HomePage() {
     localStorage.removeItem("token");
     localStorage.removeItem("resetEmail");
     setIsLoggedIn(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const scrollLeft = () => {

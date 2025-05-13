@@ -25,7 +25,7 @@ const Navbar = () => {
     localStorage.removeItem('resetEmail'); // Clean up any leftover reset email
     setIsLoggedIn(false);
     setMenuOpen(false); // Close mobile menu on logout
-    navigate('/login');
+    navigate('/');
   };
 
   const isActive = (path) => location.pathname === path;
