@@ -49,7 +49,7 @@ const Login = () => {
         } else {
           navigate("/");
         }
-      }, 2000); // Increased delay for better UX
+      }, 200);
     } catch (err) {
       if (err.response?.data?.message?.includes("Your email is not verified")) {
         setError(err.response.data.message);

@@ -347,7 +347,7 @@ function AdminBook() {
                         <td className="px-4 py-2">{book.language}</td>
                         <td className="px-4 py-2">{book.availability}</td>
                         <td className="px-4 py-2">{book.isbn}</td>
-                        <td className="px-4 py-2">{book.price}</td>
+                        <td className="px-4 py-2">Rs.{book.price}</td>
                         <td className="px-4 py-2">{book.inStockQty}</td>
                         <td className="px-4 py-2">
                           <img
