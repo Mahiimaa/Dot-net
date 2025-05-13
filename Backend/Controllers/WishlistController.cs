@@ -59,7 +59,8 @@ namespace Backend.Controllers
                         {
                             Title = w.Book.Title ?? "Untitled",
                             Price = w.Book.Price,
-                            ImageUrl = w.Book.ImageUrl
+                            ImageUrl = w.Book.ImageUrl,
+                            Availability = w.Book.Availability 
                         } : null
                     })
                     .ToListAsync();

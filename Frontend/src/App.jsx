@@ -35,6 +35,8 @@ import BroadcastMessages from './Components/BroadcastMessages';
 import Bestseller from './pages/Bestseller';
 import Shop from "./pages/Shop";
 import './App.css';
+import VerifyEmail from './pages/VerifyEmail';
+
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly, allowedRoles = [] }) => {
@@ -61,6 +63,7 @@ function RoutesWithNotifications() {
     '/forgotpassword',
     '/otpverification',
     '/newpassword',
+    '/verify-email',
   ];
 
   // Check if current route is excluded
@@ -76,6 +79,7 @@ function RoutesWithNotifications() {
         <Route path="/bestsellers" element={<Bestseller />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/otpverification" element={<OtpVerification />} />
