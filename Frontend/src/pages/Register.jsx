@@ -4,6 +4,7 @@ import { FaFacebookF } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api/axios";
+import { GiSpellBook } from "react-icons/gi";
 
 const Register = () => {
   const { login } = useContext(AuthContext);
@@ -14,8 +15,6 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-  const [otp, setOtp] = useState("");
-  const [isVerificationStep, setIsVerificationStep] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
@@ -29,7 +28,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
-  
+
     // Client-side validation
     if (!formData.firstName || !formData.lastName || !formData.email) {
       setError("Please fill in all required fields.");
@@ -43,23 +42,25 @@ const Register = () => {
       setError("Password must be at least 8 characters long.");
       return;
     }
-  
+
     try {
-      const response = await api.post("/Auth/register", {
+      await api.post("/Auth/register", {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
-       setSuccess("Registration successful! Please check your email for the OTP.");
-      setIsVerificationStep(true);
+      setSuccess("Registration successful! Please check your email for the OTP.");
+      // Redirect to VerifyEmail page with email
+      setTimeout(() => {
+        navigate("/verify-email", { state: { email: formData.email } });
+      }, 2000);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 409) {
           setError("An account with this email already exists.");
         } else if (err.response.status === 400) {
-          // Improved error handling for validation errors
           const errors = err.response.data.errors;
           if (errors) {
             const errorMessages = Object.values(errors).flat().join(", ");
@@ -76,52 +77,16 @@ const Register = () => {
     }
   };
 
-  const handleOtpSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    try {
-      const response = await api.post("/Auth/verify-email", {
-        email: formData.email,
-        otp: otp,
-      });
-      const { token, user } = response.data;
-      login(token, user);
-      setSuccess("Email verified successfully! Redirecting to login...");
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    } catch (err) {
-      console.error("OTP verification error:", err.response?.data);
-      setError(err.response?.data.message || "Invalid OTP. Please try again.");
-    }
-  };
-
-  const handleResendOtp = async () => {
-    setError("");
-    setSuccess("");
-    try {
-      await api.post("/Auth/resend-otp", {
-        email: formData.email,
-      });
-      setSuccess("OTP resent successfully! Please check your email.");
-    } catch (err) {
-      console.error("Resend OTP error:", err.response?.data);
-      setError(err.response?.data.message || "Failed to resend OTP. Please try again.");
-    }
-  };
-
   const handleSocialLogin = (provider) => {
     // TODO: Implement social login (Google/Facebook)
-    // Example: Redirect to backend OAuth endpoint (/Auth/google or /Auth/facebook)
     alert(`Social login with ${provider} is not implemented yet.`);
   };
 
   return (
     <div className="w-full h-screen bg-[#e8dfd6] flex items-center justify-center relative overflow-hidden">
       <div className="absolute top-4 left-4 text-black font-semibold text-lg flex items-center gap-2 z-20">
-        <span className="text-xl">📖</span> Foliana
+        <GiSpellBook className="w-8 h-8 text-green-700" />
+        <span className="text-xl font-bold text-green-700">Foliana</span>
       </div>
       <div className="rounded-2xl shadow-xl w-full max-w-md px-8 py-10 text-center z-10 backdrop-blur-md bg-white/30 border border-black/50">
         <div className="flex justify-between mb-6">
@@ -148,7 +113,6 @@ const Register = () => {
             {success}
           </div>
         )}
-        {!isVerificationStep ? (
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -202,34 +166,6 @@ const Register = () => {
             Create account
           </button>
         </form>
-        ) : (
-          <form className="flex flex-col gap-4" onSubmit={handleOtpSubmit}>
-            <input
-              type="text"
-              name="otp"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
-            >
-              Verify Email
-            </button>
-            <button
-              type="button"
-              onClick={handleResendOtp}
-              className="text-sm text-[#c7916c] hover:underline"
-            >
-              Resend OTP
-            </button>
-          </form>
-        )}
-        {!isVerificationStep && (
-          <>
         <div className="my-4 text-sm text-gray-500">OR</div>
         <div className="flex justify-center gap-4">
           <button
@@ -245,8 +181,6 @@ const Register = () => {
             <FcGoogle />
           </button>
         </div>
-        </>
-        )}
       </div>
       <div className="absolute -bottom-10 w-full z-0">
         <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />
@@ -289,7 +223,9 @@ const Register = () => {
           }
         }
         .animate-fade-in {
-          animation: fade-in 0.3s ease-in;
+          animation: fade-in 
+
+0.3s ease-in;
         }
       `}</style>
     </div>

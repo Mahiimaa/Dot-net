@@ -13,7 +13,9 @@ const Orders = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [modalOrder, setModalOrder] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
 
+  const ordersPerPage = 6; // Display 6 orders per page
   const currentUserId = user?.id;
 
   const tabs = [
@@ -113,6 +115,34 @@ const Orders = () => {
     }
   };
 
+  // Pagination logic
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Generate page numbers for pagination
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
@@ -146,132 +176,175 @@ const Orders = () => {
             ) : orders.length === 0 ? (
               <p className="text-gray-500">No orders found.</p>
             ) : (
-              <div className="space-y-4">
-                {orders.map((order) => {
-                  const statusDisplay = getStatusDisplay(order.status);
-                  const isMultipleItems = order.orderItems.length > 1;
-                  const title = isMultipleItems
-                    ? "Multiple Items"
-                    : order.orderItems[0]?.book?.title || "Untitled";
-                  const author = isMultipleItems
-                    ? `Order #${order.id}`
-                    : order.orderItems[0]?.book?.author || "Unknown";
-                  const qty = isMultipleItems
-                    ? null
-                    : order.orderItems[0]?.quantity;
-                  const bookId = isMultipleItems
-                    ? null
-                    : order.orderItems[0]?.bookId;
+              <>
+                <div className="space-y-4">
+                  {currentOrders.map((order) => {
+                    const statusDisplay = getStatusDisplay(order.status);
+                    const isMultipleItems = order.orderItems.length > 1;
+                    const title = isMultipleItems
+                      ? "Multiple Items"
+                      : order.orderItems[0]?.book?.title || "Untitled";
+                    const author = isMultipleItems
+                      ? `Order #${order.id}`
+                      : order.orderItems[0]?.book?.author || "Unknown";
+                    const qty = isMultipleItems
+                      ? null
+                      : order.orderItems[0]?.quantity;
+                    const bookId = isMultipleItems
+                      ? null
+                      : order.orderItems[0]?.bookId;
 
-                  const isValidBookId = bookId && !isNaN(bookId);
-                  return (
-                    <div
-                      key={order.id}
-                      className="bg-white rounded-xl p-4 shadow border border-gray-100"
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="text-sm font-semibold">
-                            Order #{order.id}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            Placed on{" "}
-                            {new Date(order.orderDate).toLocaleDateString()}
-                          </p>
-                          <p className="text-sm font-medium mt-1">
-                            Rs. {order.totalAmount}
-                          </p>
-                        </div>
-                        {order.status === "Pending" ? (
-                          <button
-                            onClick={() => handleCancelOrder(order.id)}
-                            className="border border-red-500 text-red-500 text-sm px-3 py-1 rounded-full"
-                          >
-                            Cancel Order
-                          </button>
-                        ) : order.status === "Fulfilled" && !isMultipleItems ? (
-                          isValidBookId ? (
-                            <Link
-                              to={`/books/${bookId}`}
+                    const isValidBookId = bookId && !isNaN(bookId);
+                    return (
+                      <div
+                        key={order.id}
+                        className="bg-white rounded-xl p-4 shadow border border-gray-100"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <p className="text-sm font-semibold">
+                              Order #{order.id}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Placed on{" "}
+                              {new Date(order.orderDate).toLocaleDateString()}
+                            </p>
+                            <p className="text-sm font-medium mt-1">
+                              Rs. {parseFloat(order.totalAmount).toFixed(2)}
+                            </p>
+                          </div>
+                          {order.status === "Pending" ? (
+                            <button
+                              onClick={() => handleCancelOrder(order.id)}
+                              className="border border-red-500 text-red-500 text-sm px-3 py-1 rounded-full"
+                            >
+                              Cancel Order
+                            </button>
+                          ) : order.status === "Fulfilled" && !isMultipleItems ? (
+                            isValidBookId ? (
+                              <Link
+                                to={`/books/${bookId}`}
+                                className="border border-green-300 text-green-700 text-sm px-3 py-1 rounded-full"
+                              >
+                                Leave a Review
+                              </Link>
+                            ) : (
+                              <button
+                                disabled
+                                className="border border-gray-300 text-gray-500 text-sm px-3 py-1 rounded-full cursor-not-allowed"
+                                title="Book information unavailable"
+                              >
+                                Leave a Review
+                              </button>
+                            )
+                          ) : order.status === "Fulfilled" && isMultipleItems ? (
+                            <button
+                              onClick={() => openModal(order)}
                               className="border border-green-300 text-green-700 text-sm px-3 py-1 rounded-full"
                             >
                               Leave a Review
-                            </Link>
-                          ) : (
-                            <button
-                              disabled
-                              className="border border-gray-300 text-gray-500 text-sm px-3 py-1 rounded-full cursor-not-allowed"
-                              title="Book information unavailable"
-                            >
-                              Leave a Review
                             </button>
-                          )
-                        ) : order.status === "Fulfilled" && isMultipleItems ? (
-                          <button
-                            onClick={() => openModal(order)}
-                            className="border border-green-300 text-green-700 text-sm px-3 py-1 rounded-full"
-                          >
-                            Leave a Review
-                          </button>
-                        ) : null}
-                      </div>
+                          ) : null}
+                        </div>
 
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={
-                            isMultipleItems
-                              ? "https://via.placeholder.com/60x90"
-                              : order.orderItems[0]?.book?.imageUrl
-                              ? `http://localhost:5127/${order.orderItems[0].book.imageUrl}`
-                              : "https://via.placeholder.com/60x90"
-                          }
-                          alt={title}
-                          className="w-16 h-24 rounded object-cover"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold">{title}</h4>
-                          <p className="text-sm text-gray-500">{author}</p>
-                          {qty && (
-                            <p className="text-xs mt-1 text-gray-500">
-                              Qty: {qty} | Rs. {order.orderItems[0]?.price}
-                            </p>
-                          )}
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={
+                              isMultipleItems
+                                ? "https://via.placeholder.com/60x90"
+                                : order.orderItems[0]?.book?.imageUrl
+                                ? `http://localhost:5127/${order.orderItems[0].book.imageUrl}`
+                                : "https://via.placeholder.com/60x90"
+                            }
+                            alt={title}
+                            className="w-16 h-24 rounded object-cover"
+                          />
+                          <div className="flex-1">
+                            <h4 className="font-semibold">{title}</h4>
+                            <p className="text-sm text-gray-500">{author}</p>
+                            {qty && (
+                              <p className="text-xs mt-1 text-gray-500">
+                                Qty: {qty} | Rs. {parseFloat(order.orderItems[0]?.price).toFixed(2)}
+                              </p>
+                            )}
 
-                          <div className="flex items-center gap-2 mt-2">
-                            <span
-                              className={`text-xs font-medium px-2 py-1 rounded-full ${
-                                statusDisplay.color === "yellow"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : statusDisplay.color === "green"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
-                              }`}
-                            >
-                              {statusDisplay.label}
-                            </span>
-
-                            {order.claimCode && (
-                              <span className="text-xs bg-gray-50 border rounded px-2 py-1 text-gray-700">
-                                #{order.claimCode}
+                            <div className="flex items-center gap-2 mt-2">
+                              <span
+                                className={`text-xs font-medium px-2 py-1 rounded-full ${
+                                  statusDisplay.color === "yellow"
+                                    ? "bg-yellow-100 text-yellow-700"
+                                    : statusDisplay.color === "green"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-700"
+                                }`}
+                              >
+                                {statusDisplay.label}
                               </span>
+
+                              {order.claimCode && (
+                                <span className="text-xs bg-gray-50 border rounded px-2 py-1 text-gray-700">
+                                  #{order.claimCode}
+                                </span>
+                              )}
+                            </div>
+
+                            {(order.status === "Pending" ||
+                              order.status === "Fulfilled") && (
+                              <p
+                                className="text-sm text-red-500 mt-2 cursor-pointer"
+                                onClick={() => openModal(order)}
+                              >
+                                View Details
+                              </p>
                             )}
                           </div>
-
-                          {(order.status === "Pending" ||
-                            order.status === "Fulfilled") && (
-                            <p
-                              className="text-sm text-red-500 mt-2 cursor-pointer"
-                              onClick={() => openModal(order)}
-                            >
-                              View Details
-                            </p>
-                          )}
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center gap-2 mt-6">
+                    <button
+                      onClick={handlePreviousPage}
+                      disabled={currentPage === 1}
+                      className={`px-3 py-1 rounded-lg ${
+                        currentPage === 1
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-blue-900 text-white hover:bg-blue-700"
+                      }`}
+                    >
+                      Previous
+                    </button>
+                    {pageNumbers.map((number) => (
+                      <button
+                        key={number}
+                        onClick={() => handlePageClick(number)}
+                        className={`px-3 py-1 rounded-lg ${
+                          currentPage === number
+                            ? "bg-blue-900 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                      >
+                        {number}
+                      </button>
+                    ))}
+                    <button
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                      className={`px-3 py-1 rounded-lg ${
+                        currentPage === totalPages
+                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                          : "bg-blue-900 text-white hover:bg-blue-700"
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

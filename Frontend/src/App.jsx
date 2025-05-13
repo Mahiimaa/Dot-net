@@ -23,7 +23,7 @@ import Authors from './pages/Authors';
 import Account from './pages/Members/Account';
 import Wishlist from './pages/Members/Wishlist';
 import Order from './pages/Members/Order';
-import AddCart from './pages/Members/AddCart';
+import AddCart from './pages/Members/Addcart';
 import Settings from './pages/Members/Settings';
 import Genres from './pages/Genres';
 import Book from './pages/Book';
@@ -34,6 +34,8 @@ import StaffOrderPortal from './pages/StaffOrderPortal';
 import BroadcastMessages from './Components/BroadcastMessages';
 import Bestseller from './pages/Bestseller';
 import './App.css';
+import VerifyEmail from './pages/VerifyEmail';
+
 
 // ProtectedRoute Component
 const ProtectedRoute = ({ children, adminOnly, allowedRoles = [] }) => {
@@ -60,6 +62,7 @@ function RoutesWithNotifications() {
     '/forgotpassword',
     '/otpverification',
     '/newpassword',
+    '/verify-email',
   ];
 
   // Check if current route is excluded
@@ -75,6 +78,7 @@ function RoutesWithNotifications() {
         <Route path="/bestsellers" element={<Bestseller />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/otpverification" element={<OtpVerification />} />

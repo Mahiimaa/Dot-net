@@ -9,16 +9,16 @@ const AddCart = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
+  const [completedOrders, setCompletedOrders] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const currentUserId = user?.id;
 
-  // Parse UTC date for discount checks
   const parseUTCDate = (dateStr) => {
     if (!dateStr) return null;
     try {
-      return new Date(dateStr + (dateStr.endsWith('Z') ? '' : 'Z'));
+      return new Date(dateStr + (dateStr.endsWith("Z") ? "" : "Z"));
     } catch (e) {
       console.error(`Invalid date format: ${dateStr}`);
       return null;
@@ -31,33 +31,39 @@ const AddCart = () => {
       return;
     }
 
-    const fetchCart = async () => {
+    const fetchCartAndOrders = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:5127/api/Cart/user/${currentUserId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        console.log("Cart response:", response.data); // Debug: Log raw response
-        const flattenedData = response.data.map((item) => {
-          const originalPrice = item.book?.price || 0;
+        // Fetch cart items
+        const cartResponse = await axios.get(
+          `http://localhost:5127/api/Cart/user/${currentUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log("Cart response:", cartResponse.data);
+        const flattenedData = cartResponse.data.map((item) => {
+          const originalPrice = parseFloat(item.book?.price || 0);
           const isDiscountActive =
             item.book?.isOnSale &&
-            (!item.book?.discountStart || parseUTCDate(item.book.discountStart) <= new Date()) &&
-            (!item.book?.discountEnd || parseUTCDate(item.book.discountEnd) >= new Date());
+            (!item.book?.discountStart ||
+              parseUTCDate(item.book.discountStart) <= new Date()) &&
+            (!item.book?.discountEnd ||
+              parseUTCDate(item.book.discountEnd) >= new Date());
           const discountedPrice = isDiscountActive
             ? (originalPrice * (1 - (item.book.discountPercent || 0) / 100)).toFixed(2)
             : originalPrice.toFixed(2);
-          console.log(`Item ${item.book?.title}:`, { // Debug: Log calculations
+          console.log(`Item ${item.book?.title}:`, {
             isOnSale: item.book?.isOnSale,
             discountPercent: item.book?.discountPercent,
             discountStart: item.book?.discountStart,
             discountEnd: item.book?.discountEnd,
             isDiscountActive,
             originalPrice,
-            discountedPrice
+            discountedPrice,
           });
           return {
             id: item.id,
@@ -73,17 +79,31 @@ const AddCart = () => {
           };
         });
         setCartItems(flattenedData);
+
+        // Fetch user orders to count completed orders
+        const ordersResponse = await axios.get(
+          `http://localhost:5127/api/Order/user/${currentUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const fulfilledOrders = ordersResponse.data.filter(
+          (order) => order.status === "Fulfilled"
+        ).length;
+        setCompletedOrders(fulfilledOrders);
       } catch (error) {
         const errorMessage =
-          error.response?.data?.error || "Failed to fetch cart. Please try again.";
+          error.response?.data?.error || "Failed to fetch cart or orders. Please try again.";
         setError(errorMessage);
-        console.error("Failed to fetch cart:", error);
+        console.error("Failed to fetch cart/orders:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCart();
+    fetchCartAndOrders();
   }, [currentUserId, isAuthenticated, navigate]);
 
   const handleQuantityChange = async (id, delta) => {
@@ -160,17 +180,34 @@ const AddCart = () => {
     }
   };
 
-  // Calculate totals using discountedPrice
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.discountedPrice * item.quantity,
-    0
-  );
-  // Calculate total discount
-  const totalDiscount = cartItems.reduce(
-    (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
-    0
-  );
-  const total = subtotal; // Final total computed by backend
+  // Calculate totals
+  const subtotal = parseFloat(
+    cartItems.reduce(
+      (acc, item) => acc + item.discountedPrice * item.quantity,
+      0
+    )
+  ).toFixed(2);
+  const totalBooks = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  // Book-specific discounts
+  const bookDiscount = parseFloat(
+    cartItems.reduce(
+      (acc, item) => acc + (item.price - item.discountedPrice) * item.quantity,
+      0
+    )
+  ).toFixed(2);
+  // 5% discount for 5+ books
+  const fivePlusBooksDiscount = totalBooks >= 5 ? parseFloat(subtotal * 0.05).toFixed(2) : 0;
+  // 10% stackable discount after every 10 completed orders
+  const loyaltyDiscount =
+    completedOrders >= 10 && completedOrders % 10 === 0
+      ? parseFloat(subtotal * 0.10).toFixed(2)
+      : 0;
+  const totalDiscount = parseFloat(
+    parseFloat(bookDiscount) +
+      parseFloat(fivePlusBooksDiscount) +
+      parseFloat(loyaltyDiscount)
+  ).toFixed(2);
+  const total = parseFloat(subtotal - totalDiscount).toFixed(2);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -237,7 +274,11 @@ const AddCart = () => {
                   </div>
                   <button
                     className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
-                    onClick={() => handleRemove(item.id)}
+                    onClick={() => {
+                      if (window.confirm("Are you sure you want to remove this item from your cart?")) {
+                        handleRemove(item.id);
+                      }
+                    }}
                   >
                     <FaTimes />
                   </button>
@@ -247,23 +288,37 @@ const AddCart = () => {
             <div className="w-full md:w-1/3 bg-[#f7f0e8] p-6 rounded-md shadow mt-6 md:mt-0">
               <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
               <div className="flex justify-between mb-2 text-sm">
-                <span>SUBTOTAL </span>
-                <span>Rs {subtotal.toFixed(2)}</span>
+                <span>SUBTOTAL</span>
+                <span>Rs {subtotal}</span>
               </div>
+              {bookDiscount > 0 && (
+                <div className="flex justify-between mb-2 text-sm">
+                  <span>BOOK DISCOUNTS</span>
+                  <span>Rs {bookDiscount}</span>
+                </div>
+              )}
+              {fivePlusBooksDiscount > 0 && (
+                <div className="flex justify-between mb-2 text-sm">
+                  <span>5+ BOOKS DISCOUNT (5%)</span>
+                  <span>Rs {fivePlusBooksDiscount}</span>
+                </div>
+              )}
+              {loyaltyDiscount > 0 && (
+                <div className="flex justify-between mb-2 text-sm">
+                  <span>LOYALTY DISCOUNT (10%)</span>
+                  <span>Rs {loyaltyDiscount}</span>
+                </div>
+              )}
               {totalDiscount > 0 && (
                 <div className="flex justify-between mb-2 text-sm">
                   <span>TOTAL DISCOUNT</span>
-                  <span>Rs {totalDiscount.toFixed(2)}</span>
+                  <span>Rs {totalDiscount}</span>
                 </div>
               )}
-              <div className="flex justify-between mb-2 text-sm">
-                <span>ADDITIONAL DISCOUNTS</span>
-                <span>Calculated at checkout</span>
-              </div>
               <hr className="mb-4" />
               <div className="flex justify-between font-medium mb-6">
                 <span>ESTIMATED TOTAL</span>
-                <span>Rs {total.toFixed(2)}</span>
+                <span>Rs {total}</span>
               </div>
               <button
                 onClick={handleCheckout}

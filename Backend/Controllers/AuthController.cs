@@ -26,6 +26,65 @@ namespace Backend.Controllers
             _emailService = emailService;
         }
 
+        // [HttpPost("register")]
+        // public async Task<ActionResult<object>> Register(RegisterDTO register)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
+        //     if (register.Password != register.ConfirmPassword)
+        //     {
+        //         Console.WriteLine("Passwords do not match.");
+        //         return BadRequest(new { message = "Passwords do not match." });
+        //     }
+
+        //     if (register.Password.Length < 8)
+        //     {
+        //         Console.WriteLine("Password too short.");
+        //         return BadRequest(new { message = "Password must be at least 8 characters long." });
+        //     }
+
+        //     if (await _context.Users.AnyAsync(u => u.Email == register.Email))
+        //     {
+        //         return Conflict("User with this email already exists.");
+        //     }
+
+        //     string membershipId = System.Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+        //     string otp = GenerateOtp();
+
+        //     var user = new User
+        //     {
+        //         Email = register.Email,
+        //         PasswordHash = BCrypt.Net.BCrypt.HashPassword(register.Password),
+        //         FirstName = register.FirstName,
+        //         LastName = register.LastName,
+        //         MembershipId = membershipId,
+        //         Role = await _context.Users.AnyAsync() ? "User" : "Admin",
+        //         CreatedAt = DateTime.UtcNow,
+        //         IsEmailVerified = false,
+        //         VerificationOtp = otp,
+        //         OtpExpiration = DateTime.UtcNow.AddMinutes(10)
+        //     };
+
+        //     await _context.Users.AddAsync(user);
+        //     await _context.SaveChangesAsync();
+
+        //     try
+        //     {
+        //         await _emailService.SendVerificationEmailAsync(user.Email, user.FirstName, otp);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         Console.WriteLine($"Failed to send verification email: {ex.Message}");
+        //         _context.Users.Remove(user);
+        //         await _context.SaveChangesAsync();
+        //         return StatusCode(500, new { message = "Failed to send verification email. Please try again." });
+        //     }
+
+        //     return Ok(new { message = "Registration successful. Please verify your email with the OTP sent." });
+        // }
+
         [HttpPost("register")]
         public async Task<ActionResult<object>> Register(RegisterDTO register)
         {
@@ -45,9 +104,20 @@ namespace Backend.Controllers
                 return BadRequest(new { message = "Password must be at least 8 characters long." });
             }
 
-            if (await _context.Users.AnyAsync(u => u.Email == register.Email))
+            // Check for existing user
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
+            if (existingUser != null)
             {
-                return Conflict("User with this email already exists.");
+                if (existingUser.IsEmailVerified)
+                {
+                    return Conflict("User with this email already exists.");
+                }
+                else
+                {
+                    // Remove unverified user
+                    _context.Users.Remove(existingUser);
+                    await _context.SaveChangesAsync();
+                }
             }
 
             string membershipId = System.Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
@@ -83,6 +153,60 @@ namespace Backend.Controllers
             }
 
             return Ok(new { message = "Registration successful. Please verify your email with the OTP sent." });
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<object>> Login(LoginDTO login)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == login.Email);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
+            {
+                return Unauthorized("Invalid email or password.");
+            }
+
+            if (!user.IsEmailVerified)
+            {
+                // Resend OTP for unverified account
+                string otp = GenerateOtp();
+                user.VerificationOtp = otp;
+                user.OtpExpiration = DateTime.UtcNow.AddMinutes(10);
+                await _context.SaveChangesAsync();
+
+                try
+                {
+                    await _emailService.SendVerificationEmailAsync(user.Email, user.FirstName, otp);
+                    return BadRequest(new { message = "Your email is not verified. A new OTP has been sent to your email." });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to send verification email: {ex.Message}");
+                    return StatusCode(500, new { message = "Failed to resend OTP. Please try again later." });
+                }
+            }
+
+            var token = _token.GenerateToken(user);
+
+            return Ok(new
+            {
+                Token = token,
+                User = new UserDTO
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Role = user.Role,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    MembershipId = user.MembershipId,
+                    CreatedAt = user.CreatedAt
+                }
+            });
         }
 
         [HttpPost("verify-email")]
@@ -172,43 +296,43 @@ namespace Backend.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<object>> Login(LoginDTO login)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        // [HttpPost("login")]
+        // public async Task<ActionResult<object>> Login(LoginDTO login)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return BadRequest(ModelState);
+        //     }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == login.Email);
+        //     var user = await _context.Users
+        //         .FirstOrDefaultAsync(u => u.Email == login.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
-            {
-                return Unauthorized("Invalid email or password.");
-            }
-            if (!user.IsEmailVerified)
-            {
-                return BadRequest("Please verify your email before logging in.");
-            }
+        //     if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
+        //     {
+        //         return Unauthorized("Invalid email or password.");
+        //     }
+        //     if (!user.IsEmailVerified)
+        //     {
+        //         return BadRequest("Please verify your email before logging in.");
+        //     }
 
-            var token = _token.GenerateToken(user);
+        //     var token = _token.GenerateToken(user);
 
-            return Ok(new
-            {
-                Token = token,
-                User = new UserDTO
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    Role = user.Role,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    MembershipId = user.MembershipId,
-                    CreatedAt = user.CreatedAt
-                }
-            });
-        }
+        //     return Ok(new
+        //     {
+        //         Token = token,
+        //         User = new UserDTO
+        //         {
+        //             Id = user.Id,
+        //             Email = user.Email,
+        //             Role = user.Role,
+        //             FirstName = user.FirstName,
+        //             LastName = user.LastName,
+        //             MembershipId = user.MembershipId,
+        //             CreatedAt = user.CreatedAt
+        //         }
+        //     });
+        // }
 
         [Authorize]
         [HttpGet("me")]

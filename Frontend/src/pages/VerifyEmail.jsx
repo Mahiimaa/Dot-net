@@ -1,84 +1,50 @@
 import React, { useState, useContext } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa";
-import { useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api/axios";
 import { GiSpellBook } from "react-icons/gi";
 
-const Login = () => {
-  const { login, user } = useContext(AuthContext);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+const VerifyEmail = () => {
+  const { login } = useContext(AuthContext);
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email || "";
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleOtpSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-
-    // Client-side validation
-    if (!formData.email || !formData.password) {
-      setError("Please fill in all required fields.");
-      return;
-    }
-
     try {
-      const response = await api.post("/Auth/login", {
-        email: formData.email,
-        password: formData.password,
-      });
-
-      const { token, user: userData } = response.data;
-      login(token, userData);
-      setSuccess("Login successful! Redirecting...");
+      const response = await api.post("/Auth/verify-email", { email, otp });
+      const { token, user } = response.data;
+      login(token, user);
+      setSuccess("Email verified successfully! Redirecting...");
       setTimeout(() => {
-        if (userData.role === "Admin") {
+        if (user.role === "Admin") {
           navigate("/dashboard");
-        } else if (userData.role === "Staff") {
+        } else if (user.role === "Staff") {
           navigate("/staff/orders");
         } else {
-          navigate("/");
+          navigate("/login");
         }
-      }, 2000); // Increased delay for better UX
+      }, 2000);
     } catch (err) {
-      if (err.response?.data?.message?.includes("Your email is not verified")) {
-        setError(err.response.data.message);
-        // Redirect to OTP verification page with email
-        navigate("/verify-email", { state: { email: formData.email } });
-      } else if (err.response) {
-        if (err.response.status === 401) {
-          setError("Incorrect email or password.");
-        } else if (err.response.status === 400) {
-          setError(
-            err.response.data.message ||
-              "Please provide valid email and password."
-          );
-        } else {
-          setError(
-            err.response.data.message || "Login failed. Please try again."
-          );
-        }
-      } else {
-        setError(
-          "Unable to connect to the server. Please check your connection."
-        );
-      }
+      setError(err.response?.data?.message || "Invalid OTP. Please try again.");
     }
   };
 
-  const handleSocialLogin = (provider) => {
-    // TODO: Implement social login (Google/Facebook)
-    alert(`Social login with ${provider} is not implemented yet.`);
+  const handleResendOtp = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      await api.post("/Auth/resend-otp", { email });
+      setSuccess("OTP resent successfully! Please check your email.");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to resend OTP.");
+    }
   };
 
   return (
@@ -99,6 +65,7 @@ const Login = () => {
             SIGN UP
           </Link>
         </div>
+        <h2 className="text-2xl font-bold mb-6 text-[#c7916c]">Verify Your Email</h2>
         {error && (
           <div className="text-white bg-[#e57373] text-sm mb-4 p-2 rounded-md animate-fade-in">
             {error}
@@ -109,53 +76,29 @@ const Login = () => {
             {success}
           </div>
         )}
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4" onSubmit={handleOtpSubmit}>
           <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleInputChange}
+            type="text"
+            placeholder="Enter OTP"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
             required
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none"
-            required
-          />
-          <div
-            className="text-right text-xs text-green-600 cursor-pointer"
-            onClick={() => navigate("/forgotpassword")}
-          >
-            Forgot password?
-          </div>
           <button
             type="submit"
             className="bg-[#c7916c] text-white py-2 rounded-md font-medium hover:bg-[#b87b58] transition"
           >
-            Log in
+            Verify
+          </button>
+          <button
+            type="button"
+            onClick={handleResendOtp}
+            className="text-sm text-[#c7916c] hover:underline"
+          >
+            Resend OTP
           </button>
         </form>
-        <div className="my-4 text-sm text-gray-500">OR</div>
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => handleSocialLogin("Facebook")}
-            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
-          >
-            <FaFacebookF className="text-blue-600" />
-          </button>
-          <button
-            onClick={() => handleSocialLogin("Google")}
-            className="bg-white border p-2 rounded-full shadow-md hover:scale-105 transition"
-          >
-            <FcGoogle />
-          </button>
-        </div>
       </div>
       <div className="absolute -bottom-10 w-full z-0">
         <div className="absolute bottom-0 w-full h-[120px] bg-white z-[-1]" />
@@ -208,4 +151,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default VerifyEmail;

@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Heart, ChevronDown, ChevronUp } from 'lucide-react';
 import * as signalR from '@microsoft/signalr';
+import { debounce } from 'lodash';
 import api from '../api/axios';
 import Navbar from './Layout/Navbar';
 import { AuthContext } from '../context/AuthContext';
 import Footer from './Layout/Footer';
 
-const BookCard = ({ book, addToCart, addToWishlist, isAuthenticated }) => {
-  // Parse discountStart and discountEnd as UTC dates
+const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishlist }) => {
   const parseUTCDate = (dateStr) => {
     if (!dateStr) return null;
     return new Date(dateStr + (dateStr.endsWith('Z') ? '' : 'Z'));
@@ -18,6 +18,8 @@ const BookCard = ({ book, addToCart, addToWishlist, isAuthenticated }) => {
     book.isOnSale &&
     (!book.discountStart || parseUTCDate(book.discountStart) <= new Date()) &&
     (!book.discountEnd || parseUTCDate(book.discountEnd) >= new Date());
+
+  const isCartDisabled = book.availability === 'Out of Stock' || book.availability === 'Library Only';
 
   return (
     <div className="relative border rounded-lg p-6 flex flex-col items-center shadow-md hover:shadow-lg transition h-full bg-white">
@@ -42,19 +44,26 @@ const BookCard = ({ book, addToCart, addToWishlist, isAuthenticated }) => {
           <>
             <button
               onClick={() => addToCart(book.id)}
-              className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition shadow-sm"
-              title="Add to Cart"
-              aria-label="Add book to cart"
+              className={`bg-gray-100 p-2 rounded-full transition shadow-sm ${
+                isCartDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'
+              }`}
+              title={isCartDisabled ? 'Not available for cart' : 'Add to Cart'}
+              aria-label={isCartDisabled ? 'Book not available for cart' : 'Add book to cart'}
+              disabled={isCartDisabled}
             >
               🛒
             </button>
             <button
-              onClick={() => addToWishlist(book.id)}
+              onClick={() => toggleWishlist(book.id)}
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition shadow-sm"
-              title="Add to Wishlist"
-              aria-label="Add book to wishlist"
+              title={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+              aria-label={isInWishlist ? 'Remove book from wishlist' : 'Add book to wishlist'}
             >
-              <Heart className="w-5 h-5 text-red-500" />
+              <Heart
+                className="w-5 h-5"
+                fill={isInWishlist ? 'red' : 'none'}
+                stroke="red"
+              />
             </button>
           </>
         )}
@@ -109,6 +118,7 @@ const Book = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [broadcastMessage, setBroadcastMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     author: '',
     genre: '',
@@ -128,28 +138,41 @@ const Book = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+  const [wishlistItems, setWishlistItems] = useState([]);
   const booksPerPage = 6;
-
-  // SignalR connection state
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [activeAnnouncementIndex, setActiveAnnouncementIndex] = useState(0);
+
+  // Debounce search query updates
+  const debouncedSetSearch = useCallback(
+    debounce((value) => {
+      setDebouncedSearchQuery(value);
+      setCurrentPage(1);
+    }, 500),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    debouncedSetSearch(value);
+  };
 
   useEffect(() => {
     if (location.state?.activeTab) {
       setActiveTab(location.state.activeTab);
-      setCurrentPage(1); 
+      setCurrentPage(1);
     }
   }, [location.state]);
 
-  // Fetch books and announcements
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch books with search parameter
         const booksResponse = await api.get('/api/Books', {
           params: {
-            search: searchQuery || undefined,
+            search: debouncedSearchQuery || undefined,
             author: filters.author || undefined,
             genre: filters.genre || undefined,
             availability: filters.availability || undefined,
@@ -171,7 +194,6 @@ const Book = () => {
         setTotalBooks(booksResponse.data.total || 0);
         setTotalPages(Math.ceil(booksResponse.data.total / booksPerPage) || 1);
 
-        // Fetch announcements
         const announcementsResponse = await api.get('/api/Announcements');
         const activeAnnouncements = announcementsResponse.data.filter(
           (ann) =>
@@ -182,6 +204,13 @@ const Book = () => {
               new Date(ann.endDate + (ann.endDate.endsWith('Z') ? '' : 'Z')) >= new Date())
         );
         setAnnouncements(activeAnnouncements);
+
+        if (isAuthenticated && user?.id) {
+          const wishlistResponse = await api.get(`/api/Wishlist/user/${user.id}`);
+          setWishlistItems(wishlistResponse.data || []);
+        } else {
+          setWishlistItems([]);
+        }
       } catch (err) {
         if (err.response?.status === 500) {
           setError('Failed to load books. Please try a different query or try again later.');
@@ -195,9 +224,17 @@ const Book = () => {
     };
 
     fetchData();
-  }, [filters, sortBy, activeTab, currentPage, searchQuery]);
+  }, [filters, sortBy, activeTab, currentPage, debouncedSearchQuery, isAuthenticated, user]);
 
-  // Handle SignalR for real-time broadcasting
+  useEffect(() => {
+    if (announcements.length > 1) {
+      const interval = setInterval(() => {
+        setActiveAnnouncementIndex((prev) => (prev + 1) % announcements.length);
+      }, 10000);
+      return () => clearInterval(interval);
+    }
+  }, [announcements.length]);
+
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
       .withUrl('http://localhost:5127/orderHub', { withCredentials: true })
@@ -246,7 +283,6 @@ const Book = () => {
     };
   }, []);
 
-  // Handlers
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
@@ -267,6 +303,7 @@ const Book = () => {
     });
     setSortBy('');
     setSearchQuery('');
+    setDebouncedSearchQuery('');
     setCurrentPage(1);
   };
 
@@ -284,7 +321,7 @@ const Book = () => {
       await api.post('/api/Cart/add', {
         userId: user.id,
         bookId,
-        quantity: 1
+        quantity: 1,
       });
       alert('Book added to cart!');
     } catch (err) {
@@ -294,23 +331,32 @@ const Book = () => {
     }
   };
 
-  const addToWishlist = async (bookId) => {
+  const toggleWishlist = async (bookId) => {
     if (!isAuthenticated || !user?.id) {
       alert('Please log in to add to wishlist.');
       navigate('/login');
       return;
     }
     try {
-      await api.post('/api/Wishlist/add', { userId: user.id, bookId });
-      alert('Book added to wishlist!');
+      const wishlistItem = wishlistItems.find((item) => item.bookId === bookId);
+      if (wishlistItem) {
+        await api.delete(`/api/Wishlist/remove/${wishlistItem.id}`);
+        setWishlistItems((prev) => prev.filter((item) => item.bookId !== bookId));
+        alert('Book removed from wishlist!');
+      } else {
+        const response = await api.post('/api/Wishlist/add', { userId: user.id, bookId });
+        const wishlistResponse = await api.get(`/api/Wishlist/user/${user.id}`);
+        setWishlistItems(wishlistResponse.data || []);
+        alert('Book added to wishlist!');
+      }
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Failed to add to wishlist. Please try again.';
+      const errorMessage =
+        err.response?.data?.message || 'Failed to update wishlist. Please try again.';
       alert(errorMessage);
       console.error('Wishlist error:', err.response?.status, err.response?.data || err.message);
     }
   };
 
-  // Unique filter options
   const authors = [...new Set(books.map((b) => b.author).filter(Boolean))];
   const genres = [...new Set(books.map((b) => b.genre).filter(Boolean))];
   const languages = [...new Set(books.map((b) => b.language).filter(Boolean))];
@@ -321,6 +367,129 @@ const Book = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-[#F6EFE4]">
+        <style>
+          {`
+            .announcement-carousel {
+              position: relative;
+              max-width: 1400px;
+              margin: 0 auto 1.1rem;
+              overflow: hidden;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              background: linear-gradient(135deg, #3b82f6, #60a5fa);
+              padding: 8px;
+            }
+
+            .announcement-item {
+              display: none;
+              opacity: 0;
+              transition: opacity 0.5s ease-in-out;
+              text-align: center;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+
+            .announcement-item.active {
+              display: block;
+              opacity: 1;
+            }
+
+            .announcement-item p {
+              color: #ffffff;
+              font-size: 1.125rem;
+              font-weight: 500;
+              margin: 0;
+              padding: 12px 16px;
+              line-height: 1.5;
+              display: inline-block;
+              animation: marquee 8s linear infinite;
+            }
+
+            @keyframes marquee {
+              0% {
+                transform: translateX(100%);
+              }
+              100% {
+                transform: translateX(-100%);
+              }
+            }
+
+            .announcement-item p:hover {
+              animation-play-state: paused;
+            }
+
+            .carousel-dots {
+              display: flex;
+              justify-content: center;
+              gap: 8px;
+              margin-top: 12px;
+            }
+
+            .carousel-dot {
+              width: 10px;
+              height: 10px;
+              background: rgba(255, 255, 255, 0.5);
+              border-radius: 50%;
+              cursor: pointer;
+              transition: background 0.3s;
+            }
+
+            .carousel-dot.active {
+              background: #ffffff;
+            }
+
+            .search-container {
+              position: relative;
+              width: 100%;
+              max-width: 815px;
+              margin: 0 auto;
+            }
+
+            .search-input {
+              width: 100%;
+              padding: 12px 40px 12px 16px;
+              border: 2px solid #e5e7eb;
+              border-radius: 8px;
+              font-size: 16px;
+              color: #1f2937;
+              background-color: #ffffff;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+              transition: border-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-input:focus {
+              outline: none;
+              border-color: #3b82f6;
+              box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+
+            .search-icon {
+              position: absolute;
+              right: 12px;
+              top: 50%;
+              transform: translateY(-50%);
+              color: #6b7280;
+              pointer-events: none;
+            }
+
+            @media (max-width: 640px) {
+              .announcement-carousel {
+                margin: 0 1rem 1.5rem;
+                padding: 12px;
+              }
+
+              .announcement-item p {
+                font-size: 1rem;
+                padding: 10px 12px;
+              }
+
+              .search-input {
+                font-size: 14px;
+                padding: 10px 36px 10px 14px;
+              }
+            }
+          `}
+        </style>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {loading ? (
             <div className="text-center">
@@ -332,24 +501,36 @@ const Book = () => {
             </div>
           ) : (
             <>
-              {/* Announcements */}
-              {announcements.map((ann) => (
-                <div
-                  key={ann.id}
-                  className="bg-blue-100 p-4 text-center mb-6 rounded-lg border border-blue-200"
-                >
-                  <p className="text-blue-800 font-medium">{ann.message}</p>
+              {announcements.length > 0 && (
+                <div className="announcement-carousel">
+                  {announcements.map((ann, index) => (
+                    <div
+                      key={ann.id}
+                      className={`announcement-item ${index === activeAnnouncementIndex ? 'active' : ''}`}
+                    >
+                      <p>{ann.message}</p>
+                    </div>
+                  ))}
+                  {announcements.length > 1 && (
+                    <div className="carousel-dots">
+                      {announcements.map((_, index) => (
+                        <span
+                          key={index}
+                          className={`carousel-dot ${index === activeAnnouncementIndex ? 'active' : ''}`}
+                          onClick={() => setActiveAnnouncementIndex(index)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
+              )}
 
-              {/* Real-time Broadcast */}
               {broadcastMessage && (
                 <div className="bg-yellow-100 p-4 text-center mb-6 rounded-lg border border-yellow-200 animate-pulse">
                   <p className="text-yellow-800 font-medium">📢 {broadcastMessage}</p>
                 </div>
               )}
 
-              {/* SignalR Connection Status (for debugging) */}
               {connectionStatus !== 'connected' && (
                 <div className="bg-orange-100 p-4 text-center mb-6 rounded-lg border border-orange-200">
                   <p className="text-orange-800 font-medium">
@@ -369,7 +550,6 @@ const Book = () => {
                 </p>
               </div>
 
-              {/* Category Tabs */}
               <div className="flex flex-wrap justify-center gap-2 mb-8">
                 {[
                   'All Books',
@@ -397,25 +577,18 @@ const Book = () => {
                 ))}
               </div>
 
-              {/* Search */}
-              <div className="flex justify-center mb-10 ">
-                <div className="relative w-full max-w-2xl">
-                  <input
-                    type="text"
-                    placeholder="Search by title, ISBN, or description..."
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setCurrentPage(1);
-                    }}
-                    className="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-                  />
-                  <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
-                </div>
+              <div className="search-container mb-10 ">
+                <input
+                  type="text"
+                  placeholder="Search by title, ISBN, or description..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="search-input"
+                />
+                <span className="search-icon">🔍</span>
               </div>
 
-              {/* Collapsible Filters */}
-              <div className="bg-white p-4 rounded-xl shadow-sm mb-8">
+              <div className="bg-white p-4 rounded-xl shadow-sm mb-8 mt-8">
                 <button
                   onClick={toggleFilterSection}
                   className="w-full flex justify-between items-center text-xl font-semibold text-gray-800"
@@ -575,9 +748,7 @@ const Book = () => {
                 )}
               </div>
 
-              {/* White background for content below filters */}
               <div className="bg-white p-6 rounded-xl shadow-sm">
-                {/* Sort and Results Info */}
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
                   <div className="text-teal-800 bg-teal-100 p-2 rounded-md mb-3 sm:mb-0">
                     {books.length > 0
@@ -605,7 +776,6 @@ const Book = () => {
                   </div>
                 </div>
 
-                {/* Book Grid */}
                 {books.length === 0 ? (
                   <div className="bg-white p-8 rounded-xl shadow-sm text-center">
                     <h3 className="text-xl font-medium text-gray-700 mb-2">No books found</h3>
@@ -621,13 +791,13 @@ const Book = () => {
                           key={book.id}
                           book={book}
                           addToCart={addToCart}
-                          addToWishlist={addToWishlist}
                           isAuthenticated={isAuthenticated}
+                          isInWishlist={wishlistItems.some((item) => item.bookId === book.id)}
+                          toggleWishlist={toggleWishlist}
                         />
                       ))}
                     </div>
 
-                    {/* Pagination */}
                     {totalPages > 1 && (
                       <div className="flex justify-center mt-12">
                         <nav

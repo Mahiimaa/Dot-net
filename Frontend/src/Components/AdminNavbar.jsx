@@ -56,13 +56,13 @@ const Sidebar = () => {
             {item.name}
           </NavLink>
         ))}
-        <button
+        {/* <button
           onClick={handleLogout}
           className="flex items-center px-4 py-3 gap-3 text-sm hover:bg-[#0b4f82]"
         >
           <LogOut size={18} />
           Logout
-        </button>
+        </button> */}
       </nav>
     </div>
   );
