@@ -318,6 +318,7 @@ function AdminBook() {
                     <th className="px-4 py-2 text-left">Price</th>
                     <th className="px-4 py-2 text-left">Publisher</th>
                     <th className="px-4 py-2 text-left">In Stock</th>
+                    <th className="px-4 py-2 text-left">Image</th>
                     <th className="px-4 py-2 text-left">Action</th>
                   </tr>
                 </thead>
@@ -348,6 +349,7 @@ function AdminBook() {
                         <td className="px-4 py-2">{book.availability}</td>
                         <td className="px-4 py-2">{book.isbn}</td>
                         <td className="px-4 py-2">Rs.{book.price}</td>
+                        <td className="px-4 py-2">{book.publisher}</td>
                         <td className="px-4 py-2">{book.inStockQty}</td>
                         <td className="px-4 py-2">
                           <img

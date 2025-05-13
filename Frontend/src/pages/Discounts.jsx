@@ -24,6 +24,8 @@ function Discounts() {
     const [books, setBooks] = useState([]);
     const [selectedBooks, setSelectedBooks] = useState([]);
     const [editSelectedBooks, setEditSelectedBooks] = useState([]);
+    const [booksLoading, setBooksLoading] = useState(true);
+    const [booksError, setBooksError] = useState(null);
 
 
     const fetchDiscounts = async () => {
@@ -103,12 +105,29 @@ function Discounts() {
       
       const fetchBooks = async () => {
         try {
-          const res = await axios.get("http://localhost:5127/api/books");
-          setBooks(res.data);
+            setBooksLoading(true);
+            setBooksError(null);
+            const res = await axios.get("http://localhost:5127/api/books");
+            console.log("Books response:", res.data);
+            const booksArray = res.data.books || res.data.Books; // Check both cases
+            if (res.data && Array.isArray(booksArray)) {
+            setBooks(booksArray);
+            if (booksArray.length === 0) {
+                setBooksError("No books found in the database.");
+            }
+            } else {
+            console.error("Unexpected response structure:", res.data);
+            setBooksError("Books data is not in the expected format");
+            setBooks([]);
+            }
         } catch (err) {
-          console.error("Failed to fetch books:", err);
+            console.error("Failed to fetch books:", err);
+            setBooksError(`Failed to fetch books: ${err.message}`);
+            setBooks([]);
+        } finally {
+            setBooksLoading(false);
         }
-      };
+        };
       
       const handleDeleteDiscount = async (id) => {
         if (!window.confirm("Are you sure you want to delete this discount?")) return;
@@ -257,24 +276,36 @@ function Discounts() {
                 </div>
                 <div className="col-span-2">
                 <label className="block font-medium">Applicable Books</label>
-                {Array.isArray(books) && books.length > 0 ? (
-                <select
-                    multiple
-                    className="w-full border p-2 rounded"
-                    value={selectedBooks}
-                    onChange={(e) =>
-                    setSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
-                    }
-                >
-                    {books.map((b) => (
-                    <option key={b.id} value={b.id}>
-                        {b.title}
-                    </option>
-                    ))}
-                </select>
-                ) : (
-                      <p className="text-gray-500">No books available</p>
-                    )}
+                {booksLoading ? (
+    <p className="text-gray-500">Loading books...</p>
+  ) : booksError ? (
+    <div className="text-red-500">
+      {booksError}
+      <button
+        onClick={fetchBooks}
+        className="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
+      >
+        Retry
+      </button>
+    </div>
+  ) : books.length > 0 ? (
+    <select
+      multiple
+      className="w-full border p-2 rounded"
+      value={selectedBooks}
+      onChange={(e) =>
+        setSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
+      }
+    >
+      {books.map((b) => (
+        <option key={b.id} value={b.id}>
+          {b.title}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <p className="text-gray-500">No books available. Please add books first.</p>
+  )}
                 </div>
 
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
@@ -361,24 +392,36 @@ function Discounts() {
                 </div>
                 <div className="col-span-2">
                     <label className="block font-medium">Applicable Books</label>
-                    {Array.isArray(books) && books.length > 0 ? (
-                    <select
-                        multiple
-                        className="w-full border p-2 rounded"
-                        value={editSelectedBooks}
-                        onChange={(e) =>
-                        setEditSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
-                        }
-                    >
-                        {books.map((b) => (
-                        <option key={b.id} value={b.id}>
-                            {b.title}
-                        </option>
-                        ))}
-                    </select>
-                    ) : (
-                      <p className="text-gray-500">No books available</p>
-                    )}
+                   {booksLoading ? (
+    <p className="text-gray-500">Loading books...</p>
+  ) : booksError ? (
+    <div className="text-red-500">
+      {booksError}
+      <button
+        onClick={fetchBooks}
+        className="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
+      >
+        Retry
+      </button>
+    </div>
+  ) : books.length > 0 ? (
+    <select
+      multiple
+      className="w-full border p-2 rounded"
+      value={editSelectedBooks}
+      onChange={(e) =>
+        setSelectedBooks(Array.from(e.target.selectedOptions, (o) => o.value))
+      }
+    >
+      {books.map((b) => (
+        <option key={b.id} value={b.id}>
+          {b.title}
+        </option>
+      ))}
+    </select>
+  ) : (
+    <p className="text-gray-500">No books available. Please add books first.</p>
+  )}
                     </div>
                 <div className="col-span-2 flex justify-center gap-4 mt-4">
                 <button

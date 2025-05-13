@@ -7,20 +7,6 @@ import Navbar from './Layout/Navbar';
 import Footer from './Layout/Footer';
 import { AuthContext } from '../context/AuthContext';
 import gen from "../assets/Images/genre.png"
-
-// Slick carousel settings
-const carouselSettings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 3000,
-  arrows: true,
-};
-
-// BookCard component (modified for Shop page)
 const BookCard = ({ book, addToCart, addToWishlist, isAuthenticated }) => {
   const parseUTCDate = (dateStr) => {
     if (!dateStr) return null;
@@ -121,7 +107,9 @@ const Shop = () => {
         const featuredResponse = await api.get('/api/Books', {
           params: { tab: 'New Releases', page: 1, pageSize: 5 },
         });
-        setFeaturedBooks(featuredResponse.data.books || []);
+        const uniqueBooks = [...new Map(featuredResponse.data.books.map(book => [book.id, book])).values()];
+      setFeaturedBooks(uniqueBooks);
+      console.log('Featured Books:', uniqueBooks);
 
         const staffPicksResponse = await api.get('/api/Books', {
           params: { tab: 'Bestsellers', page: 1, pageSize: 4 }, 
@@ -194,41 +182,6 @@ const Shop = () => {
             </div>
           ) : (
             <>
-              <div className="mb-12">
-                <Slider {...carouselSettings}>
-                  {featuredBooks.map((book) => (
-                    <div key={book.id} className="relative">
-                      <div className="bg-gradient-to-r from-amber-600 to-teal-600 text-white rounded-xl shadow-2xl overflow-hidden">
-                        <div className="flex flex-col md:flex-row items-center p-6 md:p-12">
-                          <div className="md:w-1/2">
-                            <h1 className="text-2xl md:text-4xl font-bold mb-4">{book.title}</h1>
-                            <p className="text-sm md:text-lg mb-6 line-clamp-3">
-                              {book.description || 'Discover this exciting new release!'}
-                            </p>
-                            <Link
-                              to={`/books/${book.id}`}
-                              className="inline-block bg-white text-amber-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition"
-                            >
-                              Shop Now
-                            </Link>
-                          </div>
-                          <div className="md:w-1/2 mt-6 md:mt-0">
-                            <img
-                              src={
-                                book.imageUrl
-                                  ? `http://localhost:5127/${book.imageUrl}`
-                                  : 'https://via.placeholder.com/400x300?text=Featured+Book'
-                              }
-                              alt={book.title}
-                              className="w-full h-64 md:h-80 object-contain rounded-lg shadow-md"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
               <div className="mb-12">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Explore Genres</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
