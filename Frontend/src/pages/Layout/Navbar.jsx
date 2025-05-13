@@ -9,6 +9,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
   // Check authentication status on component mount
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -20,12 +21,16 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Clear token and user data from localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('resetEmail'); // Clean up any leftover reset email
-    setIsLoggedIn(false);
-    setMenuOpen(false); // Close mobile menu on logout
-    navigate('/');
+    // Show confirmation popup
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      // Clear token and user data from localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('resetEmail'); // Clean up any leftover reset email
+      setIsLoggedIn(false);
+      setMenuOpen(false); // Close mobile menu on logout
+      navigate('/login');
+    }
   };
 
   const isActive = (path) => location.pathname === path;
@@ -35,7 +40,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
-        <GiSpellBook className="w-8 h-8 text-green-700" />
+          <GiSpellBook className="w-8 h-8 text-green-700" />
           <span className="text-xl font-bold text-green-700">Foliana</span>
         </div>
 
@@ -118,7 +123,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden mt-3 flex flex-col space-y-3">
-         <a
+          <a
             href="/"
             className={`text-gray-600 hover:text-green-700 transition ${
               isActive('/') ? 'text-green-700 font-semibold' : ''
@@ -161,6 +166,7 @@ const Navbar = () => {
           <a
          className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full hover:bg-teal这场-200 transition w-max"
           href="/shop">
+
             Shop
           </a>
           {isLoggedIn ? (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import { GiSpellBook } from "react-icons/gi";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -17,8 +18,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-10 pb-8 border-b border-amber-200">
           <div className="flex flex-col items-start max-w-xs">
             <div className="flex items-center mb-3">
-            <FaPaperPlane />
-              <span className="ml-2 text-2xl font-bold text-amber-800">Foliana</span>
+              <GiSpellBook className="w-8 h-8 text-green-700" />
+              <span className="text-xl font-bold text-green-700 ">Foliana</span>
             </div>
             <p className="text-sm leading-relaxed">Infusing the online shopping with an in-store pickup experience.</p>
           </div>

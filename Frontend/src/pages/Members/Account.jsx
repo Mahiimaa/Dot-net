@@ -134,7 +134,6 @@ const Account = () => {
     fetchData(true);
   };
 
-  // Calculate statistics
   const booksPurchased = orders.reduce((sum, order) => {
     const items = order.OrderItems || order.orderItems || [];
     return sum + items.reduce((s, item) => s + (item.Quantity || item.quantity || 0), 0);
@@ -159,9 +158,10 @@ const Account = () => {
     .filter((order) => ["Pending", "Fulfilled"].includes(order.Status || order.status))
     .slice(0, 2);
 
+  
   const recentActivities = [
     ...orders
-      .slice(0, 2)
+      .slice(0, 4) 
       .map((order) => {
         const items = order.OrderItems || order.orderItems || [];
         return {
@@ -175,13 +175,13 @@ const Account = () => {
         };
       }),
     ...wishlist
-      .slice(0, 1)
+      .slice(0, 2) 
       .map((item) => ({
         icon: "❤️",
         title: "Book Added to Wishlist",
         desc: `Added '${item.Book?.Title || item.book?.title || "Unknown"}' to your wishlist`,
       })),
-  ];
+  ].slice(0, 5); 
 
   if (loading) {
     return (
@@ -222,55 +222,23 @@ const Account = () => {
         <div className="flex gap-6 mt-8">
           <SideProfile />
           <div className="w-3/4 space-y-6">
-            {/* Profile Summary */}
-            {/* <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome, {user?.firstName || "User"}!</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-600">
-                    <span className="font-medium">Name:</span> {user?.firstName} {user?.lastName}
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="font-medium">Email:</span> {user?.email || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-600">
-                    <span className="font-medium">Membership ID:</span> {user?.membershipId || "N/A"}
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="font-medium">Joined:</span>{" "}
-                    {user?.createdAt
-                      ? new Date(user.createdAt).toLocaleDateString()
-                      : "N/A"}
-                  </p>
-                </div>
-              </div>
-              <Link
-                to="/setting"
-                className="mt-4 inline-block bg-brown-600 text-white px-4 py-2 rounded-lg hover:bg-brown-700 transition"
-              >
-                Edit Profile
-              </Link>
-            </div> */}
+            {/* Tabs */}
+            <div className="flex gap-6 border-b border-gray-200 mb-6">
+              {tabs.map((tab) => (
+                <Link
+                  key={tab.name}
+                  to={tab.path}
+                  className={`pb-2 border-b-2 ${
+                    location.pathname === tab.path
+                      ? "border-brown-500 text-brown-700 font-medium"
+                      : "text-gray-500"
+                  }`}
+                >
+                  {tab.name}
+                </Link>
+              ))}
+            </div>
 
-          {/* Tabs */}
-          <div className="flex gap-6 border-b border-gray-200 mb-6">
-            {tabs.map((tab) => (
-              <Link
-                key={tab.name}
-                to={tab.path}
-                className={`pb-2 border-b-2 ${
-                location.pathname === tab.path
-                ? "border-brown-500 text-brown-700 font-medium"
-                : "text-gray-500"
-                }`}
-              >
-              {tab.name}
-              </Link>
-            ))}
-          </div>
-                  
             {/* Statistics */}
             <div className="grid grid-cols-3 gap-4">
               <StatCard number={booksPurchased} label="Books Purchased" />
@@ -329,7 +297,10 @@ const Account = () => {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-semibold text-gray-800">Recent Activity</h3>
                 {recentActivities.length > 0 && (
-                  <Link to="/order" className="text-brown-600 hover:text-brown-700 text-sm">
+                  <Link
+                    to="/order"
+                    className="text-brown-600 hover:text-brown-700 text-sm"
+                  >
                     View All
                   </Link>
                 )}
