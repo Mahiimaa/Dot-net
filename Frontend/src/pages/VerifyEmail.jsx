@@ -65,7 +65,9 @@ const VerifyEmail = () => {
             SIGN UP
           </Link>
         </div>
-        <h2 className="text-2xl font-bold mb-6 text-[#c7916c]">Verify Your Email</h2>
+        <h2 className="text-2xl font-bold mb-6 text-[#c7916c]">
+          Verify Your Email
+        </h2>
         {error && (
           <div className="text-white bg-[#e57373] text-sm mb-4 p-2 rounded-md animate-fade-in">
             {error}

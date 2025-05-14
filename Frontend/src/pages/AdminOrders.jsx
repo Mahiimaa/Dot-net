@@ -120,7 +120,7 @@ function AdminOrders() {
     }
   };
 
-    const openModal = (order) => {
+  const openModal = (order) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
   };
@@ -181,8 +181,7 @@ function AdminOrders() {
                   </tr>
                 ) : (
                   filteredOrders.map((o) => (
-                    <tr key={o.id} className="border-t"
-                    >
+                    <tr key={o.id} className="border-t">
                       <td className="px-4 py-2">{o.id}</td>
                       <td className="px-4 py-2">{o.userName}</td>
                       <td className="px-4 py-2" onClick={() => openModal(o)}>
@@ -191,7 +190,9 @@ function AdminOrders() {
                           : o.books[0]?.book?.title || "N/A"}
                       </td>
                       <td className="px-4 py-2">{o.claimCode}</td>
-                      <td className="px-4 py-2">Rs.{o.totalAmount.toFixed(2)}</td>
+                      <td className="px-4 py-2">
+                        Rs.{o.totalAmount.toFixed(2)}
+                      </td>
                       <td className="px-4 py-2">
                         {getStatusDisplay(o.status)}
                       </td>
@@ -243,7 +244,8 @@ function AdminOrders() {
                 {selectedOrder.totalAmount.toFixed(2)}
               </p>
               <p>
-                <strong>Status:</strong> {getStatusDisplay(selectedOrder.status)}
+                <strong>Status:</strong>{" "}
+                {getStatusDisplay(selectedOrder.status)}
               </p>
               <p>
                 <strong>Order Date:</strong>{" "}

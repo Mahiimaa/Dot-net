@@ -7,7 +7,9 @@ const SideProfile = () => {
 
   // Fallback values if user data is not available
   const fullName = user ? `${user.firstName} ${user.lastName}` : "User Name";
-  const bio = user?.bio || "Book enthusiast with a love for mystery novels and historical fiction.";
+  const bio =
+    user?.bio ||
+    "Book enthusiast with a love for mystery novels and historical fiction.";
   const profileImage = user?.profileImageUrl || profileImg;
   const membershipDate = user?.createdAt
     ? new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -26,7 +28,9 @@ const SideProfile = () => {
         onError={(e) => (e.target.src = profileImg)}
       />
       <h2 className="text-center font-semibold text-lg">{fullName}</h2>
-      <p className="text-center text-sm text-gray-500">Member since {membershipDate}</p>
+      <p className="text-center text-sm text-gray-500">
+        Member since {membershipDate}
+      </p>
       <p className="mt-2 text-center text-gray-600 text-sm">{bio}</p>
     </div>
   );

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from './Layout/Navbar';
-import Footer from './Layout/Footer';
-import backgroundImg from '../assets/Background.png';
-import bgPattern from '../assets/Images/Bg.jpg';
-import api from '../api/axios'; 
-import book1 from '../assets/Books/book1.jpg';
-import book2 from '../assets/Books/book2.jpg';
-import book3 from '../assets/Books/book3.jpeg';
+import Navbar from "./Layout/Navbar";
+import Footer from "./Layout/Footer";
+import backgroundImg from "../assets/Background.png";
+import bgPattern from "../assets/Images/Bg.jpg";
+import api from "../api/axios";
+import book1 from "../assets/Books/book1.jpg";
+import book2 from "../assets/Books/book2.jpg";
+import book3 from "../assets/Books/book3.jpeg";
 
 export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,26 +32,30 @@ export default function HomePage() {
       setLoading(true);
       setError(null);
       try {
-        const bestSellersResponse = await api.get('/api/Books', {
+        const bestSellersResponse = await api.get("/api/Books", {
           params: {
-            tab: 'Bestsellers',
+            tab: "Bestsellers",
             page: 1,
             pageSize: 10,
           },
         });
         setBestSellers(bestSellersResponse.data.books || []);
 
-        const featuredResponse = await api.get('/api/Books', {
+        const featuredResponse = await api.get("/api/Books", {
           params: {
             isFeatured: true,
             page: 1,
-            pageSize: 3, 
+            pageSize: 3,
           },
         });
         setFeaturedBooks(featuredResponse.data.books || []);
       } catch (err) {
-        setError('Failed to load books. Please try again.');
-        console.error('Fetch error:', err.response?.status, err.response?.data || err.message);
+        setError("Failed to load books. Please try again.");
+        console.error(
+          "Fetch error:",
+          err.response?.status,
+          err.response?.data || err.message
+        );
       } finally {
         setLoading(false);
       }
@@ -69,12 +73,12 @@ export default function HomePage() {
 
   const scrollLeft = () => {
     const scrollAmount = scrollRef.current.offsetWidth;
-    scrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
   };
 
   const scrollRight = () => {
     const scrollAmount = scrollRef.current.offsetWidth;
-    scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
   return (
@@ -85,12 +89,18 @@ export default function HomePage() {
         {/* Hero Section */}
         <section
           className="flex items-center justify-center flex-col text-center w-full bg-cover bg-center"
-          style={{ backgroundImage: `url(${backgroundImg})`, minHeight: "calc(100vh - 80px - 60px)" }}
+          style={{
+            backgroundImage: `url(${backgroundImg})`,
+            minHeight: "calc(100vh - 80px - 60px)",
+          }}
         >
           <h1 className="text-4xl font-bold text-gray-800">Welcome to</h1>
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Book Shop</h2>
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+            Our Book Shop
+          </h2>
           <p className="text-gray-600 max-w-xl mb-6">
-            Discover a world of literary treasures and explore our vast selection of books
+            Discover a world of literary treasures and explore our vast
+            selection of books
           </p>
           <a
             href="/shop"
@@ -103,9 +113,13 @@ export default function HomePage() {
         {/* Best Sellers Section */}
         <section className="py-16 px-4 md:px-16 bg-gray-50 relative">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold"><span className="text-green-600">Best</span>Sellers</h2>
+            <h2 className="text-3xl font-bold">
+              <span className="text-green-600">Best</span>Sellers
+            </h2>
             <button
-              onClick={() => navigate("/book", { state: { activeTab: "Bestsellers" } })}
+              onClick={() =>
+                navigate("/book", { state: { activeTab: "Bestsellers" } })
+              }
               className="text-blue-700 hover:underline cursor-pointer"
             >
               See All
@@ -122,7 +136,9 @@ export default function HomePage() {
             </div>
           ) : bestSellers.length === 0 ? (
             <div className="text-center">
-              <p className="text-lg text-gray-600">No best sellers available.</p>
+              <p className="text-lg text-gray-600">
+                No best sellers available.
+              </p>
             </div>
           ) : (
             <>
@@ -157,12 +173,14 @@ export default function HomePage() {
                       src={
                         book.imageUrl
                           ? `http://localhost:5127/${book.imageUrl}`
-                          : 'https://via.placeholder.com/150x200?text=Book+Cover'
+                          : "https://via.placeholder.com/150x200?text=Book+Cover"
                       }
                       alt={book.title}
                       className="w-full h-64 object-contain mb-4"
                     />
-                    <h3 className="text-lg font-semibold text-gray-800">{book.title}</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {book.title}
+                    </h3>
                     <p className="text-sm text-gray-600">{book.author}</p>
                     <div className="flex items-center my-2">
                       {[...Array(book.rating || 0)].map((_, i) => (
@@ -202,11 +220,17 @@ export default function HomePage() {
                     </div>
                     <div className="flex items-center space-x-2">
                       {book.isOnSale && book.discountPercent > 0 && (
-                        <span className="text-gray-500 line-through">Rs. {book.price}</span>
+                        <span className="text-gray-500 line-through">
+                          Rs. {book.price}
+                        </span>
                       )}
                       <span className="text-lg font-bold text-gray-800">
-                        Rs. {book.isOnSale && book.discountPercent > 0
-                          ? (book.price * (1 - book.discountPercent / 100)).toFixed(2)
+                        Rs.{" "}
+                        {book.isOnSale && book.discountPercent > 0
+                          ? (
+                              book.price *
+                              (1 - book.discountPercent / 100)
+                            ).toFixed(2)
                           : book.price}
                       </span>
                     </div>
@@ -225,7 +249,9 @@ export default function HomePage() {
 
         {/* Featured Books Section */}
         <section className="py-16 px-4 md:px-16 bg-white">
-          <h2 className="text-3xl font-bold text-center mb-10"><span className="text-[#f29d7e]">Featured</span> Books</h2>
+          <h2 className="text-3xl font-bold text-center mb-10">
+            <span className="text-[#f29d7e]">Featured</span> Books
+          </h2>
           {loading ? (
             <div className="text-center">
               <p className="text-lg text-gray-600">Loading featured books...</p>
@@ -236,7 +262,9 @@ export default function HomePage() {
             </div>
           ) : featuredBooks.length === 0 ? (
             <div className="text-center">
-              <p className="text-lg text-gray-600">No featured books available.</p>
+              <p className="text-lg text-gray-600">
+                No featured books available.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -249,12 +277,14 @@ export default function HomePage() {
                     src={
                       book.imageUrl
                         ? `http://localhost:5127/${book.imageUrl}`
-                        : 'https://via.placeholder.com/150x200?text=Book+Cover'
+                        : "https://via.placeholder.com/150x200?text=Book+Cover"
                     }
                     alt={book.title}
                     className="w-full h-72 object-cover rounded-lg mb-4"
                   />
-                  <h3 className="text-lg font-semibold text-gray-800">{book.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {book.title}
+                  </h3>
                   <p className="text-sm text-gray-600">{book.author}</p>
                   <button
                     onClick={() => navigate(`/books/${book.id}`)}
@@ -275,9 +305,12 @@ export default function HomePage() {
         >
           {/* Left Side: Text + Buttons */}
           <div className="mb-10 lg:mb-0 max-w-lg text-center lg:text-left">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Join Our Community</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Join Our Community
+            </h2>
             <p className="text-gray-600 mb-6">
-              Sign up now to access exclusive deals and discover more amazing books!
+              Sign up now to access exclusive deals and discover more amazing
+              books!
             </p>
             <div className="flex justify-center lg:justify-start gap-4">
               <button
@@ -314,9 +347,21 @@ export default function HomePage() {
           </div> */}
           {/* Right Side: Tilted Book Images */}
           <div className="flex gap-6">
-            <img src={book1} alt="Book 1" className="w-32 h-48 object-cover rounded-lg transform rotate-[-10deg] shadow-lg" />
-            <img src={book2} alt="Book 2" className="w-32 h-48 object-cover rounded-lg transform rotate-[10deg] shadow-lg" />
-            <img src={book3} alt="Book 3" className="w-32 h-48 object-cover rounded-lg transform rotate-[-5deg] shadow-lg" />
+            <img
+              src={book1}
+              alt="Book 1"
+              className="w-32 h-48 object-cover rounded-lg transform rotate-[-10deg] shadow-lg"
+            />
+            <img
+              src={book2}
+              alt="Book 2"
+              className="w-32 h-48 object-cover rounded-lg transform rotate-[10deg] shadow-lg"
+            />
+            <img
+              src={book3}
+              alt="Book 3"
+              className="w-32 h-48 object-cover rounded-lg transform rotate-[-5deg] shadow-lg"
+            />
           </div>
         </section>
       </div>

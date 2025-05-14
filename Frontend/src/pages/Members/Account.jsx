@@ -61,12 +61,15 @@ const Account = () => {
       setLoading(true);
       setError(null);
 
-      const ordersResponse = await fetch(`${API_BASE_URL}/api/Order/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const ordersResponse = await fetch(
+        `${API_BASE_URL}/api/Order/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (ordersResponse.status === 401) {
         localStorage.clear();
@@ -77,18 +80,23 @@ const Account = () => {
 
       if (!ordersResponse.ok) {
         const errorText = await ordersResponse.text();
-        throw new Error(`Failed to fetch orders: ${errorText || "Unknown error"}`);
+        throw new Error(
+          `Failed to fetch orders: ${errorText || "Unknown error"}`
+        );
       }
 
       const ordersData = await ordersResponse.json();
       setOrders(ordersData);
 
-      const wishlistResponse = await fetch(`${API_BASE_URL}/api/Wishlist/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const wishlistResponse = await fetch(
+        `${API_BASE_URL}/api/Wishlist/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (wishlistResponse.status === 401) {
         localStorage.clear();
@@ -99,7 +107,9 @@ const Account = () => {
 
       if (!wishlistResponse.ok) {
         const errorText = await wishlistResponse.text();
-        throw new Error(`Failed to fetch wishlist: ${errorText || "Unknown error"}`);
+        throw new Error(
+          `Failed to fetch wishlist: ${errorText || "Unknown error"}`
+        );
       }
 
       const wishlistData = await wishlistResponse.json();
@@ -136,7 +146,10 @@ const Account = () => {
 
   const booksPurchased = orders.reduce((sum, order) => {
     const items = order.OrderItems || order.orderItems || [];
-    return sum + items.reduce((s, item) => s + (item.Quantity || item.quantity || 0), 0);
+    return (
+      sum +
+      items.reduce((s, item) => s + (item.Quantity || item.quantity || 0), 0)
+    );
   }, 0);
 
   const totalOrders = orders.length;
@@ -155,33 +168,32 @@ const Account = () => {
     .toFixed(2);
 
   const upcomingPickups = orders
-    .filter((order) => ["Pending", "Fulfilled"].includes(order.Status || order.status))
+    .filter((order) =>
+      ["Pending", "Fulfilled"].includes(order.Status || order.status)
+    )
     .slice(0, 2);
 
-  
   const recentActivities = [
-    ...orders
-      .slice(0, 4) 
-      .map((order) => {
-        const items = order.OrderItems || order.orderItems || [];
-        return {
-          icon: "🛒",
-          title: "Order Placed",
-          desc: `You ordered ${
-            items.length > 1
-              ? `${items.length} books`
-              : items[0]?.Book?.Title || items[0]?.book?.title || "Unknown"
-          }`,
-        };
-      }),
-    ...wishlist
-      .slice(0, 2) 
-      .map((item) => ({
-        icon: "❤️",
-        title: "Book Added to Wishlist",
-        desc: `Added '${item.Book?.Title || item.book?.title || "Unknown"}' to your wishlist`,
-      })),
-  ].slice(0, 5); 
+    ...orders.slice(0, 4).map((order) => {
+      const items = order.OrderItems || order.orderItems || [];
+      return {
+        icon: "🛒",
+        title: "Order Placed",
+        desc: `You ordered ${
+          items.length > 1
+            ? `${items.length} books`
+            : items[0]?.Book?.Title || items[0]?.book?.title || "Unknown"
+        }`,
+      };
+    }),
+    ...wishlist.slice(0, 2).map((item) => ({
+      icon: "❤️",
+      title: "Book Added to Wishlist",
+      desc: `Added '${
+        item.Book?.Title || item.book?.title || "Unknown"
+      }' to your wishlist`,
+    })),
+  ].slice(0, 5);
 
   if (loading) {
     return (
@@ -243,15 +255,23 @@ const Account = () => {
             <div className="grid grid-cols-3 gap-4">
               <StatCard number={booksPurchased} label="Books Purchased" />
               <StatCard number={totalOrders} label="Total Orders" />
-              <StatCard number={`Rs.${discountEarned}`} label="Discounts Earned" />
+              <StatCard
+                number={`Rs.${discountEarned}`}
+                label="Discounts Earned"
+              />
             </div>
 
             {/* Upcoming Pickups */}
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-gray-800">Upcoming Pickups</h3>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Upcoming Pickups
+                </h3>
                 {upcomingPickups.length > 0 && (
-                  <Link to="/order" className="text-brown-600 hover:text-brown-700 text-sm">
+                  <Link
+                    to="/order"
+                    className="text-brown-600 hover:text-brown-700 text-sm"
+                  >
                     View All
                   </Link>
                 )}
@@ -263,28 +283,36 @@ const Account = () => {
                     title={
                       (order.OrderItems || order.orderItems || []).length > 1
                         ? "Multiple Items"
-                        : (order.OrderItems?.[0]?.Book?.Title ||
-                           order.orderItems?.[0]?.book?.title ||
-                           "Unknown")
+                        : order.OrderItems?.[0]?.Book?.Title ||
+                          order.orderItems?.[0]?.book?.title ||
+                          "Unknown"
                     }
                     author={
                       (order.OrderItems || order.orderItems || []).length > 1
                         ? `Order #${order.Id || order.id}`
-                        : (order.OrderItems?.[0]?.Book?.Author ||
-                           order.orderItems?.[0]?.book?.author ||
-                           "Unknown")
+                        : order.OrderItems?.[0]?.Book?.Author ||
+                          order.orderItems?.[0]?.book?.author ||
+                          "Unknown"
                     }
                     imageUrl={
-                      (order.OrderItems?.[0]?.Book?.ImageUrl ||
-                        order.orderItems?.[0]?.book?.imageUrl)
-                        ? `${API_BASE_URL}/${order.OrderItems?.[0]?.Book?.ImageUrl ||
-                            order.orderItems?.[0]?.book?.imageUrl}`
+                      order.OrderItems?.[0]?.Book?.ImageUrl ||
+                      order.orderItems?.[0]?.book?.imageUrl
+                        ? `${API_BASE_URL}/${
+                            order.OrderItems?.[0]?.Book?.ImageUrl ||
+                            order.orderItems?.[0]?.book?.imageUrl
+                          }`
                         : "https://via.placeholder.com/60x90"
                     }
                     status={order.Status || order.status}
-                    date={new Date(order.OrderDate || order.orderDate).toLocaleDateString()}
+                    date={new Date(
+                      order.OrderDate || order.orderDate
+                    ).toLocaleDateString()}
                     code={order.ClaimCode || order.claimCode}
-                    badgeColor={(order.Status || order.status) === "Fulfilled" ? "green" : "orange"}
+                    badgeColor={
+                      (order.Status || order.status) === "Fulfilled"
+                        ? "green"
+                        : "orange"
+                    }
                   />
                 ))
               ) : (
@@ -295,7 +323,9 @@ const Account = () => {
             {/* Recent Activities */}
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-gray-800">Recent Activity</h3>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Recent Activity
+                </h3>
                 {recentActivities.length > 0 && (
                   <Link
                     to="/order"
@@ -332,7 +362,15 @@ const StatCard = ({ number, label }) => (
   </div>
 );
 
-const PickupCard = ({ title, author, imageUrl, status, date, code, badgeColor }) => (
+const PickupCard = ({
+  title,
+  author,
+  imageUrl,
+  status,
+  date,
+  code,
+  badgeColor,
+}) => (
   <div className="flex items-center gap-4 mb-4 bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition">
     <img
       src={imageUrl}
