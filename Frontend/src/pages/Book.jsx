@@ -665,15 +665,17 @@ const Book = () => {
                 ))}
               </div>
 
-              <div className="search-container mb-10 ">
+              <div className="relative max-w-3xl mx-auto mb-10 flex items-center bg-white rounded-xl shadow-sm hover:shadow-md focus-within:shadow-md hover:-translate-y-[2px] focus-within:-translate-y-[2px] transition-all duration-300 p-1">
                 <input
                   type="text"
                   placeholder="Search by title, ISBN, or description..."
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  className="search-input"
+                  className="w-full p-3 pl-12 text-gray-700 bg-transparent rounded-lg text-base font-inter placeholder-gray-400 placeholder-italic focus:outline-none focus:text-gray-800"
                 />
-                <span className="search-icon">🔍</span>
+                <span className="absolute left-4 text-blue-400 text-lg group-hover:text-blue-600 group-focus-within:text-blue-600 transition-all duration-300 transform hover:scale-110 focus-within:scale-110">
+                  🔍
+                </span>
               </div>
 
               <div className="bg-white p-4 rounded-xl shadow-sm mb-8 mt-8">
