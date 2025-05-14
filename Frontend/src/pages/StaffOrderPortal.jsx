@@ -35,7 +35,8 @@ const StaffOrderPortal = () => {
       setMembershipId("");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Failed to fulfill order. Please try again.";
+        error.response?.data?.error ||
+        "Failed to fulfill order. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -59,7 +60,9 @@ const StaffOrderPortal = () => {
 
           {/* Fulfill Order Form */}
           <div className="bg-white p-6 rounded-lg shadow mb-8">
-            <h2 className="text-lg font-semibold text-gray-700 mb-4">Fulfill Order</h2>
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+              Fulfill Order
+            </h2>
             <form onSubmit={handleFulfill} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
@@ -113,17 +116,25 @@ const StaffOrderPortal = () => {
               <h2 className="text-lg font-semibold mb-4">Order Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Order ID: {order.id}</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Order ID: {order.id}
+                  </p>
                   <p className="text-sm text-gray-600 mb-1">
                     Order Date: {new Date(order.orderDate).toLocaleDateString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Status: {order.status}</p>
-                  <p className="text-sm text-gray-600 mb-1">Claim Code: {order.claimCode}</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Status: {order.status}
+                  </p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Claim Code: {order.claimCode}
+                  </p>
                 </div>
               </div>
-              <p className="font-medium mb-4 border-t pt-2">Total Amount: Rs {order.totalAmount}</p>
+              <p className="font-medium mb-4 border-t pt-2">
+                Total Amount: Rs {order.totalAmount}
+              </p>
 
               <h3 className="text-md font-medium mb-2">Order Items</h3>
               <div className="space-y-4">
@@ -139,8 +150,12 @@ const StaffOrderPortal = () => {
                       className="h-20 w-16 object-cover rounded"
                     />
                     <div className="flex-1">
-                      <h4 className="font-semibold">{item.book?.title || "Untitled"}</h4>
-                      <p className="text-sm text-gray-600">By {item.book?.author || "Unknown"}</p>
+                      <h4 className="font-semibold">
+                        {item.book?.title || "Untitled"}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        By {item.book?.author || "Unknown"}
+                      </p>
                       <p className="text-sm text-gray-600">
                         Quantity: {item.quantity} × Rs {item.price} = Rs{" "}
                         {item.quantity * item.price}

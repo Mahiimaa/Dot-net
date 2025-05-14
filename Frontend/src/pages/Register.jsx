@@ -51,7 +51,9 @@ const Register = () => {
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       });
-      setSuccess("Registration successful! Please check your email for the OTP.");
+      setSuccess(
+        "Registration successful! Please check your email for the OTP."
+      );
       // Redirect to VerifyEmail page with email
       setTimeout(() => {
         navigate("/verify-email", { state: { email: formData.email } });
@@ -64,15 +66,25 @@ const Register = () => {
           const errors = err.response.data.errors;
           if (errors) {
             const errorMessages = Object.values(errors).flat().join(", ");
-            setError(errorMessages || "Please provide valid registration details.");
+            setError(
+              errorMessages || "Please provide valid registration details."
+            );
           } else {
-            setError(err.response.data.message || "Please provide valid registration details.");
+            setError(
+              err.response.data.message ||
+                "Please provide valid registration details."
+            );
           }
         } else {
-          setError(err.response.data.message || "Registration failed. Please try again.");
+          setError(
+            err.response.data.message ||
+              "Registration failed. Please try again."
+          );
         }
       } else {
-        setError("Unable to connect to the server. Please check your connection.");
+        setError(
+          "Unable to connect to the server. Please check your connection."
+        );
       }
     }
   };
@@ -96,10 +108,7 @@ const Register = () => {
           >
             LOGIN
           </Link>
-          <Link
-            to="/register"
-            className="text-sm font-medium text-green-600"
-          >
+          <Link to="/register" className="text-sm font-medium text-green-600">
             SIGN UP
           </Link>
         </div>
@@ -190,7 +199,10 @@ const Register = () => {
             d="M0,100 C500,250 1500,-30 2000,100 L2000,180 L0,180 Z"
           />
         </svg>
-        <svg viewBox="0 0 3000 100" className="w-full h-24 absolute bottom-10 left-0">
+        <svg
+          viewBox="0 0 3000 100"
+          className="w-full h-24 absolute bottom-10 left-0"
+        >
           <path
             d="M0,30 Q250,150 500,30 T1000,30 T1500,30 T2000,30 T2500,30 T3000,30"
             stroke="#7cc8f9"

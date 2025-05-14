@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from './Layout/Navbar';
-import Footer from './Layout/Footer';
-import productImg from '../assets/Images/Love.webp';
+import Navbar from "./Layout/Navbar";
+import Footer from "./Layout/Footer";
+import productImg from "../assets/Images/Love.webp";
 
 export default function Bestseller() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,11 +17,51 @@ export default function Bestseller() {
   }, [navigate]);
 
   const bestSellerProducts = [
-    { id: 1, title: "The Great Adventure", price: 935, originalPrice: 1100, rating: 0, onSale: true, image: productImg },
-    { id: 2, title: "The Great Adventure", price: 935, originalPrice: null, rating: 0, onSale: false, image: productImg },
-    { id: 3, title: "The Great Adventure", price: 1000, originalPrice: null, rating: 4, onSale: false, image: productImg },
-    { id: 4, title: "New Arrival", price: 800, originalPrice: 950, rating: 5, onSale: true, image: productImg },
-    { id: 5, title: "Classic Tale", price: 500, originalPrice: null, rating: 3, onSale: false, image: productImg },
+    {
+      id: 1,
+      title: "The Great Adventure",
+      price: 935,
+      originalPrice: 1100,
+      rating: 0,
+      onSale: true,
+      image: productImg,
+    },
+    {
+      id: 2,
+      title: "The Great Adventure",
+      price: 935,
+      originalPrice: null,
+      rating: 0,
+      onSale: false,
+      image: productImg,
+    },
+    {
+      id: 3,
+      title: "The Great Adventure",
+      price: 1000,
+      originalPrice: null,
+      rating: 4,
+      onSale: false,
+      image: productImg,
+    },
+    {
+      id: 4,
+      title: "New Arrival",
+      price: 800,
+      originalPrice: 950,
+      rating: 5,
+      onSale: true,
+      image: productImg,
+    },
+    {
+      id: 5,
+      title: "Classic Tale",
+      price: 500,
+      originalPrice: null,
+      rating: 3,
+      onSale: false,
+      image: productImg,
+    },
   ];
 
   return (
@@ -32,7 +72,7 @@ export default function Bestseller() {
         {/* Breadcrumb Navigation */}
         <div className="text-sm text-gray-600 mb-4">
           <span
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="text-blue-600 hover:underline cursor-pointer"
           >
             Home
@@ -47,16 +87,25 @@ export default function Bestseller() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {bestSellerProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 relative">
+            <div
+              key={product.id}
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 relative"
+            >
               {product.onSale && (
                 <span className="absolute top-4 left-4 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
                   On Sale
                 </span>
               )}
 
-              <img src={product.image} alt={product.title} className="w-full h-64 object-contain mb-4" />
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-64 object-contain mb-4"
+              />
 
-              <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-800">
+                {product.title}
+              </h3>
 
               <div className="flex items-center my-2">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -80,9 +129,13 @@ export default function Bestseller() {
 
               <div className="flex items-center space-x-2">
                 {product.originalPrice && (
-                  <span className="text-gray-500 line-through">Rs. {product.originalPrice}</span>
+                  <span className="text-gray-500 line-through">
+                    Rs. {product.originalPrice}
+                  </span>
                 )}
-                <span className="text-lg font-bold text-gray-800">Rs. {product.price}</span>
+                <span className="text-lg font-bold text-gray-800">
+                  Rs. {product.price}
+                </span>
               </div>
 
               <button className="mt-4 w-full bg-[#f29d7e] text-white py-2 rounded-full hover:bg-[#f28663] transition">

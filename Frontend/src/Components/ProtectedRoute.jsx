@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children, adminOnly = false, roles = [] }) => {
   const { isAuthenticated, user, loading } = useContext(AuthContext);
@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children, adminOnly = false, roles = [] }) => {
   }
 
   // Redirect to / if user lacks required role
-  if (adminOnly && user?.role !== 'Admin') {
+  if (adminOnly && user?.role !== "Admin") {
     return <Navigate to="/" replace />;
   }
   if (roles.length > 0 && !roles.includes(user?.role)) {

@@ -1,18 +1,22 @@
-import { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import { useSignalR } from '../context/SignalRContext';
+import { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+import { useSignalR } from "../context/SignalRContext";
 
 const BroadcastMessages = () => {
   const { user, isAuthenticated } = useAuth();
   const { connection, startConnection } = useSignalR();
   const [messages, setMessages] = useState([]);
   const [isVisible, setIsVisible] = useState(() => {
-    const key = user?.id ? `broadcastBannerVisible_${user.id}` : 'broadcastBannerVisible';
-    return localStorage.getItem(key) !== 'false';
+    const key = user?.id
+      ? `broadcastBannerVisible_${user.id}`
+      : "broadcastBannerVisible";
+    return localStorage.getItem(key) !== "false";
   });
   const [seenMessageIds, setSeenMessageIds] = useState(() => {
-    const key = user?.id ? `seenBroadcastMessageIds_${user.id}` : 'seenBroadcastMessageIds';
+    const key = user?.id
+      ? `seenBroadcastMessageIds_${user.id}`
+      : "seenBroadcastMessageIds";
     const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : [];
   });
@@ -23,20 +27,24 @@ const BroadcastMessages = () => {
 
   // Save isVisible to localStorage
   useEffect(() => {
-    const key = user?.id ? `broadcastBannerVisible_${user.id}` : 'broadcastBannerVisible';
+    const key = user?.id
+      ? `broadcastBannerVisible_${user.id}`
+      : "broadcastBannerVisible";
     localStorage.setItem(key, isVisible.toString());
   }, [isVisible, user]);
 
   // Save seenMessageIds to localStorage
   useEffect(() => {
-    const key = user?.id ? `seenBroadcastMessageIds_${user.id}` : 'seenBroadcastMessageIds';
+    const key = user?.id
+      ? `seenBroadcastMessageIds_${user.id}`
+      : "seenBroadcastMessageIds";
     localStorage.setItem(key, JSON.stringify(seenMessageIds));
   }, [seenMessageIds, user]);
 
   // Clear state on logout
   useEffect(() => {
     if (!isAuthenticated) {
-      const keyPrefix = user?.id ? `_${user.id}` : '';
+      const keyPrefix = user?.id ? `_${user.id}` : "";
       localStorage.removeItem(`seenBroadcastMessageIds${keyPrefix}`);
       localStorage.removeItem(`broadcastBannerVisible${keyPrefix}`);
       setMessages([]);
@@ -69,9 +77,12 @@ const BroadcastMessages = () => {
 
     const fetchMessages = async () => {
       try {
-        const response = await axios.get('http://localhost:5127/api/order/broadcasts', {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:5127/api/order/broadcasts",
+          {
+            withCredentials: true,
+          }
+        );
         const newMessages = response.data
           .filter((msg) => !seenMessageIds.includes(msg.id))
           .map((msg) => ({
@@ -87,8 +98,8 @@ const BroadcastMessages = () => {
         }
         setError(null);
       } catch (error) {
-        console.error('Error fetching broadcast messages:', error);
-        setError('Failed to load recent orders. Please try again later.');
+        console.error("Error fetching broadcast messages:", error);
+        setError("Failed to load recent orders. Please try again later.");
       }
     };
 
@@ -101,11 +112,11 @@ const BroadcastMessages = () => {
 
     connectionRef.current = connection;
 
-    connection.on('orderBroadcast', (message) => {
-      console.log('Received orderBroadcast:', message);
+    connection.on("orderBroadcast", (message) => {
+      console.log("Received orderBroadcast:", message);
       const now = Date.now();
       if (now - lastFetchRef.current < 5000) {
-        console.log('Skipping duplicate broadcast due to debounce');
+        console.log("Skipping duplicate broadcast due to debounce");
         return;
       }
       lastFetchRef.current = now;
@@ -120,9 +131,12 @@ const BroadcastMessages = () => {
       // Sync with database after 10 seconds
       const fetchNewMessages = async () => {
         try {
-          const response = await axios.get('http://localhost:5127/api/order/broadcasts', {
-            withCredentials: true,
-          });
+          const response = await axios.get(
+            "http://localhost:5127/api/order/broadcasts",
+            {
+              withCredentials: true,
+            }
+          );
           const newMessages = response.data
             .filter((msg) => !seenMessageIds.includes(msg.id))
             .map((msg) => ({ id: msg.id, message: msg.message }));
@@ -133,14 +147,14 @@ const BroadcastMessages = () => {
             ]);
           }
         } catch (error) {
-          console.error('Error syncing broadcast messages:', error);
+          console.error("Error syncing broadcast messages:", error);
         }
       };
       setTimeout(fetchNewMessages, 10000);
     });
 
     return () => {
-      connection.off('orderBroadcast');
+      connection.off("orderBroadcast");
     };
   }, [isAuthenticated, connection, seenMessageIds]);
 
@@ -154,7 +168,9 @@ const BroadcastMessages = () => {
   };
 
   const handleResetSeenMessages = () => {
-    const key = user?.id ? `seenBroadcastMessageIds_${user.id}` : 'seenBroadcastMessageIds';
+    const key = user?.id
+      ? `seenBroadcastMessageIds_${user.id}`
+      : "seenBroadcastMessageIds";
     setSeenMessageIds([]);
     localStorage.setItem(key, JSON.stringify([]));
     setIsVisible(true);
@@ -170,16 +186,21 @@ const BroadcastMessages = () => {
   };
 
   if (!isAuthenticated || !isVisible || (messages.length === 0 && !error)) {
-    console.log('Banner hidden:', { isAuthenticated, isVisible, messagesLength: messages.length, error });
+    console.log("Banner hidden:", {
+      isAuthenticated,
+      isVisible,
+      messagesLength: messages.length,
+      error,
+    });
     return null;
   }
 
   return (
     <div
       className={`fixed bottom-5 right-5 bg-gradient-to-br from-amber-50 to-gray-100 border-2 border-amber-700 rounded-xl p-4 max-w-xs shadow-xl z-50 transition-all duration-500 ease-out transform ${
-        isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
+        isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full"
       }`}
-      style={{ pointerEvents: isVisible ? 'auto' : 'none' }}
+      style={{ pointerEvents: isVisible ? "auto" : "none" }}
     >
       <button
         className="absolute top-2 right-2 text-amber-900 hover:text-amber-600 text-xl font-bold transition-transform duration-200 hover:scale-110"
