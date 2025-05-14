@@ -111,27 +111,32 @@ export default function AboutUs() {
           </motion.h2>
 
           <div className="max-w-5xl mx-auto px-6 text-gray-700 leading-relaxed space-y-8">
-            <motion.p
-              variants={fadeInUp}
-              className="text-lg text-center"
-            >
-              <strong>Foliana</strong> is a C#.NET-powered platform that evolves a private library into a modern online bookstore. 
-              Blending in-store pickup with digital browsing, it offers members the ability to explore, buy, and track books from anywhere.
+            <motion.p variants={fadeInUp} className="text-lg text-center">
+              <strong>Foliana</strong> is a C#.NET-powered platform that evolves
+              a private library into a modern online bookstore. Blending
+              in-store pickup with digital browsing, it offers members the
+              ability to explore, buy, and track books from anywhere.
             </motion.p>
 
             <div className="grid md:grid-cols-2 gap-10">
               <motion.div variants={fadeInUp}>
-                <h3 className="text-xl font-semibold mb-2 text-green-600">What We Offer</h3>
+                <h3 className="text-xl font-semibold mb-2 text-green-600">
+                  What We Offer
+                </h3>
                 <ul className="list-disc list-inside space-y-2">
                   <li>Browse books by author, genre, format, or price</li>
                   <li>Search for signed or collector’s editions</li>
-                  <li>Wishlist, shopping cart, loyalty discounts & reward points</li>
+                  <li>
+                    Wishlist, shopping cart, loyalty discounts & reward points
+                  </li>
                   <li>In-store pickup & real-time order tracking</li>
                 </ul>
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <h3 className="text-xl font-semibold mb-2 text-green-600">Admin Features</h3>
+                <h3 className="text-xl font-semibold mb-2 text-green-600">
+                  Admin Features
+                </h3>
                 <ul className="list-disc list-inside space-y-2">
                   <li>Manage books, inventory, and orders efficiently</li>
                   <li>Create and manage promotions & announcements</li>
@@ -145,24 +150,36 @@ export default function AboutUs() {
               variants={fadeInUp}
               className="bg-gray-100 rounded-lg p-6 shadow-md mt-10"
             >
-              <h3 className="text-xl font-semibold text-center mb-4 text-green-700">Our Mission & Vision</h3>
+              <h3 className="text-xl font-semibold text-center mb-4 text-green-700">
+                Our Mission & Vision
+              </h3>
               <p>
-                Our mission is to extend the charm of traditional bookstores into the digital era. While we embrace 
-                technology to reach more readers, we continue to value the personal connection fostered through 
-                in-store pickups. Foliana bridges this gap — allowing both online convenience and offline intimacy.
+                Our mission is to extend the charm of traditional bookstores
+                into the digital era. While we embrace technology to reach more
+                readers, we continue to value the personal connection fostered
+                through in-store pickups. Foliana bridges this gap — allowing
+                both online convenience and offline intimacy.
               </p>
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <h3 className="text-xl font-semibold mb-2 text-green-600 text-center">Objectives</h3>
+              <h3 className="text-xl font-semibold mb-2 text-green-600 text-center">
+                Objectives
+              </h3>
               <ul className="list-disc list-inside space-y-2 max-w-3xl mx-auto">
                 <li>Enable users to search and buy books from anywhere</li>
-                <li>Maintain in-store pickup model to preserve personal touch</li>
-                <li>Support wishlist, cart, and order tracking functionality</li>
+                <li>
+                  Maintain in-store pickup model to preserve personal touch
+                </li>
+                <li>
+                  Support wishlist, cart, and order tracking functionality
+                </li>
                 <li>Allow reviews from verified purchasers</li>
                 <li>Empower staff to process orders via claim codes</li>
                 <li>Provide tools for managing discounts and promotions</li>
-                <li>Drive growth by blending digital and in-store experiences</li>
+                <li>
+                  Drive growth by blending digital and in-store experiences
+                </li>
               </ul>
             </motion.div>
           </div>
@@ -173,4 +190,3 @@ export default function AboutUs() {
     </div>
   );
 }
-

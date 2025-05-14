@@ -36,11 +36,14 @@ const Wishlist = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:5127/api/Wishlist/user/${currentUserId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:5127/api/Wishlist/user/${currentUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         console.log("Fetched wishlist response:", response.data);
 
         const flattenedData = response.data.map((item) => ({
@@ -57,7 +60,8 @@ const Wishlist = () => {
         setWishlistItems(flattenedData);
       } catch (error) {
         const errorMessage =
-          error.response?.data?.error || "Failed to fetch wishlist. Please try again.";
+          error.response?.data?.error ||
+          "Failed to fetch wishlist. Please try again.";
         setError(errorMessage);
         console.error("Failed to fetch wishlist:", error);
       } finally {
@@ -89,11 +93,14 @@ const Wishlist = () => {
       alert(response.data.message);
       const fetchWishlist = async () => {
         try {
-          const response = await axios.get(`http://localhost:5127/api/Wishlist/user/${currentUserId}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
+          const response = await axios.get(
+            `http://localhost:5127/api/Wishlist/user/${currentUserId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
           const flattenedData = response.data.map((item) => ({
             id: item.id,
             bookId: item.bookId,
@@ -107,7 +114,8 @@ const Wishlist = () => {
           setWishlistItems(flattenedData);
         } catch (error) {
           const errorMessage =
-            error.response?.data?.error || "Failed to fetch wishlist after adding.";
+            error.response?.data?.error ||
+            "Failed to fetch wishlist after adding.";
           alert(errorMessage);
           console.error("Failed to fetch wishlist:", error);
         }
@@ -115,7 +123,8 @@ const Wishlist = () => {
       fetchWishlist();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "Failed to add to wishlist. Please try again.";
+        error.response?.data?.message ||
+        "Failed to add to wishlist. Please try again.";
       alert(errorMessage);
       console.error("Add to wishlist error:", error);
     }
@@ -123,16 +132,20 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5127/api/Wishlist/remove/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `http://localhost:5127/api/Wishlist/remove/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       alert(response.data.message);
       setWishlistItems(wishlistItems.filter((item) => item.id !== id));
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "Failed to remove from wishlist. Please try again.";
+        error.response?.data?.message ||
+        "Failed to remove from wishlist. Please try again.";
       alert(errorMessage);
       console.error("Remove from wishlist error:", error);
     }
@@ -160,7 +173,8 @@ const Wishlist = () => {
       alert(`Added ${item.title} to cart!`);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Failed to add to cart. Please try again.";
+        error.response?.data?.error ||
+        "Failed to add to cart. Please try again.";
       alert(errorMessage);
       console.error("Add to cart error:", error);
     }
@@ -202,7 +216,9 @@ const Wishlist = () => {
             ) : (
               <div className="grid grid-cols-3 gap-6">
                 {wishlistItems.map((item) => {
-                  const isCartDisabled = item.availability === "Out of Stock" || item.availability === "Library Only";
+                  const isCartDisabled =
+                    item.availability === "Out of Stock" ||
+                    item.availability === "Library Only";
                   const cartTooltip = isCartDisabled
                     ? item.availability === "Out of Stock"
                       ? "This book is currently out of stock."

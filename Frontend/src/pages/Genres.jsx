@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from './Layout/Navbar';
-import Footer from './Layout/Footer';
+import Navbar from "./Layout/Navbar";
+import Footer from "./Layout/Footer";
 
 export default function Genres() {
   const [genres, setGenres] = useState([]);
@@ -38,7 +38,11 @@ export default function Genres() {
 
     if (!booksByGenre[genre.id]) {
       try {
-        const res = await fetch(`http://localhost:5127/api/genres/${encodeURIComponent(genre.name)}/books`);
+        const res = await fetch(
+          `http://localhost:5127/api/genres/${encodeURIComponent(
+            genre.name
+          )}/books`
+        );
         const data = await res.json();
         setBooksByGenre((prev) => ({ ...prev, [genre.name]: data }));
       } catch (err) {
@@ -55,7 +59,9 @@ export default function Genres() {
       <Navbar />
 
       <div className="max-w-7xl mx-auto py-10 px-4 flex-1">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Browse by Genre</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
+          Browse by Genre
+        </h1>
 
         {/* Search Input */}
         <div className="flex justify-center mb-8">
@@ -78,7 +84,9 @@ export default function Genres() {
                 key={genre.name}
                 className="bg-white shadow-sm hover:shadow-md transition rounded-xl p-4 w-full sm:w-[280px] md:w-[300px] lg:w-[320px] flex flex-col items-center gap-2"
               >
-                <h3 className="text-lg font-semibold text-center">{genre.name}</h3>
+                <h3 className="text-lg font-semibold text-center">
+                  {genre.name}
+                </h3>
                 <p className="text-sm text-gray-600 text-center px-2">
                   {genre.description || "Explore top books in this genre"}
                 </p>
@@ -92,7 +100,9 @@ export default function Genres() {
                 {expandedGenreId === genre.name && booksByGenre[genre.name] && (
                   <div className="mt-4 w-full text-left">
                     {booksByGenre[genre.name].length === 0 ? (
-                      <p className="text-sm text-gray-500 text-center">No books found.</p>
+                      <p className="text-sm text-gray-500 text-center">
+                        No books found.
+                      </p>
                     ) : (
                       <ul className="text-sm text-gray-700 space-y-1">
                         {booksByGenre[genre.name].map((book) => (
@@ -101,7 +111,9 @@ export default function Genres() {
                             onClick={() => navigate(`/books/${book.id}`)}
                             className="bg-gray-50 rounded p-2 cursor-pointer hover:bg-gray-100 transition"
                           >
-                            <strong className="text-blue-900 hover:underline">{book.title}</strong>
+                            <strong className="text-blue-900 hover:underline">
+                              {book.title}
+                            </strong>
                           </li>
                         ))}
                       </ul>

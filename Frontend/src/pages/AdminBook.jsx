@@ -72,7 +72,9 @@ function AdminBook() {
       console.error("Failed to fetch books:", error);
       setMessage({
         type: "error",
-        text: error.response?.data?.message || "Failed to load books. Please try again.",
+        text:
+          error.response?.data?.message ||
+          "Failed to load books. Please try again.",
       });
       setBooks([]);
       setTotalPages(1);
@@ -178,7 +180,9 @@ function AdminBook() {
         type: "error",
         text:
           error.response?.data?.message ||
-          `Failed to ${editingBookId ? "update" : "add"} book. Please try again.`,
+          `Failed to ${
+            editingBookId ? "update" : "add"
+          } book. Please try again.`,
       });
     }
   };
@@ -200,7 +204,9 @@ function AdminBook() {
       console.error("Failed to delete book:", error);
       setMessage({
         type: "error",
-        text: error.response?.data?.message || "Failed to delete book. Please try again.",
+        text:
+          error.response?.data?.message ||
+          "Failed to delete book. Please try again.",
       });
     }
   };
@@ -318,6 +324,7 @@ function AdminBook() {
                     <th className="px-4 py-2 text-left">Price</th>
                     <th className="px-4 py-2 text-left">Publisher</th>
                     <th className="px-4 py-2 text-left">In Stock</th>
+                    <th className="px-4 py-2 text-left">Image</th>
                     <th className="px-4 py-2 text-left">Action</th>
                   </tr>
                 </thead>
@@ -348,6 +355,7 @@ function AdminBook() {
                         <td className="px-4 py-2">{book.availability}</td>
                         <td className="px-4 py-2">{book.isbn}</td>
                         <td className="px-4 py-2">Rs.{book.price}</td>
+                        <td className="px-4 py-2">{book.publisher}</td>
                         <td className="px-4 py-2">{book.inStockQty}</td>
                         <td className="px-4 py-2">
                           <img
@@ -380,13 +388,15 @@ function AdminBook() {
                                 discountPercent: book.discountPercent || "",
                                 discountStart:
                                   book.discountStart?.slice(0, 10) || "",
-                                discountEnd: book.discountEnd?.slice(0, 10) || "",
+                                discountEnd:
+                                  book.discountEnd?.slice(0, 10) || "",
                                 isOnSale: book.isOnSale || false,
                                 isBestseller: book.isBestseller || false,
                                 isAwardWinner: book.isAwardWinner || false,
                                 isComingSoon: book.isComingSoon || false,
                                 isFeatured: book.isFeatured || false,
-                                publishDate: book.publishDate?.slice(0, 10) || "",
+                                publishDate:
+                                  book.publishDate?.slice(0, 10) || "",
                                 totalSold: book.totalSold || "",
                               });
                               setEditingBookId(book.id);
@@ -455,7 +465,9 @@ function AdminBook() {
                       required
                     />
                     {errors.title && (
-                      <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.title}
+                      </p>
                     )}
                   </div>
                   <div>
@@ -493,7 +505,9 @@ function AdminBook() {
                       required
                     />
                     {errors.author && (
-                      <p className="text-red-500 text-sm mt-1">{errors.author}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.author}
+                      </p>
                     )}
                   </div>
                   <div>
@@ -598,7 +612,9 @@ function AdminBook() {
                       required
                     />
                     {errors.price && (
-                      <p className="text-red-500 text-sm mt-1">{errors.price}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.price}
+                      </p>
                     )}
                   </div>
                   <div>
@@ -677,7 +693,9 @@ function AdminBook() {
                       required
                     />
                     {errors.inStockQty && (
-                      <p className="text-red-500 text-sm mt-1">{errors.inStockQty}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.inStockQty}
+                      </p>
                     )}
                   </div>
                   <div>
@@ -726,7 +744,9 @@ function AdminBook() {
                       type="number"
                       placeholder="Enter discount %"
                       className={`w-full border p-3 rounded focus:ring-2 focus:ring-[#1b3a57] ${
-                        errors.discountPercent ? "border-red-500" : "border-gray-300"
+                        errors.discountPercent
+                          ? "border-red-500"
+                          : "border-gray-300"
                       }`}
                       value={formData.discountPercent}
                       onChange={(e) =>
@@ -740,7 +760,9 @@ function AdminBook() {
                       step="0.01"
                     />
                     {errors.discountPercent && (
-                      <p className="text-red-500 text-sm mt-1">{errors.discountPercent}</p>
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.discountPercent}
+                      </p>
                     )}
                     <p className="text-gray-500 text-xs mt-1">
                       Enter 0-100 for discount percentage
@@ -792,7 +814,9 @@ function AdminBook() {
                       }
                       className="h-4 w-4 text-[#1b3a57] focus:ring-[#1b3a57] border-gray-300 rounded"
                     />
-                    <label className="text-sm font-medium text-gray-700">On Sale</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      On Sale
+                    </label>
                   </div>
                   <div className="flex items-center gap-4">
                     <input
@@ -806,7 +830,9 @@ function AdminBook() {
                       }
                       className="h-4 w-4 text-[#1b3a57] focus:ring-[#1b3a57] border-gray-300 rounded"
                     />
-                    <label className="text-sm font-medium text-gray-700">Bestseller</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Bestseller
+                    </label>
                   </div>
                   <div className="flex items-center gap-4">
                     <input
@@ -820,7 +846,9 @@ function AdminBook() {
                       }
                       className="h-4 w-4 text-[#1b3a57] focus:ring-[#1b3a57] border-gray-300 rounded"
                     />
-                    <label className="text-sm font-medium text-gray-700">Award Winner</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Award Winner
+                    </label>
                   </div>
                   <div className="flex items-center gap-4">
                     <input
@@ -834,7 +862,9 @@ function AdminBook() {
                       }
                       className="h-4 w-4 text-[#1b3a57] focus:ring-[#1b3a57] border-gray-300 rounded"
                     />
-                    <label className="text-sm font-medium text-gray-700">Coming Soon</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Coming Soon
+                    </label>
                   </div>
                   <div className="flex items-center gap-4">
                     <input
@@ -848,7 +878,9 @@ function AdminBook() {
                       }
                       className="h-4 w-4 text-[#1b3a57] focus:ring-[#1b3a57] border-gray-300 rounded"
                     />
-                    <label className="text-sm font-medium text-gray-700">Featured</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Featured
+                    </label>
                   </div>
 
                   {/* Image Upload */}
@@ -894,31 +926,45 @@ function AdminBook() {
         {showDetailsModal && selectedBook && (
           <div className="fixed inset-0 bg-gray-900/30 flex items-center justify-center z-50">
             <div className="bg-white rounded-md p-6 w-[90%] max-w-4xl shadow-lg">
-              <h2 className="text-center text-xl font-semibold mb-6">Book Details</h2>
+              <h2 className="text-center text-xl font-semibold mb-6">
+                Book Details
+              </h2>
               <div className="max-h-[70vh] overflow-y-auto pr-4">
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Title</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Title
+                    </label>
                     <p className="mt-1">{selectedBook.title}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Author</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Author
+                    </label>
                     <p className="mt-1">{selectedBook.author}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Tags</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Tags
+                    </label>
                     <p className="mt-1">{selectedBook.tags || "N/A"}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Genre</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Genre
+                    </label>
                     <p className="mt-1">{selectedBook.genre || "N/A"}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Language</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Language
+                    </label>
                     <p className="mt-1">{selectedBook.language || "N/A"}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">ISBN</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      ISBN
+                    </label>
                     <p className="mt-1">{selectedBook.isbn || "N/A"}</p>
                   </div>
                   <div className="col-span-2">
@@ -928,11 +974,15 @@ function AdminBook() {
                     <p className="mt-1">{selectedBook.description || "N/A"}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Format</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Format
+                    </label>
                     <p className="mt-1">{selectedBook.format}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Price</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Price
+                    </label>
                     <p className="mt-1">{selectedBook.price}</p>
                   </div>
                   <div>
@@ -969,48 +1019,70 @@ function AdminBook() {
                     <label className="block text-sm font-medium text-gray-700">
                       Discount Start
                     </label>
-                    <p className="mt-1">{selectedBook.discountStart?.slice(0, 10) || "N/A"}</p>
+                    <p className="mt-1">
+                      {selectedBook.discountStart?.slice(0, 10) || "N/A"}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Discount End
                     </label>
-                    <p className="mt-1">{selectedBook.discountEnd?.slice(0, 10) || "N/A"}</p>
+                    <p className="mt-1">
+                      {selectedBook.discountEnd?.slice(0, 10) || "N/A"}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">On Sale</label>
-                    <p className="mt-1">{selectedBook.isOnSale ? "Yes" : "No"}</p>
+                    <label className="block text-sm font-medium text-gray-700">
+                      On Sale
+                    </label>
+                    <p className="mt-1">
+                      {selectedBook.isOnSale ? "Yes" : "No"}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Bestseller
                     </label>
-                    <p className="mt-1">{selectedBook.isBestseller ? "Yes" : "No"}</p>
+                    <p className="mt-1">
+                      {selectedBook.isBestseller ? "Yes" : "No"}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Award Winner
                     </label>
-                    <p className="mt-1">{selectedBook.isAwardWinner ? "Yes" : "No"}</p>
+                    <p className="mt-1">
+                      {selectedBook.isAwardWinner ? "Yes" : "No"}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Coming Soon
                     </label>
-                    <p className="mt-1">{selectedBook.isComingSoon ? "Yes" : "No"}</p>
+                    <p className="mt-1">
+                      {selectedBook.isComingSoon ? "Yes" : "No"}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Featured</label>
-                    <p className="mt-1">{selectedBook.isFeatured ? "Yes" : "No"}</p>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Featured
+                    </label>
+                    <p className="mt-1">
+                      {selectedBook.isFeatured ? "Yes" : "No"}
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Publish Date
                     </label>
-                    <p className="mt-1">{selectedBook.publishDate?.slice(0, 10) || "N/A"}</p>
+                    <p className="mt-1">
+                      {selectedBook.publishDate?.slice(0, 10) || "N/A"}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Rating</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Rating
+                    </label>
                     <p className="mt-1">{selectedBook.rating || "N/A"}</p>
                   </div>
                   <div>
@@ -1020,7 +1092,9 @@ function AdminBook() {
                     <p className="mt-1">{selectedBook.totalSold || 0}</p>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Image</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Image
+                    </label>
                     <img
                       src={`http://localhost:5127/${selectedBook.imageUrl}`}
                       alt="book"

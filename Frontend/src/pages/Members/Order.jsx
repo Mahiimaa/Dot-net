@@ -220,7 +220,8 @@ const Orders = () => {
                             >
                               Cancel Order
                             </button>
-                          ) : order.status === "Fulfilled" && !isMultipleItems ? (
+                          ) : order.status === "Fulfilled" &&
+                            !isMultipleItems ? (
                             isValidBookId ? (
                               <Link
                                 to={`/books/${bookId}`}
@@ -237,7 +238,8 @@ const Orders = () => {
                                 Leave a Review
                               </button>
                             )
-                          ) : order.status === "Fulfilled" && isMultipleItems ? (
+                          ) : order.status === "Fulfilled" &&
+                            isMultipleItems ? (
                             <button
                               onClick={() => openModal(order)}
                               className="border border-green-300 text-green-700 text-sm px-3 py-1 rounded-full"
@@ -264,7 +266,10 @@ const Orders = () => {
                             <p className="text-sm text-gray-500">{author}</p>
                             {qty && (
                               <p className="text-xs mt-1 text-gray-500">
-                                Qty: {qty} | Rs. {parseFloat(order.orderItems[0]?.price).toFixed(2)}
+                                Qty: {qty} | Rs.{" "}
+                                {parseFloat(order.orderItems[0]?.price).toFixed(
+                                  2
+                                )}
                               </p>
                             )}
 

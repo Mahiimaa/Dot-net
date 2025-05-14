@@ -54,7 +54,10 @@ const AddCart = () => {
             (!item.book?.discountEnd ||
               parseUTCDate(item.book.discountEnd) >= new Date());
           const discountedPrice = isDiscountActive
-            ? (originalPrice * (1 - (item.book.discountPercent || 0) / 100)).toFixed(2)
+            ? (
+                originalPrice *
+                (1 - (item.book.discountPercent || 0) / 100)
+              ).toFixed(2)
             : originalPrice.toFixed(2);
           console.log(`Item ${item.book?.title}:`, {
             isOnSale: item.book?.isOnSale,
@@ -95,7 +98,8 @@ const AddCart = () => {
         setCompletedOrders(fulfilledOrders);
       } catch (error) {
         const errorMessage =
-          error.response?.data?.error || "Failed to fetch cart or orders. Please try again.";
+          error.response?.data?.error ||
+          "Failed to fetch cart or orders. Please try again.";
         setError(errorMessage);
         console.error("Failed to fetch cart/orders:", error);
       } finally {
@@ -132,7 +136,8 @@ const AddCart = () => {
       );
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Failed to update quantity. Please try again.";
+        error.response?.data?.error ||
+        "Failed to update quantity. Please try again.";
       alert(errorMessage);
       console.error("Update quantity error:", error);
     }
@@ -148,7 +153,8 @@ const AddCart = () => {
       setCartItems((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Failed to remove from cart. Please try again.";
+        error.response?.data?.error ||
+        "Failed to remove from cart. Please try again.";
       alert(errorMessage);
       console.error("Remove from cart error:", error);
     }
@@ -169,12 +175,15 @@ const AddCart = () => {
           },
         }
       );
-      alert(`Order placed successfully! Claim code: ${response.data.claimCode}`);
+      alert(
+        `Order placed successfully! Claim code: ${response.data.claimCode}`
+      );
       setCartItems([]);
       navigate("/order");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Failed to place order. Please try again.";
+        error.response?.data?.error ||
+        "Failed to place order. Please try again.";
       alert(errorMessage);
       console.error("Checkout error:", error);
     }
@@ -196,11 +205,12 @@ const AddCart = () => {
     )
   ).toFixed(2);
   // 5% discount for 5+ books
-  const fivePlusBooksDiscount = totalBooks >= 5 ? parseFloat(subtotal * 0.05).toFixed(2) : 0;
+  const fivePlusBooksDiscount =
+    totalBooks >= 5 ? parseFloat(subtotal * 0.05).toFixed(2) : 0;
   // 10% stackable discount after every 10 completed orders
   const loyaltyDiscount =
     completedOrders >= 10 && completedOrders % 10 === 0
-      ? parseFloat(subtotal * 0.10).toFixed(2)
+      ? parseFloat(subtotal * 0.1).toFixed(2)
       : 0;
   const totalDiscount = parseFloat(
     parseFloat(bookDiscount) +
@@ -237,9 +247,13 @@ const AddCart = () => {
                   </Link>
                   <div className="flex-1">
                     <Link to={`/books/${item.bookId}`}>
-                      <h3 className="text-md font-semibold hover:underline">{item.title}</h3>
+                      <h3 className="text-md font-semibold hover:underline">
+                        {item.title}
+                      </h3>
                     </Link>
-                    <p className="text-sm text-gray-500 mb-1">By {item.author}</p>
+                    <p className="text-sm text-gray-500 mb-1">
+                      By {item.author}
+                    </p>
                     <div className="flex items-center gap-2 text-sm mb-2">
                       {item.discountedPrice < item.price ? (
                         <>
@@ -275,7 +289,11 @@ const AddCart = () => {
                   <button
                     className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
                     onClick={() => {
-                      if (window.confirm("Are you sure you want to remove this item from your cart?")) {
+                      if (
+                        window.confirm(
+                          "Are you sure you want to remove this item from your cart?"
+                        )
+                      ) {
                         handleRemove(item.id);
                       }
                     }}

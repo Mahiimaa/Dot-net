@@ -29,7 +29,9 @@ const Review = () => {
       setError(null);
 
       try {
-        const response = await api.get(`/api/Reviews/my-reviews?page=${page}&pageSize=${pageSize}`);
+        const response = await api.get(
+          `/api/Reviews/my-reviews?page=${page}&pageSize=${pageSize}`
+        );
         if (response.status !== 200) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -40,7 +42,8 @@ const Review = () => {
       } catch (err) {
         console.error("Failed to fetch user reviews:", err);
         setError(
-          err.response?.data?.error || "Failed to load reviews. Please try again later."
+          err.response?.data?.error ||
+            "Failed to load reviews. Please try again later."
         );
       } finally {
         setLoading(false);
@@ -89,7 +92,9 @@ const Review = () => {
             {loading && <p className="text-gray-600">Loading reviews...</p>}
             {error && <p className="text-red-500">{error}</p>}
             {!loading && !error && reviews.length === 0 && (
-              <p className="text-gray-500">You haven’t written any reviews yet.</p>
+              <p className="text-gray-500">
+                You haven’t written any reviews yet.
+              </p>
             )}
             {!loading && !error && reviews.length > 0 && (
               <>
@@ -103,7 +108,9 @@ const Review = () => {
                       <div className="bg-white rounded-xl p-4 shadow border flex gap-4">
                         <img
                           src={
-                            review.image && review.image !== "https://via.placeholder.com/80x120"
+                            review.image &&
+                            review.image !==
+                              "https://via.placeholder.com/80x120"
                               ? `http://localhost:5127/${review.image}`
                               : "https://via.placeholder.com/80x120"
                           }
@@ -124,7 +131,9 @@ const Review = () => {
                           </div>
 
                           {/* Review Text */}
-                          <p className="text-sm text-gray-700">{review.reviewText}</p>
+                          <p className="text-sm text-gray-700">
+                            {review.reviewText}
+                          </p>
                         </div>
                       </div>
                     </Link>

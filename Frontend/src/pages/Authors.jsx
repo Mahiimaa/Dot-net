@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from './Layout/Navbar';
-import Footer from './Layout/Footer';
+import Navbar from "./Layout/Navbar";
+import Footer from "./Layout/Footer";
 
 export default function Authors() {
   const [authors, setAuthors] = useState([]);
@@ -10,7 +10,7 @@ export default function Authors() {
   const [expandedAuthorName, setExpandedAuthorName] = useState(null);
   const [search, setSearch] = useState("");
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:5127/api/authors")
@@ -43,7 +43,11 @@ export default function Authors() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5127/api/authors/${encodeURIComponent(authorName)}/books`);
+      const res = await fetch(
+        `http://localhost:5127/api/authors/${encodeURIComponent(
+          authorName
+        )}/books`
+      );
       const data = await res.json();
       setBooksByAuthor((prev) => ({ ...prev, [authorName]: data }));
       setExpandedAuthorName(authorName);
@@ -57,7 +61,9 @@ export default function Authors() {
       <Navbar />
 
       <div className="max-w-7xl mx-auto py-10 px-4 flex-1">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">Meet Our Authors</h1>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+          Meet Our Authors
+        </h1>
         <div className="flex justify-center mb-8">
           <input
             type="text"
@@ -81,7 +87,9 @@ export default function Authors() {
                   {author.name?.[0]?.toUpperCase() || "?"}
                 </div>
 
-                <h3 className="text-lg font-semibold text-center">{author.name}</h3>
+                <h3 className="text-lg font-semibold text-center">
+                  {author.name}
+                </h3>
                 <p className="text-sm text-gray-600 text-center px-2">
                   {author.specialty || "Genre not specified"}
                 </p>
@@ -89,31 +97,38 @@ export default function Authors() {
                   onClick={() => handleViewBooks(author.name)}
                   className="bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm mt-2 hover:bg-emerald-200"
                 >
-                  {expandedAuthorName === author.name ? "Hide Books" : "View Books"}
+                  {expandedAuthorName === author.name
+                    ? "Hide Books"
+                    : "View Books"}
                 </button>
 
-                {expandedAuthorName === author.name && booksByAuthor[author.name] && (
-                  <div className="mt-4 w-full text-left">
-                    {booksByAuthor[author.name].length === 0 ? (
-                      <p className="text-sm text-gray-500 text-center">No books found.</p>
-                    ) : (
-                      <ul className="text-sm text-gray-700 space-y-1">
-                        {booksByAuthor[author.name].map((book) => (
-                          <li
-                            key={book.id}
-                            onClick={() => navigate(`/books/${book.id}`)} 
-                            className="bg-gray-50 rounded p-2 cursor-pointer hover:bg-gray-100 transition"
-                          >
-                            <strong className="text-blue-900 hover:underline">{book.title}</strong>
-                            <p className="text-xs text-gray-500">
-                              Published: {book.publishDate?.split("T")[0]}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
+                {expandedAuthorName === author.name &&
+                  booksByAuthor[author.name] && (
+                    <div className="mt-4 w-full text-left">
+                      {booksByAuthor[author.name].length === 0 ? (
+                        <p className="text-sm text-gray-500 text-center">
+                          No books found.
+                        </p>
+                      ) : (
+                        <ul className="text-sm text-gray-700 space-y-1">
+                          {booksByAuthor[author.name].map((book) => (
+                            <li
+                              key={book.id}
+                              onClick={() => navigate(`/books/${book.id}`)}
+                              className="bg-gray-50 rounded p-2 cursor-pointer hover:bg-gray-100 transition"
+                            >
+                              <strong className="text-blue-900 hover:underline">
+                                {book.title}
+                              </strong>
+                              <p className="text-xs text-gray-500">
+                                Published: {book.publishDate?.split("T")[0]}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )}
               </div>
             ))
           )}

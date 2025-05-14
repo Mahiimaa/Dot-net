@@ -9,9 +9,6 @@ Backend/obj/
 # EF Core migrations
 Backend/Migrations/
 
-# === EF Core Migrations ===
-Backend/Migrations/
-
 # === FRONTEND (Node/React) ===
 Frontend/node_modules/
 Frontend/build/
@@ -35,5 +32,4 @@ Thumbs.db
 # === OTHERS ===
 *.cache
 *.tmp
-build/
-dist/
+

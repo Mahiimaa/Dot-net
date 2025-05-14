@@ -8,12 +8,13 @@ const MemberNavbar = () => {
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
-      logout(); 
+      logout();
       navigate("/login"); // Redirect to login
     }
   };
 
-  const userProfileImage = user?.profileImageUrl || localStorage.getItem("profileImage");
+  const userProfileImage =
+    user?.profileImageUrl || localStorage.getItem("profileImage");
   const placeholderInitial = user?.firstName?.charAt(0)?.toUpperCase() || "U";
 
   return (
@@ -22,7 +23,7 @@ const MemberNavbar = () => {
       <nav className="flex items-center space-x-6 text-gray-600">
         <Link to="/">Home</Link>
         <Link to="/books">Books</Link>
-        
+
         {/* <Link to="/authors">Authors</Link> */}
         {/* <Link to="/genres">Genres</Link> */}
         <button

@@ -1,17 +1,23 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Heart, ChevronDown, ChevronUp } from 'lucide-react';
-import * as signalR from '@microsoft/signalr';
-import { debounce } from 'lodash';
-import api from '../api/axios';
-import Navbar from './Layout/Navbar';
-import { AuthContext } from '../context/AuthContext';
-import Footer from './Layout/Footer';
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Heart, ChevronDown, ChevronUp } from "lucide-react";
+import * as signalR from "@microsoft/signalr";
+import { debounce } from "lodash";
+import api from "../api/axios";
+import Navbar from "./Layout/Navbar";
+import { AuthContext } from "../context/AuthContext";
+import Footer from "./Layout/Footer";
 
-const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishlist }) => {
+const BookCard = ({
+  book,
+  addToCart,
+  isAuthenticated,
+  isInWishlist,
+  toggleWishlist,
+}) => {
   const parseUTCDate = (dateStr) => {
     if (!dateStr) return null;
-    return new Date(dateStr + (dateStr.endsWith('Z') ? '' : 'Z'));
+    return new Date(dateStr + (dateStr.endsWith("Z") ? "" : "Z"));
   };
 
   const isDiscountActive =
@@ -19,7 +25,9 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
     (!book.discountStart || parseUTCDate(book.discountStart) <= new Date()) &&
     (!book.discountEnd || parseUTCDate(book.discountEnd) >= new Date());
 
-  const isCartDisabled = book.availability === 'Out of Stock' || book.availability === 'Library Only';
+  const isCartDisabled =
+    book.availability === "Out of Stock" ||
+    book.availability === "Library Only";
 
   return (
     <div className="relative border rounded-lg p-6 flex flex-col items-center shadow-md hover:shadow-lg transition h-full bg-white">
@@ -33,7 +41,7 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
           src={
             book.imageUrl
               ? `http://localhost:5127/${book.imageUrl}`
-              : 'https://via.placeholder.com/150x200?text=Book+Cover'
+              : "https://via.placeholder.com/150x200?text=Book+Cover"
           }
           alt={book.title}
           className="w-80 h-56 object-contain rounded-md p-4 bg-white"
@@ -45,10 +53,16 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
             <button
               onClick={() => addToCart(book.id)}
               className={`bg-gray-100 p-2 rounded-full transition shadow-sm ${
-                isCartDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'
+                isCartDisabled
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-gray-200"
               }`}
-              title={isCartDisabled ? 'Not available for cart' : 'Add to Cart'}
-              aria-label={isCartDisabled ? 'Book not available for cart' : 'Add book to cart'}
+              title={isCartDisabled ? "Not available for cart" : "Add to Cart"}
+              aria-label={
+                isCartDisabled
+                  ? "Book not available for cart"
+                  : "Add book to cart"
+              }
               disabled={isCartDisabled}
             >
               🛒
@@ -56,12 +70,16 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
             <button
               onClick={() => toggleWishlist(book.id)}
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition shadow-sm"
-              title={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
-              aria-label={isInWishlist ? 'Remove book from wishlist' : 'Add book to wishlist'}
+              title={isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+              aria-label={
+                isInWishlist
+                  ? "Remove book from wishlist"
+                  : "Add book to wishlist"
+              }
             >
               <Heart
                 className="w-5 h-5"
-                fill={isInWishlist ? 'red' : 'none'}
+                fill={isInWishlist ? "red" : "none"}
                 stroke="red"
               />
             </button>
@@ -70,7 +88,10 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
       </div>
       <div className="w-full mt-4 px-2">
         <Link to={`/books/${book.id}`} className="hover:underline">
-          <h3 className="text-lg font-semibold text-center line-clamp-2" title={book.title}>
+          <h3
+            className="text-lg font-semibold text-center line-clamp-2"
+            title={book.title}
+          >
             {book.title}
           </h3>
         </Link>
@@ -80,16 +101,22 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
         </p>
         <div className="flex justify-center items-center mt-2">
           {[...Array(book.rating || 0)].map((_, i) => (
-            <span key={i} className="text-yellow-400 text-lg">★</span>
+            <span key={i} className="text-yellow-400 text-lg">
+              ★
+            </span>
           ))}
           {[...Array(5 - (book.rating || 0))].map((_, i) => (
-            <span key={i} className="text-gray-300 text-lg">★</span>
+            <span key={i} className="text-gray-300 text-lg">
+              ★
+            </span>
           ))}
         </div>
         <p className="mt-2 text-center font-medium">
           {isDiscountActive ? (
             <>
-              <span className="line-through text-gray-500 mr-2">Rs. {book.price}</span>
+              <span className="line-through text-gray-500 mr-2">
+                Rs. {book.price}
+              </span>
               <span className="text-green-600">
                 Rs. {(book.price * (1 - book.discountPercent / 100)).toFixed(2)}
               </span>
@@ -100,7 +127,9 @@ const BookCard = ({ book, addToCart, isAuthenticated, isInWishlist, toggleWishli
         </p>
         <p
           className={`text-xs text-center mt-1 ${
-            book.availability === 'Available' ? 'text-green-600' : 'text-blue-600'
+            book.availability === "Available"
+              ? "text-green-600"
+              : "text-blue-600"
           }`}
         >
           {book.availability}
@@ -116,22 +145,24 @@ const Book = () => {
   const location = useLocation();
   const [books, setBooks] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
-  const [broadcastMessage, setBroadcastMessage] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [broadcastMessage, setBroadcastMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [filters, setFilters] = useState({
-    author: '',
-    genre: '',
-    availability: '',
-    minPrice: '',
-    maxPrice: '',
-    rating: '',
-    language: '',
-    format: '',
-    publisher: '',
+    author: "",
+    genre: "",
+    availability: "",
+    minPrice: "",
+    maxPrice: "",
+    rating: "",
+    language: "",
+    format: "",
+    publisher: "",
   });
-  const [sortBy, setSortBy] = useState('');
-  const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'All Books');
+  const [sortBy, setSortBy] = useState("");
+  const [activeTab, setActiveTab] = useState(
+    location.state?.activeTab || "All Books"
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalBooks, setTotalBooks] = useState(0);
@@ -140,7 +171,7 @@ const Book = () => {
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [wishlistItems, setWishlistItems] = useState([]);
   const booksPerPage = 6;
-  const [connectionStatus, setConnectionStatus] = useState('disconnected');
+  const [connectionStatus, setConnectionStatus] = useState("disconnected");
   const [activeAnnouncementIndex, setActiveAnnouncementIndex] = useState(0);
 
   // Debounce search query updates
@@ -170,7 +201,7 @@ const Book = () => {
       setLoading(true);
       setError(null);
       try {
-        const booksResponse = await api.get('/api/Books', {
+        const booksResponse = await api.get("/api/Books", {
           params: {
             search: debouncedSearchQuery || undefined,
             author: filters.author || undefined,
@@ -183,7 +214,7 @@ const Book = () => {
             format: filters.format || undefined,
             publisher: filters.publisher || undefined,
             sortBy: sortBy || undefined,
-            tab: activeTab !== 'All Books' ? activeTab : undefined,
+            tab: activeTab !== "All Books" ? activeTab : undefined,
             page: currentPage,
             pageSize: booksPerPage,
           },
@@ -194,37 +225,57 @@ const Book = () => {
         setTotalBooks(booksResponse.data.total || 0);
         setTotalPages(Math.ceil(booksResponse.data.total / booksPerPage) || 1);
 
-        const announcementsResponse = await api.get('/api/Announcements');
+        const announcementsResponse = await api.get("/api/Announcements");
         const activeAnnouncements = announcementsResponse.data.filter(
           (ann) =>
             (!ann.startDate ||
-              new Date(ann.startDate + (ann.startDate.endsWith('Z') ? '' : 'Z')) <=
-                new Date()) &&
+              new Date(
+                ann.startDate + (ann.startDate.endsWith("Z") ? "" : "Z")
+              ) <= new Date()) &&
             (!ann.endDate ||
-              new Date(ann.endDate + (ann.endDate.endsWith('Z') ? '' : 'Z')) >= new Date())
+              new Date(ann.endDate + (ann.endDate.endsWith("Z") ? "" : "Z")) >=
+                new Date())
         );
         setAnnouncements(activeAnnouncements);
 
         if (isAuthenticated && user?.id) {
-          const wishlistResponse = await api.get(`/api/Wishlist/user/${user.id}`);
+          const wishlistResponse = await api.get(
+            `/api/Wishlist/user/${user.id}`
+          );
           setWishlistItems(wishlistResponse.data || []);
         } else {
           setWishlistItems([]);
         }
       } catch (err) {
         if (err.response?.status === 500) {
-          setError('Failed to load books. Please try a different query or try again later.');
+          setError(
+            "Failed to load books. Please try a different query or try again later."
+          );
         } else {
-          setError('Failed to load data. Please check your network and try again.');
+          setError(
+            "Failed to load data. Please check your network and try again."
+          );
         }
-        console.error('Fetch error:', err.response?.status, err.response?.data || err.message);
+        console.error(
+          "Fetch error:",
+          err.response?.status,
+          err.response?.data || err.message
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [filters, sortBy, activeTab, currentPage, debouncedSearchQuery, isAuthenticated, user]);
+  }, [
+    filters,
+    sortBy,
+    activeTab,
+    currentPage,
+    debouncedSearchQuery,
+    isAuthenticated,
+    user,
+  ]);
 
   useEffect(() => {
     if (announcements.length > 1) {
@@ -237,40 +288,40 @@ const Book = () => {
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5127/orderHub', { withCredentials: true })
+      .withUrl("http://localhost:5127/orderHub", { withCredentials: true })
       .withAutomaticReconnect([0, 2000, 5000, 10000])
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    connection.on('orderBroadcast', (message) => {
-      console.log('Received broadcast:', message);
+    connection.on("orderBroadcast", (message) => {
+      console.log("Received broadcast:", message);
       setBroadcastMessage(message);
-      setTimeout(() => setBroadcastMessage(''), 5000);
+      setTimeout(() => setBroadcastMessage(""), 5000);
     });
 
     connection.onreconnecting((error) => {
-      console.warn('SignalR reconnecting:', error?.message);
-      setConnectionStatus('reconnecting');
+      console.warn("SignalR reconnecting:", error?.message);
+      setConnectionStatus("reconnecting");
     });
 
     connection.onreconnected((connectionId) => {
-      console.log('SignalR reconnected with ID:', connectionId);
-      setConnectionStatus('connected');
+      console.log("SignalR reconnected with ID:", connectionId);
+      setConnectionStatus("connected");
     });
 
     connection.onclose((error) => {
-      console.error('SignalR connection closed:', error?.message);
-      setConnectionStatus('disconnected');
+      console.error("SignalR connection closed:", error?.message);
+      setConnectionStatus("disconnected");
     });
 
     const startConnection = async () => {
       try {
         await connection.start();
-        console.log('SignalR connection started');
-        setConnectionStatus('connected');
+        console.log("SignalR connection started");
+        setConnectionStatus("connected");
       } catch (err) {
-        console.error('SignalR connection failed:', err.message);
-        setConnectionStatus('failed');
+        console.error("SignalR connection failed:", err.message);
+        setConnectionStatus("failed");
         setTimeout(startConnection, 5000);
       }
     };
@@ -278,8 +329,10 @@ const Book = () => {
     startConnection();
 
     return () => {
-      console.log('Stopping SignalR connection');
-      connection.stop().catch((err) => console.error('Error stopping SignalR:', err.message));
+      console.log("Stopping SignalR connection");
+      connection
+        .stop()
+        .catch((err) => console.error("Error stopping SignalR:", err.message));
     };
   }, []);
 
@@ -291,19 +344,19 @@ const Book = () => {
 
   const handleClearFilters = () => {
     setFilters({
-      author: '',
-      genre: '',
-      availability: '',
-      minPrice: '',
-      maxPrice: '',
-      rating: '',
-      language: '',
-      format: '',
-      publisher: '',
+      author: "",
+      genre: "",
+      availability: "",
+      minPrice: "",
+      maxPrice: "",
+      rating: "",
+      language: "",
+      format: "",
+      publisher: "",
     });
-    setSortBy('');
-    setSearchQuery('');
-    setDebouncedSearchQuery('');
+    setSortBy("");
+    setSearchQuery("");
+    setDebouncedSearchQuery("");
     setCurrentPage(1);
   };
 
@@ -313,47 +366,62 @@ const Book = () => {
 
   const addToCart = async (bookId) => {
     if (!isAuthenticated || !user?.id) {
-      alert('Please log in to add to cart.');
-      navigate('/login');
+      alert("Please log in to add to cart.");
+      navigate("/login");
       return;
     }
     try {
-      await api.post('/api/Cart/add', {
+      await api.post("/api/Cart/add", {
         userId: user.id,
         bookId,
         quantity: 1,
       });
-      alert('Book added to cart!');
+      alert("Book added to cart!");
     } catch (err) {
-      const errorMessage = err.response?.data?.error || 'Failed to add to cart. Please try again.';
+      const errorMessage =
+        err.response?.data?.error || "Failed to add to cart. Please try again.";
       alert(errorMessage);
-      console.error('Add to cart error:', err.response?.status, err.response?.data || err.message);
+      console.error(
+        "Add to cart error:",
+        err.response?.status,
+        err.response?.data || err.message
+      );
     }
   };
 
   const toggleWishlist = async (bookId) => {
     if (!isAuthenticated || !user?.id) {
-      alert('Please log in to add to wishlist.');
-      navigate('/login');
+      alert("Please log in to add to wishlist.");
+      navigate("/login");
       return;
     }
     try {
       const wishlistItem = wishlistItems.find((item) => item.bookId === bookId);
       if (wishlistItem) {
         await api.delete(`/api/Wishlist/remove/${wishlistItem.id}`);
-        setWishlistItems((prev) => prev.filter((item) => item.bookId !== bookId));
-        alert('Book removed from wishlist!');
+        setWishlistItems((prev) =>
+          prev.filter((item) => item.bookId !== bookId)
+        );
+        alert("Book removed from wishlist!");
       } else {
-        const response = await api.post('/api/Wishlist/add', { userId: user.id, bookId });
+        const response = await api.post("/api/Wishlist/add", {
+          userId: user.id,
+          bookId,
+        });
         const wishlistResponse = await api.get(`/api/Wishlist/user/${user.id}`);
         setWishlistItems(wishlistResponse.data || []);
-        alert('Book added to wishlist!');
+        alert("Book added to wishlist!");
       }
     } catch (err) {
       const errorMessage =
-        err.response?.data?.message || 'Failed to update wishlist. Please try again.';
+        err.response?.data?.message ||
+        "Failed to update wishlist. Please try again.";
       alert(errorMessage);
-      console.error('Wishlist error:', err.response?.status, err.response?.data || err.message);
+      console.error(
+        "Wishlist error:",
+        err.response?.status,
+        err.response?.data || err.message
+      );
     }
   };
 
@@ -361,7 +429,9 @@ const Book = () => {
   const genres = [...new Set(books.map((b) => b.genre).filter(Boolean))];
   const languages = [...new Set(books.map((b) => b.language).filter(Boolean))];
   const formats = [...new Set(books.map((b) => b.format).filter(Boolean))];
-  const publishers = [...new Set(books.map((b) => b.publisher).filter(Boolean))];
+  const publishers = [
+    ...new Set(books.map((b) => b.publisher).filter(Boolean)),
+  ];
 
   return (
     <>
@@ -370,124 +440,136 @@ const Book = () => {
         <style>
           {`
             .announcement-carousel {
-              position: relative;
-              max-width: 1400px;
-              margin: 0 auto 1.1rem;
-              overflow: hidden;
-              border-radius: 12px;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-              background: linear-gradient(135deg, #3b82f6, #60a5fa);
-              padding: 8px;
-            }
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow for minimal look */
+            background: linear-gradient(135deg, #fce7f3, #dbeafe); /* Pastel pink to pastel blue gradient */
+            padding: 12px;
+            border: 1px solid #e5e7eb; /* Light gray border to match theme */
+            animation: pulse 4s ease-in-out infinite; /* Gentle pulse to attract attention */
+          }
 
-            .announcement-item {
-              display: none;
+          @keyframes pulse {
+            0%, 100% {
+              transform: scale(1);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+            50% {
+              transform: scale(1.01); /* Subtle scale for pulse effect */
+              box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            }
+          }
+
+          .announcement-item {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+          .announcement-item.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            animation: fadeScaleIn 0.6s ease-in-out; /* Combined fade, slide, and scale animation */
+          }
+
+          .announcement-item:not(.active) {
+            transform: translateY(10px) scale(0.95); /* Starting position and scale */
+          }
+
+          .announcement-item p {
+            color: #4b5563; /* text-gray-600 for soft text */
+            font-size: 1.2rem;
+            font-weight: 500; /* Medium weight for minimal aesthetic */
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 14px 20px;
+            line-height: 1.6;
+            display: inline-block;
+            animation: marquee 10s linear infinite; /* Smooth marquee */
+            transition: color 0.3s, text-shadow 0.3s; /* Smooth hover transition */
+          }
+
+          .announcement-item p:hover {
+            animation-play-state: paused;
+            color: #374151; /* text-gray-700 for hover */
+            text-shadow: 0 0 8px rgba(147, 197, 253, 0.5); /* Subtle blue glow */
+            cursor: pointer;
+          }
+
+          @keyframes marquee {
+            0% {
+              transform: translateX(100%);
+            }
+            100% {
+              transform: translateX(-100%);
+            }
+          }
+
+          @keyframes fadeScaleIn {
+            0% {
               opacity: 0;
-              transition: opacity 0.5s ease-in-out;
-              text-align: center;
-              white-space: nowrap;
-              overflow: hidden;
+              transform: translateY(10px) scale(0.95);
             }
-
-            .announcement-item.active {
-              display: block;
+            100% {
               opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+
+          .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+          }
+
+          .carousel-dot {
+            width: 10px;
+            height: 10px;
+            background: #d1d5db; /* gray-300 for inactive dots */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+          }
+
+          .carousel-dot.active {
+            background: #93c5fd; /* Pastel blue (blue-300) for theme consistency */
+            transform: scale(1.2);
+            box-shadow: 0 0 6px rgba(147, 197, 253, 0.6); /* Subtle blue glow */
+          }
+
+          .carousel-dot:hover {
+            background: #60a5fa; /* blue-400 for hover */
+            transform: scale(1.1);
+            box-shadow: 0 0 8px rgba(147, 197, 253, 0.4);
+          }
+
+          @media (max-width: 640px) {
+            .announcement-carousel {
+              margin: 0 1rem 1.5rem;
+              padding: 10px;
+              border-radius: 10px;
+              box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+              animation: pulse 4s ease-in-out infinite; /* Maintain pulse on mobile */
             }
 
             .announcement-item p {
-              color: #ffffff;
-              font-size: 1.125rem;
-              font-weight: 500;
-              margin: 0;
+              font-size: 1.05rem;
               padding: 12px 16px;
-              line-height: 1.5;
-              display: inline-block;
-              animation: marquee 8s linear infinite;
-            }
-
-            @keyframes marquee {
-              0% {
-                transform: translateX(100%);
-              }
-              100% {
-                transform: translateX(-100%);
-              }
-            }
-
-            .announcement-item p:hover {
-              animation-play-state: paused;
-            }
-
-            .carousel-dots {
-              display: flex;
-              justify-content: center;
-              gap: 8px;
-              margin-top: 12px;
             }
 
             .carousel-dot {
-              width: 10px;
-              height: 10px;
-              background: rgba(255, 255, 255, 0.5);
-              border-radius: 50%;
-              cursor: pointer;
-              transition: background 0.3s;
+              width: 8px;
+              height: 8px;
             }
-
-            .carousel-dot.active {
-              background: #ffffff;
-            }
-
-            .search-container {
-              position: relative;
-              width: 100%;
-              max-width: 815px;
-              margin: 0 auto;
-            }
-
-            .search-input {
-              width: 100%;
-              padding: 12px 40px 12px 16px;
-              border: 2px solid #e5e7eb;
-              border-radius: 8px;
-              font-size: 16px;
-              color: #1f2937;
-              background-color: #ffffff;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-              transition: border-color 0.3s, box-shadow 0.3s;
-            }
-
-            .search-input:focus {
-              outline: none;
-              border-color: #3b82f6;
-              box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            }
-
-            .search-icon {
-              position: absolute;
-              right: 12px;
-              top: 50%;
-              transform: translateY(-50%);
-              color: #6b7280;
-              pointer-events: none;
-            }
-
-            @media (max-width: 640px) {
-              .announcement-carousel {
-                margin: 0 1rem 1.5rem;
-                padding: 12px;
-              }
-
-              .announcement-item p {
-                font-size: 1rem;
-                padding: 10px 12px;
-              }
-
-              .search-input {
-                font-size: 14px;
-                padding: 10px 36px 10px 14px;
-              }
-            }
+          }
           `}
         </style>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -506,7 +588,9 @@ const Book = () => {
                   {announcements.map((ann, index) => (
                     <div
                       key={ann.id}
-                      className={`announcement-item ${index === activeAnnouncementIndex ? 'active' : ''}`}
+                      className={`announcement-item ${
+                        index === activeAnnouncementIndex ? "active" : ""
+                      }`}
                     >
                       <p>{ann.message}</p>
                     </div>
@@ -516,7 +600,9 @@ const Book = () => {
                       {announcements.map((_, index) => (
                         <span
                           key={index}
-                          className={`carousel-dot ${index === activeAnnouncementIndex ? 'active' : ''}`}
+                          className={`carousel-dot ${
+                            index === activeAnnouncementIndex ? "active" : ""
+                          }`}
                           onClick={() => setActiveAnnouncementIndex(index)}
                         />
                       ))}
@@ -527,11 +613,13 @@ const Book = () => {
 
               {broadcastMessage && (
                 <div className="bg-yellow-100 p-4 text-center mb-6 rounded-lg border border-yellow-200 animate-pulse">
-                  <p className="text-yellow-800 font-medium">📢 {broadcastMessage}</p>
+                  <p className="text-yellow-800 font-medium">
+                    📢 {broadcastMessage}
+                  </p>
                 </div>
               )}
 
-              {connectionStatus !== 'connected' && (
+              {connectionStatus !== "connected" && (
                 <div className="bg-orange-100 p-4 text-center mb-6 rounded-lg border border-orange-200">
                   <p className="text-orange-800 font-medium">
                     SignalR Status: {connectionStatus}
@@ -544,28 +632,28 @@ const Book = () => {
                   Explore Our Extensive Book Collection
                 </h1>
                 <p className="text-lg text-gray-600">
-                  Discover a vast array of books across various genres, from captivating novels to
-                  insightful non-fiction. Browse our curated selection and find your next literary
-                  adventure!
+                  Discover a vast array of books across various genres, from
+                  captivating novels to insightful non-fiction. Browse our
+                  curated selection and find your next literary adventure!
                 </p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-2 mb-8">
                 {[
-                  'All Books',
-                  'Bestsellers',
-                  'Award Winners',
-                  'New Releases',
-                  'New Arrivals',
-                  'Coming Soon',
-                  'Deals',
+                  "All Books",
+                  "Bestsellers",
+                  "Award Winners",
+                  "New Releases",
+                  "New Arrivals",
+                  "Coming Soon",
+                  "Deals",
                 ].map((tab) => (
                   <button
                     key={tab}
                     className={`px-4 py-2 rounded-full transition ${
                       activeTab === tab
-                        ? 'bg-blue-900 text-white shadow-md'
-                        : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
+                        ? "bg-blue-900 text-white shadow-md"
+                        : "bg-white text-gray-700 hover:bg-gray-100 shadow-sm"
                     }`}
                     onClick={() => {
                       setActiveTab(tab);
@@ -604,7 +692,9 @@ const Book = () => {
                 {isFilterExpanded && (
                   <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Author</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Author
+                      </label>
                       <select
                         name="author"
                         value={filters.author}
@@ -620,7 +710,9 @@ const Book = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Genre</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Genre
+                      </label>
                       <select
                         name="genre"
                         value={filters.genre}
@@ -651,7 +743,9 @@ const Book = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Rating
+                      </label>
                       <select
                         name="rating"
                         value={filters.rating}
@@ -665,7 +759,9 @@ const Book = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Language
+                      </label>
                       <select
                         name="language"
                         value={filters.language}
@@ -681,7 +777,9 @@ const Book = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Format</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Format
+                      </label>
                       <select
                         name="format"
                         value={filters.format}
@@ -697,7 +795,9 @@ const Book = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Publisher</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Publisher
+                      </label>
                       <select
                         name="publisher"
                         value={filters.publisher}
@@ -753,10 +853,12 @@ const Book = () => {
                   <div className="text-teal-800 bg-teal-100 p-2 rounded-md mb-3 sm:mb-0">
                     {books.length > 0
                       ? `Showing ${books.length} of ${totalBooks} books`
-                      : 'No books match your filters'}
+                      : "No books match your filters"}
                   </div>
                   <div className="flex items-center">
-                    <label className="mr-2 text-sm font-medium text-gray-700">Sort by:</label>
+                    <label className="mr-2 text-sm font-medium text-gray-700">
+                      Sort by:
+                    </label>
                     <select
                       value={sortBy}
                       onChange={(e) => {
@@ -768,7 +870,9 @@ const Book = () => {
                     >
                       <option value="">Default</option>
                       <option value="title">Title (A-Z)</option>
-                      <option value="publishDate">Publication Date (Newest)</option>
+                      <option value="publishDate">
+                        Publication Date (Newest)
+                      </option>
                       <option value="priceLow">Price (Low to High)</option>
                       <option value="priceHigh">Price (High to Low)</option>
                       <option value="popularity">Popularity (Most Sold)</option>
@@ -778,9 +882,12 @@ const Book = () => {
 
                 {books.length === 0 ? (
                   <div className="bg-white p-8 rounded-xl shadow-sm text-center">
-                    <h3 className="text-xl font-medium text-gray-700 mb-2">No books found</h3>
+                    <h3 className="text-xl font-medium text-gray-700 mb-2">
+                      No books found
+                    </h3>
                     <p className="text-gray-500">
-                      Try adjusting your search or filters, or clear the search term.
+                      Try adjusting your search or filters, or clear the search
+                      term.
                     </p>
                   </div>
                 ) : (
@@ -792,7 +899,9 @@ const Book = () => {
                           book={book}
                           addToCart={addToCart}
                           isAuthenticated={isAuthenticated}
-                          isInWishlist={wishlistItems.some((item) => item.bookId === book.id)}
+                          isInWishlist={wishlistItems.some(
+                            (item) => item.bookId === book.id
+                          )}
                           toggleWishlist={toggleWishlist}
                         />
                       ))}
@@ -805,12 +914,14 @@ const Book = () => {
                           aria-label="Pagination"
                         >
                           <button
-                            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                            onClick={() =>
+                              setCurrentPage((p) => Math.max(p - 1, 1))
+                            }
                             disabled={currentPage === 1}
                             className={`px-4 py-2 rounded-l-md border ${
                               currentPage === 1
-                                ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
-                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                ? "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed"
+                                : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                             }`}
                           >
                             Previous
@@ -821,20 +932,22 @@ const Book = () => {
                               onClick={() => setCurrentPage(i + 1)}
                               className={`px-4 py-2 border ${
                                 currentPage === i + 1
-                                  ? 'z-10 bg-blue-900 border-blue-900 text-white'
-                                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                  ? "z-10 bg-blue-900 border-blue-900 text-white"
+                                  : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                               }`}
                             >
                               {i + 1}
                             </button>
                           ))}
                           <button
-                            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                            onClick={() =>
+                              setCurrentPage((p) => Math.min(p + 1, totalPages))
+                            }
                             disabled={currentPage === totalPages}
                             className={`px-4 py-2 rounded-r-md border ${
                               currentPage === totalPages
-                                ? 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
-                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                ? "bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed"
+                                : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                             }`}
                           >
                             Next

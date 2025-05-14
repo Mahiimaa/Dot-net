@@ -13,8 +13,6 @@ import AdminOrders from './pages/AdminOrders';
 import AdminReview from './pages/AdminReview';
 import AdminSettings from './pages/AdminSettings';
 import Home from './pages/Home';
-import BookList from './pages/BookList';
-import Layout from './pages/Layout/layout';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import OtpVerification from './pages/Auth/OtpVerification';
 import NewPassword from './pages/Auth/NewPasswordStep';
@@ -74,8 +72,6 @@ function RoutesWithNotifications() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/layout" element={<Layout />} />
-        <Route path="/BookList" element={<BookList />} />
         <Route path="/bestsellers" element={<Bestseller />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/register" element={<Register />} />
