@@ -28,12 +28,20 @@ function AdminDashboard() {
   const [recentOrders, setRecentOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const token = localStorage.getItem('token');
+  const userData = localStorage.getItem('user');
+  console.log('AdminDashboard - Token before refresh:', token);
+  console.log('AdminDashboard - UserData before refresh:', userData);
   const fetchDashboardStats = async () => {
     setIsLoading(true);
     setError(null);
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+    setError("No authentication token found. Please log in.");
+    setIsLoading(false);
+    return;
+  }
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };

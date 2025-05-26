@@ -1,28 +1,37 @@
 import React, { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children, adminOnly = false, roles = [] }) => {
   const { isAuthenticated, user, loading } = useContext(AuthContext);
+  const location = useLocation();
 
-  // Show loading indicator while checking authentication
+  console.log("ProtectedRoute - Current path:", location.pathname);
+  console.log("ProtectedRoute - Auth state:", { isAuthenticated, loading, userRole: user?.role });
+  console.log("ProtectedRoute - Requirements:", { adminOnly, roles });
+
   if (loading) {
-    return <div className="text-center py-6">Loading...</div>;
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-700"></div>
+      </div>
+    );
   }
-
-  // Redirect to /login if not authenticated
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    console.log("ProtectedRoute - Not authenticated, redirecting to login");
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
-  // Redirect to / if user lacks required role
   if (adminOnly && user?.role !== "Admin") {
-    return <Navigate to="/" replace />;
-  }
-  if (roles.length > 0 && !roles.includes(user?.role)) {
+    console.log("ProtectedRoute - Not admin, redirecting to home");
     return <Navigate to="/" replace />;
   }
 
+  if (roles.length > 0 && !roles.includes(user?.role)) {
+    console.log("ProtectedRoute - Doesn't have required role, redirecting to home");
+    return <Navigate to="/" replace />;
+  }
+  console.log("ProtectedRoute - Access granted");
   return children;
 };
 
