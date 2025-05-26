@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import api from '../api/axios';
 
 export const AuthContext = createContext();
 
@@ -6,54 +7,83 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    if (token && userData) {
+    const loadAuthState = async () => {
+      setLoading(true);
       try {
-        const parsedUser = JSON.parse(userData);
-        setIsAuthenticated(true);
-        setUser(parsedUser);
+        const token = localStorage.getItem('token');
+        const userData = localStorage.getItem('user');
+        
+        console.log('AuthProvider - Initial load - Token exists:', !!token);
+        console.log('AuthProvider - Initial load - UserData exists:', !!userData);
+        
+        if (token && userData) {
+          try {
+            const parsedUser = JSON.parse(userData);
+            setIsAuthenticated(true);
+            setUser(parsedUser);
+          } catch (parseError) {
+            console.error('Failed to parse user data:', parseError);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+          }
+        }
       } catch (error) {
-        console.error('Failed to parse user data from localStorage:', error);
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
+        console.error('Error loading auth state:', error);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    loadAuthState();
   }, []);
 
+  // Debug logging whenever auth state changes
+  useEffect(() => {
+    if (!loading) {
+      console.log('Auth state updated:', { 
+        isAuthenticated, 
+        userRole: user?.role
+      });
+    }
+  }, [isAuthenticated, user, loading]);
+
   const login = (token, userData) => {
+    console.log('Login function called with userData:', userData.role);
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setIsAuthenticated(true);
     setUser(userData);
-    setLoading(false);
   };
 
   const logout = () => {
+    console.log('Logout function called');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsAuthenticated(false);
     setUser(null);
-    setLoading(false);
   };
 
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
     localStorage.setItem('user', JSON.stringify(updatedUser));
-    console.log('User updated:', updatedUser);
+  };
+
+  const authContextValue = {
+    isAuthenticated,
+    user,
+    login,
+    logout,
+    updateUser,
+    loading
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, updateUser, loading }}>
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Custom hook to access AuthContext
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

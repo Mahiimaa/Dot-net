@@ -32,23 +32,9 @@ import StaffOrderPortal from './pages/StaffOrderPortal';
 import BroadcastMessages from './Components/BroadcastMessages';
 import Bestseller from './pages/Bestseller';
 import Shop from "./pages/Shop";
+import ProtectedRoute from './Components/ProtectedRoute'; 
 import './App.css';
 import VerifyEmail from './pages/VerifyEmail';
-
-
-// ProtectedRoute Component
-const ProtectedRoute = ({ children, adminOnly, allowedRoles = [] }) => {
-  const { isAuthenticated, user } = useContext(AuthContext);
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  // If adminOnly is true, set allowedRoles to ['Admin']
-  const roles = adminOnly ? ['Admin'] : allowedRoles;
-  if (roles.length > 0 && user?.role && !roles.includes(user.role)) {
-    return <Navigate to="/" replace />;
-  }
-  return children;
-};
 
 function RoutesWithNotifications() {
   const { isAuthenticated, user, loading } = useContext(AuthContext);
